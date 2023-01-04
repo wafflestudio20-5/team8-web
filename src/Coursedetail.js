@@ -19,8 +19,31 @@ const Detailcap = styled.div`
   border-bottom: 1px solid #e7e7e7;
   background: #f8f8f8;
 `
-const Close = styled.button``
-const Header = styled.div``
+const Close = styled.button`
+  position: absolute;
+  border: none;
+  background-color: #fff;
+  width: 30px;
+  height: 20px;
+  right: 5px;
+  top: 5px;
+  cursor: pointer;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+`
+const Header = styled.div`
+  height: 4rem;
+  padding-top: 60px;
+  font-size: 24px;
+  text-align: center;
+  div {
+    margin: auto;
+
+    width: fit-content;
+  }
+`
 const Container = styled.div``
 const Tap = styled.ul`
   display: flex;
@@ -28,6 +51,7 @@ const Tap = styled.ul`
   flex-direction: row;
   width: 100%;
   padding: 0;
+  height: 4rem;
   li {
     border: 1px solid #ccc;
     list-style: none;
@@ -37,12 +61,13 @@ const Tap = styled.ul`
 const Tabbutton = styled.button`
   width: 100%;
   height: 100%;
+  padding: 0;
   background-color: ${(props) =>
     props.tabnum === props.number ? '#ccc' : '#fff'};
   border: none;
 `
 
-const Coursedetail = () => {
+const Coursedetail = ({ modal, setModal }) => {
   const [tabnum, setTabnum] = useState(0)
   const tab = [
     { title: '강좌상세조회' },
@@ -50,14 +75,21 @@ const Coursedetail = () => {
     { title: '강의계획서' },
     { title: '수강반' },
     { title: '2군 교과목' },
-    { title: '교수님' },
     { title: '동일대체 교과목' },
     { title: 'Cross-Listing 교과목' },
   ]
   return (
     <Wrapper>
-      <Close />
-      <Header>강좌상세정보</Header>
+      <Close
+        onClick={() => {
+          setModal(false)
+        }}
+      >
+        <img src="/delete.png" />
+      </Close>
+      <Header>
+        <div>강좌상세정보</div>
+      </Header>
       <Container>
         <Tap tabnum={tabnum}>
           {tab.map((item, i) => (
