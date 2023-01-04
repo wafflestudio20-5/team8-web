@@ -1,7 +1,7 @@
 import './Header.css'
 import Searchcourse from './Searchcourse'
 import axios from 'axios'
-const Header = () => {
+const Header = ({ setSearchopen, searchopen }) => {
   const menu = [
     { title: '관심강좌', link: '/events' },
     { title: '장바구니', link: '/events' },
@@ -27,7 +27,12 @@ const Header = () => {
             <div>
               <img src={'/search.png'} alt={'search'} className="searchicon" />
             </div>
-            <div className="search_list">
+            <div
+              className="search_list"
+              onClick={() => {
+                setSearchopen(searchopen ? false : true)
+              }}
+            >
               <img
                 src={'/search_list.png'}
                 alt={'searchlist'}

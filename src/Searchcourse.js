@@ -7,7 +7,9 @@ const Wrapper = styled.div`
   border-radius: 10px;
   background: #fff;
   width: 70%;
-  height: 80%;
+  height: ${(props) => (props.searchopen ? '80%' : '0')};
+  opacity: ${(props) => (props.searchopen ? '1' : '0')};
+  transition: all 1s;
 `
 const Footer = styled.div`
   position: absolute;
@@ -71,14 +73,18 @@ const Top = styled.div`
 const Content = styled.div`
   height: 80%;
 `
-const Searchcourse = () => {
+const Searchcourse = ({ setSearchopen, searchopen }) => {
   return (
-    <Wrapper>
+    <Wrapper searchopen={searchopen}>
       <Top>
         <span>상세검색 년도 강좌를 검색합니다.</span>
         <div>
           <button>초기화</button>
-          <Close>
+          <Close
+            onClick={() => {
+              setSearchopen(false)
+            }}
+          >
             <img src="/delete.png" />
           </Close>
         </div>

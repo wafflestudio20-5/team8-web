@@ -1,4 +1,5 @@
 .headerbox {
+  position: sticky;
   height: 145px;
   border-bottom: 1px solid #dedede;
   display: flex;
