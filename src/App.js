@@ -7,8 +7,8 @@ import Coursedetail from './Coursedetail'
 import Searchcourse from './Searchcourse'
 import Review from './Review'
 function App() {
-  const [modal, setModal] = useState(false)
-  const [searchopen, setSearchopen] = useState(false)
+  const [modal, setModal] = useState(true)
+  const [searchopen, setSearchopen] = useState(true)
   return (
     <div>
       <Header searchopen={searchopen} setSearchopen={setSearchopen} />

@@ -1,12 +1,12 @@
 import styled from 'styled-components'
 import React, { useState } from 'react'
 const Wrapper = styled.div`
-  width: 90%;
-  height: 90%;
+  width: 95%;
+  height: 95%;
   background-color: #fff;
   position: absolute;
   bottom: 0;
-  right: 5%;
+  right: 2.5%;
   display: flex;
   flex-direction: column;
 `
@@ -40,11 +40,13 @@ const Header = styled.div`
   text-align: center;
   div {
     margin: auto;
-
     width: fit-content;
   }
 `
-const Container = styled.div``
+const Container = styled.div`
+  padding: 0 25px;
+  overflow: auto;
+`
 const Tap = styled.ul`
   display: flex;
   justify-content: space-between;

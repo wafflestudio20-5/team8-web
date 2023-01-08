@@ -45,18 +45,12 @@ const Header = ({ setSearchopen, searchopen }) => {
           className="accountinfo"
           onClick={() => {
             axios
-              .post(
-                'http://ec2-13-125-66-192.ap-northeast-2.compute.amazonaws.com:8000/user/login/',
-                {
-                  email: 'test@naver.com',
-                  password: 'pass2580',
-                },
-                {
-                  withCredentials: true,
-                },
-              )
+              .get(`https://snu-sugang.o-r.kr/lectures/?page=1`)
               .then((res) => {
                 console.log(res)
+              })
+              .catch((err) => {
+                console.log(err)
               })
           }}
         >
