@@ -45,7 +45,7 @@ const Header = ({ setSearchopen, searchopen }) => {
           className="accountinfo"
           onClick={() => {
             axios
-              .get(`https://snu-sugang.o-r.kr/lectures/?page=1`)
+              .get(`https://snu-sugang.o-r.kr/lectures/1/reviews`)
               .then((res) => {
                 console.log(res)
               })
