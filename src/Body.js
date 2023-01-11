@@ -1,19 +1,9 @@
 import "./Body.css";
-import { useState, useEffect } from "react";
 import GoogleButton from "./GoogleButton";
 
 const Body = () => {
-  const [userId, setUserId] = useState("");
-  const [loginState, setLoginState] = useState(false);
-
   return (
     <div>
-      <GoogleButton
-        loginState={loginState}
-        setLoginState={setLoginState}
-        userId={userId}
-        setUserId={setUserId}
-      />
       <div className="whole-container">
         <div className="body-container">
           <div className="body-item">
@@ -51,6 +41,7 @@ const Body = () => {
             </div>
           </div>
           <div className="body-item">
+            <GoogleButton />
             <div className="manual">
               <a href="https://now.snu.ac.kr/popup/card/37">
                 <div className="blue-box">

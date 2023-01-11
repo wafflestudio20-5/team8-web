@@ -1,0 +1,37 @@
+.register-container{
+    margin-top: 30px;
+    margin-left: 25vw;
+    margin-right: 25vw;
+    min-width: 500px;
+    overflow: scroll;
+    border: 2px solid #396ec7;
+    border-radius: 5px;
+    padding: 20px;
+    overflow: scroll;
+}
+.register-title{
+    text-align: center;
+    font-size: 30px;
+    height: 50px;
+    color: #396ec7;
+    font-weight: bold;
+    border-bottom: 1px solid #396ec7;
+    margin-bottom: 20px;
+}
+.register-contents{
+    padding-left: 30px;
+    font-size: 18px;
+    line-height: 50px;
+}
+.bold-title{
+    font-weight: bold;
+    display: inline-block;
+    width: 100px;
+}
+.register-input{
+    font-size: 18px;
+    height: 20px;
+    width: 150px;
+    text-align: center;
+    margin-right: 50px;
+}
