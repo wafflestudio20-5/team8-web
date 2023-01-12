@@ -1,6 +1,6 @@
 .headerbox {
   height: 145px;
-  width: 100vw;
+  width: 100%;
   border-bottom: 1px solid #dedede;
   display: flex;
   flex-direction: column;

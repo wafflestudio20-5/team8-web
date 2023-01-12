@@ -3,26 +3,31 @@ import { useUserDataContext } from "./Context";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { collapseToast, toast } from "react-toastify";
 
 const Register = () => {
   const {
     name,
     email,
     password,
+    college,
     setCollege,
+    department,
     setDepartment,
     studentId,
     setStudentId,
     yearOfEntrance,
     setYearOfEntrance,
+    program,
     setProgram,
+    grade,
     setGrade,
   } = useUserDataContext();
   // 학번, 이름, 이수과정, 학년, 입학년도, 등록횟수, 주전공, 부전공, 복수전공
 
   useEffect(() => {
-    if (studentId.length > 3) setYearOfEntrance(studentId.substring(0, 4));
+    if (studentId.length > 3)
+      setYearOfEntrance(parseInt(studentId.substring(0, 4)));
   }, [studentId]);
 
   let navigate = useNavigate();
@@ -30,13 +35,20 @@ const Register = () => {
   const signup = () => {
     axios
       .post("https://snu-sugang.o-r.kr/user/register/", {
-        name: name,
         email: email,
         password: password,
+        name: name,
+        student_id: studentId,
+        college: college,
+        department: department,
+        program: program,
+        academic_year: grade,
+        year_of_entrance: yearOfEntrance,
       })
       .then((response) => {
         console.log("sign-up success");
         console.log(response);
+        toast.success("가입되었습니다.");
         navigate(-1);
       })
       .catch((response) => {
@@ -70,7 +82,7 @@ const Register = () => {
           <span className="bold-title">소속 학과</span>
           <input
             className="register-input"
-            placeholder="컴퓨터공학과"
+            placeholder="컴퓨터공학부"
             onChange={(e) => setDepartment(e.target.value)}
           />
           <br />
@@ -106,7 +118,7 @@ const Register = () => {
           <span className="bold-title">학년</span>
           <select
             className="register-select"
-            onChange={(e) => setGrade(e.target.value)}
+            onChange={(e) => setGrade(parseInt(e.target.value))}
           >
             <option key="1" value="1">
               1학년
@@ -119,6 +131,9 @@ const Register = () => {
             </option>
             <option key="4" value="4">
               4학년
+            </option>
+            <option key="5" value="5">
+              추가 학기
             </option>
           </select>
         </form>

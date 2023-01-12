@@ -18,7 +18,6 @@ const Header = () => {
 
   let navigate = useNavigate();
   const logout = () => {
-    // axios.post(~~ logout)
     setLoginState(false);
     navigate("/");
     toast.success("로그아웃되었습니다.");

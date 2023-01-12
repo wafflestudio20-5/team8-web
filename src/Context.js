@@ -17,9 +17,9 @@ export function UserDataProvider({ children }) {
   const [college, setCollege] = useState("");
   const [department, setDepartment] = useState("");
   const [studentId, setStudentId] = useState("");
-  const [grade, setGrade] = useState("");
-  const [program, setProgram] = useState("");
-  const [yearOfEntrance, setYearOfEntrance] = useState("");
+  const [grade, setGrade] = useState(1);
+  const [program, setProgram] = useState("학사");
+  const [yearOfEntrance, setYearOfEntrance] = useState();
   const [cookies, setCookie] = useCookies(["token"]);
 
   return (
