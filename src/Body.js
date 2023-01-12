@@ -1,5 +1,4 @@
 import "./Body.css";
-import GoogleButton from "./GoogleButton";
 
 const Body = () => {
   return (
@@ -15,7 +14,7 @@ const Body = () => {
                 ※ 장바구니는 선착순이 아닙니다.
               </span>
             </div>
-            <div className="table-container">
+            <div className="info-table-container">
               <table height="100px" width="100%">
                 <thead>
                   <tr>
@@ -41,17 +40,14 @@ const Body = () => {
             </div>
           </div>
           <div className="body-item">
-            <GoogleButton />
             <div className="manual">
               <a href="https://now.snu.ac.kr/popup/card/37">
                 <div className="blue-box">
                   장바구니 초보를 위한 수강신청 안내
                 </div>
               </a>
-              <a href="../public/manual.pdf" download>
-                <div className="blue-box">
-                  수강신청방법 매뉴얼 (파일 다운로드 X)
-                </div>
+              <a href={"/public/manual.pdf"} download>
+                <div className="blue-box">수강신청방법 매뉴얼</div>
               </a>
             </div>
           </div>

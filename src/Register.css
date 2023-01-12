@@ -1,5 +1,5 @@
 .register-container{
-    margin-top: 30px;
+    margin-top: 50px;
     margin-left: 25vw;
     margin-right: 25vw;
     min-width: 500px;
@@ -19,9 +19,9 @@
     margin-bottom: 20px;
 }
 .register-contents{
-    padding-left: 30px;
+    padding-left: 40px;
     font-size: 18px;
-    line-height: 50px;
+    line-height: 55px;
 }
 .bold-title{
     font-weight: bold;
@@ -34,4 +34,33 @@
     width: 150px;
     text-align: center;
     margin-right: 50px;
+}
+.register-select{
+    font-size: 18px;
+    height: 25px;
+    width: 158px;
+    text-align: center;
+    margin-right: 50px;
+}
+.register-buttons{
+    margin-top: 30px;
+    text-align: center;
+}
+.register-button{
+    width: 150px;
+    height: 40px;
+    background-color: navy;
+    color: white;
+    border: 1px solid navy;
+    display: inline-block;
+    cursor: pointer;
+}
+.register-button-cancel{
+    width: 150px;
+    height: 40px;
+    background-color: gray;
+    color: white;
+    border: 1px solid gray;
+    display: inline-block;
+    cursor: pointer;
 }

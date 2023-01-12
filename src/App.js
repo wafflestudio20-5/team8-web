@@ -9,6 +9,7 @@ import Mypage from "./Mypage";
 import TimeTable from "./TimeTable";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import "./App.css";
 
 function App() {
@@ -26,13 +27,13 @@ function App() {
           <Route path="/timetable" element={<TimeTable />} />
           <Route path="*" element={<Search />} />
         </Routes>
+        <ToastContainer
+          position="top-right"
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       </BrowserRouter>
-      <ToastContainer
-        position="top-right"
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
       </div>
 
   );

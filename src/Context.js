@@ -6,6 +6,7 @@ import {
   useContext,
 } from "react";
 import axios from "axios";
+import { useCookies } from "react-cookie";
 
 const UserDataContext = createContext();
 export function UserDataProvider({ children }) {
@@ -16,10 +17,10 @@ export function UserDataProvider({ children }) {
   const [college, setCollege] = useState("");
   const [department, setDepartment] = useState("");
   const [studentId, setStudentId] = useState("");
+  const [grade, setGrade] = useState("");
   const [program, setProgram] = useState("");
   const [yearOfEntrance, setYearOfEntrance] = useState("");
-  const [numberOfSemesters, setNumberOfSemesters] = useState(0);
-  const [major, setMajor] = useState("");
+  const [cookies, setCookie] = useCookies(["token"]);
 
   return (
     <UserDataContext.Provider
@@ -42,8 +43,10 @@ export function UserDataProvider({ children }) {
         setProgram,
         yearOfEntrance,
         setYearOfEntrance,
-        numberOfSemesters,
-        setNumberOfSemesters,
+        grade,
+        setGrade,
+        cookies,
+        setCookie,
       }}
     >
       {children}

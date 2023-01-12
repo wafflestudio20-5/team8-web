@@ -18,6 +18,8 @@ const GoogleButton = ({ onSocial }) => {
     setPassword,
     setName,
     setCollege,
+    setCookie,
+    cookie,
   } = useUserDataContext();
 
   useEffect(() => {
@@ -42,26 +44,27 @@ const GoogleButton = ({ onSocial }) => {
         })
         .then((response) => {
           console.log("login success");
-          console.log(response);
+          console.log(response.data.token);
+          toast.success("로그인되었습니다.");
           setLoginState(true);
           setEmail(userEmail);
           setPassword(userPassword);
+          setCookie("token", response.data.token);
+          // 구현 필요!! axios.post --> get user info and set all the contexts
         })
         .catch((e) => {
           console.log("error");
           console.log(e);
-          alert("로그인에 실패했습니다.");
           toast.error("로그인에 실패했습니다.");
         });
     } else {
-      alert("SNU 이메일로 로그인해주세요.");
       toast.error("SNU 이메일로 로그인해주세요.");
     }
   };
 
   const loginFailure = (response) => {
     console.log(response);
-    alert("구글 로그인에 실패했습니다.");
+    toast.error("구글 로그인에 실패했습니다.");
   };
 
   let navigate = useNavigate();
@@ -71,22 +74,31 @@ const GoogleButton = ({ onSocial }) => {
     let userEmail = response.profileObj.email;
     let userPassword = response.profileObj.googleId;
     if (userEmail.includes("@snu.ac.kr")) {
-      // 이미 가입된 이메일인지 확인하는 절차 필요 (axios.get??)
-      setEmail(userEmail);
-      setPassword(userPassword);
-      let arr = response.profileObj.name.split(" / ");
-      setName(arr[0]);
-      setCollege(arr[2]);
-      let link = "/register";
-      navigate(link);
+      axios
+        .post("https://snu-sugang.o-r.kr/user/login/", {
+          email: userEmail,
+          password: userPassword,
+        })
+        .then(() => {
+          toast.error("이미 가입된 이메일입니다.");
+        })
+        .catch(() => {
+          setEmail(userEmail);
+          setPassword(userPassword);
+          let arr = response.profileObj.name.split(" / ");
+          setName(arr[0]);
+          setCollege(arr[2]);
+          let link = "/register";
+          navigate(link);
+        });
     } else {
-      alert("SNU 이메일로 가입해주세요.");
+      toast.error("SNU 이메일로 가입해주세요.");
     }
   };
 
   const signupFailure = (response) => {
     console.log(response);
-    alert("회원 가입에 실패했습니다.");
+    toast.error("회원 가입에 실패했습니다.");
   };
 
   return (
