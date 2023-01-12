@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import React, { useState } from 'react'
 const Wrapper = styled.div`
+  z-index: 2;
   width: 95%;
   height: 95%;
   background-color: #fff;
@@ -80,8 +81,8 @@ const Close = styled.button`
   background-color: #fff;
   width: 30px;
   height: 20px;
-  right: 5px;
-  top: 5px;
+  right: 15px;
+  top: 15px;
   cursor: pointer;
   img {
     width: 100%;
@@ -89,8 +90,8 @@ const Close = styled.button`
   }
 `
 const Header = styled.div`
-  height: 4rem;
-  padding-top: 60px;
+  height: 3rem;
+  padding-top: 40px;
   font-size: 24px;
   text-align: center;
   div {
@@ -169,16 +170,25 @@ const Overview = styled.div`
   padding: 10px;
 `
 
+const Back = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+`
+
 const Coursedetail = ({ modal, setModal }) => {
   const [tabnum, setTabnum] = useState(0)
   const tab = [
-    { title: '강좌상세조회' },
-    { title: '교과목개요' },
-    { title: '강의계획서' },
-    { title: '수강반' },
-    { title: '2군 교과목' },
-    { title: '동일대체 교과목' },
-    { title: 'Cross-Listing 교과목' },
+    '강좌상세조회',
+    '교과목개요',
+    '강의계획서',
+    '수강반',
+    '2군 교과목',
+    '동일대체 교과목',
+    'Cross-Listing 교과목',
   ]
   const detail = [
     { title: '정원', content: '0' },
@@ -211,6 +221,7 @@ const Coursedetail = ({ modal, setModal }) => {
     { title: '학기', content: '0' },
     { title: '교과목번호', content: '0' },
   ]
+
   const Detailtable = ({ detail }) => {
     let app = []
     for (let i = 0; i < detail.length; i = i + 2) {
@@ -232,7 +243,25 @@ const Coursedetail = ({ modal, setModal }) => {
       </table>
     )
   }
+
   const Tabcontent = ({ tabnum }) => {
+    const evaluate = [
+      '출석',
+      '과제',
+      '중간',
+      '기말',
+      '수시평가',
+      '태도',
+      '기타',
+      '합계',
+    ]
+    const classmeth = [
+      '플립러닝',
+      '이론위주 수업',
+      '토론위주 수업',
+      '프로젝트수업',
+      '기타',
+    ]
     if (tabnum === 0) {
       return (
         <Detailclass>
@@ -321,13 +350,147 @@ const Coursedetail = ({ modal, setModal }) => {
     } else if (tabnum === 2) {
       return (
         <Detailclass>
+          <table>
+            <colgroup>
+              <col style={{ width: '15%' }} />
+              <col />
+              <col />
+            </colgroup>
+            <thead>
+              <tr>
+                <th>학점</th>
+                <th>개설학과</th>
+                <th>대표교수</th>{' '}
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>과</td>
+                <td>교수</td>
+              </tr>
+            </thead>
+          </table>
           <div>
-            <span>교과목개요(국문)</span>
-            <Overview>개요없음</Overview>
+            <span>파일 다운로드</span>
+            <table>
+              <colgroup>
+                <col style={{ width: '30%' }} />
+                <col />
+              </colgroup>
+              <tbody>
+                <tr>
+                  <th>첨부파일(국문)</th>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th>첨부파일(영문)</th>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
           <div>
-            <span>교과목개요(영문)</span>
-            <Overview>No content</Overview>
+            <span>강의 계획 상세</span>
+            <table>
+              <colgroup>
+                <col style={{ width: '16%' }} />
+                <col style={{ width: '14%' }} />
+                <col style={{ width: '14%' }} />
+                <col style={{ width: '14%' }} span={4} />
+              </colgroup>
+              <tbody>
+                <tr>
+                  <th>1.수업목표</th>
+                  <td colSpan={7}>없음</td>
+                </tr>
+                <tr>
+                  <th>2.교재 및 참고문헌</th>
+                  <td colSpan={7}>없음</td>
+                </tr>
+                <tr>
+                  <th rowSpan={11}>3.평가방법</th>
+                  <td>성적부여방식</td>
+                  <td>절대평가</td>
+                  <td>등급제여부</td>
+                  <td colSpan={4}>A~F</td>
+                </tr>
+                {evaluate.map((item, i) => (
+                  <tr key={item}>
+                    <td>{item}(%)</td>
+                    <td>0%</td>
+                    <td colSpan={5}></td>
+                  </tr>
+                ))}
+                <tr>
+                  <td>출석규정</td>
+                  <td colSpan={6}></td>
+                </tr>
+                <tr>
+                  <td>기타사항</td>
+                  <td colSpan={6}></td>
+                </tr>
+                <tr>
+                  <th>4.정원외신청</th>
+                  <td>수용가능인원</td>
+                  <td colSpan={6}>최대 명</td>
+                </tr>
+                <tr>
+                  <th rowSpan={2}>5.수강생 참고사항</th>
+                  <td colSpan={8}></td>
+                </tr>
+                <tr>
+                  <td>면담시간/장소</td>
+                  <td colSpan={6}></td>
+                </tr>
+                <tr>
+                  <th rowSpan={3}>6.강의계획</th>
+                  <td rowSpan={2}> 수업방식</td>
+                  {classmeth.map((item, i) => (
+                    <td key={item}>
+                      <input type="checkbox" disabled="disabled" />
+                      <label>{item}</label>
+                    </td>
+                  ))}
+                </tr>
+                <tr>
+                  <td>기타내용</td>
+                  <td colSpan={5}></td>
+                </tr>
+                <tr>
+                  <td colSpan={7}></td>
+                </tr>
+                <tr>
+                  <th rowspan={3}>7.장애학생 지원사항</th>
+                  <td>강의 수강 관련</td>
+                  <td colSpan={5}></td>
+                </tr>
+                <tr>
+                  <td>과제 및 평가 관련</td>
+                  <td colSpan={6}></td>
+                </tr>
+                <tr>
+                  <td>비고</td>
+                  <td colSpan={7}></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <span>주차별 강의계획</span>
+            <table>
+              <colgroup>
+                <col style={{ width: '15%' }} />
+                <col />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th>주차구분</th>
+                  <th>주차별 강의계획내용</th>
+                </tr>
+                <tr>
+                  <td colSpan={2}>주차별 강의계획 내용 없음</td>
+                </tr>
+              </thead>
+            </table>
           </div>
         </Detailclass>
       )
@@ -407,7 +570,6 @@ const Coursedetail = ({ modal, setModal }) => {
     } else if (tabnum === 6) {
       return (
         <Detailclass2>
-          {' '}
           <table>
             <colgroup>
               <col span={2} style={{ width: '15%' }} />
@@ -432,36 +594,39 @@ const Coursedetail = ({ modal, setModal }) => {
     }
   }
   return (
-    <Wrapper>
-      <Close
-        onClick={() => {
-          setModal(false)
-        }}
-      >
-        <img src="/delete.png" />
-      </Close>
-      <Header>
-        <div>강좌상세정보</div>
-      </Header>
-      <Container>
-        <Tap tabnum={tabnum}>
-          {tab.map((item, i) => (
-            <li key={item.title}>
-              <Tabbutton
-                number={i}
-                tabnum={tabnum}
-                onClick={() => {
-                  setTabnum(i)
-                }}
-              >
-                {item.title}
-              </Tabbutton>
-            </li>
-          ))}
-        </Tap>
-        <Tabcontent tabnum={tabnum} />
-      </Container>
-    </Wrapper>
+    <div>
+      <Back />
+      <Wrapper>
+        <Close
+          onClick={() => {
+            setModal(false)
+          }}
+        >
+          <img src="/delete.png" />
+        </Close>
+        <Header>
+          <div>강좌상세정보</div>
+        </Header>
+        <Container>
+          <Tap tabnum={tabnum}>
+            {tab.map((item, i) => (
+              <li key={item}>
+                <Tabbutton
+                  number={i}
+                  tabnum={tabnum}
+                  onClick={() => {
+                    setTabnum(i)
+                  }}
+                >
+                  {item}
+                </Tabbutton>
+              </li>
+            ))}
+          </Tap>
+          <Tabcontent tabnum={tabnum} />
+        </Container>
+      </Wrapper>
+    </div>
   )
 }
 

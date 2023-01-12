@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import axios from 'axios'
 const Wrapper = styled.div`
   position: absolute;
   top: 100px;
@@ -9,9 +10,10 @@ const Wrapper = styled.div`
   width: 70%;
   height: ${(props) => (props.searchopen ? '80%' : '0')};
   opacity: ${(props) => (props.searchopen ? '1' : '0')};
+  z-index: ${(props) => (props.searchopen ? '1' : '-1')};
   transition: all 1s;
 `
-const Footer = styled.div`
+const Footer = styled.button`
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -130,9 +132,9 @@ const Searchitem = styled.div`
     color: #666;
   }
 `
-const Searchselect = ({ selectdata }) => {
+const Searchselect = ({ selectdata, id }) => {
   return (
-    <select>
+    <select id={id}>
       <option>전체</option>
       {selectdata.map((data) => {
         return <option key={data}>{data}</option>
@@ -141,6 +143,9 @@ const Searchselect = ({ selectdata }) => {
   )
 }
 const Searchcourse = ({ setSearchopen, searchopen }) => {
+  const submit = (e) => {
+    e.preventDefault()
+  }
   const subject = [
     '교양',
     '전필',
@@ -154,7 +159,7 @@ const Searchcourse = ({ setSearchopen, searchopen }) => {
   ]
   return (
     <Wrapper searchopen={searchopen}>
-      <form>
+      <form onSubmit={submit}>
         <Top>
           <span>상세검색 년도 강좌를 검색합니다.</span>
           <div>
@@ -175,24 +180,24 @@ const Searchcourse = ({ setSearchopen, searchopen }) => {
             <Searchitem>
               <span>학년</span>
               <div>
-                <Searchselect selectdata={['학사']} />
-                <Searchselect selectdata={['1학년']} />
+                <Searchselect id={'search1'} selectdata={['학사']} />
+                <Searchselect id={'search2'} selectdata={['1학년']} />
               </div>
             </Searchitem>
             <Searchitem>
               <span>개설학과</span>
               <div>
-                <Searchselect selectdata={['']} />
-                <Searchselect selectdata={['']} />
-                <Searchselect selectdata={['']} />
+                <Searchselect id={'search3'} selectdata={['']} />
+                <Searchselect id={'search4'} selectdata={['']} />
+                <Searchselect id={'search5'} selectdata={['']} />
               </div>
             </Searchitem>
             <Searchitem>
               <span>교과구분</span>
               <div>
-                {subject.map((data) => (
+                {subject.map((data, i) => (
                   <div key={data}>
-                    <input type="checkbox" />
+                    <input type="checkbox" id={`subject${i}`} />
                     <span>{data}</span>
                   </div>
                 ))}
@@ -204,6 +209,7 @@ const Searchcourse = ({ setSearchopen, searchopen }) => {
               <span>교양영역</span>
               <div>
                 <Searchselect
+                  id={'search6'}
                   selectdata={[
                     '학문의 기초',
                     '학문의 세계',
@@ -211,17 +217,17 @@ const Searchcourse = ({ setSearchopen, searchopen }) => {
                     '전공영역',
                   ]}
                 />
-                <Searchselect selectdata={['']} />
+                <Searchselect id={'search7'} selectdata={['']} />
               </div>
             </Searchitem>
             <Searchitem>
               <span>과정구분</span>
-              <Searchselect selectdata={['학사', '대학원']} />
+              <Searchselect id={'search8'} selectdata={['학사', '대학원']} />
             </Searchitem>
             <Searchitem>
               <span>검색제외 설정</span>
               <div>
-                <input type="text" />
+                <input id={'search9'} type="text" />
                 <span>
                   입력하는 단어가 포함된 강좌명을 검색결과에서 제외하라는 조건을
                   설정합니다. 여러 개의 단어는 쉼표(,)로 구분해서 입력하세요.
@@ -230,7 +236,14 @@ const Searchcourse = ({ setSearchopen, searchopen }) => {
             </Searchitem>
           </div>
         </Content>
-        <Footer>검색</Footer>
+        <Footer
+          type="submit"
+          onClick={() => {
+            setSearchopen(false)
+          }}
+        >
+          검색
+        </Footer>
       </form>
     </Wrapper>
   )

@@ -41,19 +41,7 @@ const Header = ({ setSearchopen, searchopen }) => {
             </div>
           </div>
         </div>
-        <div
-          className="accountinfo"
-          onClick={() => {
-            axios
-              .get(`https://snu-sugang.o-r.kr/lectures/1/reviews`)
-              .then((res) => {
-                console.log(res)
-              })
-              .catch((err) => {
-                console.log(err)
-              })
-          }}
-        >
+        <div className="accountinfo">
           <div>홍길동</div>
           <div>학번 0000-00000</div>
         </div>
