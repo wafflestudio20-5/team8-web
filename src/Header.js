@@ -1,13 +1,39 @@
 import "./Header.css";
+import GoogleButton from "./GoogleButton";
+import { useUserDataContext, useCourseDataContext } from "./Context";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useState } from "react";
 import axios from "axios";
+
 const Header = () => {
   const menu = [
     { title: "관심강좌", link: "/interest" },
     { title: "시간표", link: "/timetable" },
     { title: "장바구니", link: "/cart" },
-    { title: "수강신청", link: "/register" },
+    { title: "수강신청", link: "/enroll" },
     { title: "수강신청내역", link: "/registered" },
   ];
+
+  const { loginState, setLoginState, name, studentId } = useUserDataContext();
+  const { search_word, setSearch_word, setGetting } = useCourseDataContext();
+  let navigate = useNavigate();
+  const logout = () => {
+    // axios.post(~~ logout)
+    setLoginState(false);
+    navigate("/");
+    toast.success("로그아웃되었습니다.");
+  };
+
+  const onSubmitSearch = async (e) => {
+    if (e.key === "Enter") {
+      setGetting(true);
+      navigate(`/search`);
+    } else {
+      await setSearch_word(e.target.value);
+    }
+  };
+
   return (
     <div className="headerbox">
       <div className="headerup">
@@ -22,10 +48,22 @@ const Header = () => {
             </select>
             <input
               type="text"
+              onKeyDown={onSubmitSearch}
+              onChange={(e) => {
+                setSearch_word(e.target.value);
+              }}
               placeholder="전체 강좌 검색은 돋보기 버튼을 클릭하세요"
             />
             <div>
-              <img src={"/search.png"} alt={"search"} className="searchicon" />
+              <img
+                onClick={() => {
+                  setGetting(true);
+                  navigate(`/search`);
+                }}
+                src={"/search.png"}
+                alt={"search"}
+                className="searchicon"
+              />
             </div>
             <div className="search_list">
               <img
@@ -36,27 +74,34 @@ const Header = () => {
             </div>
           </div>
         </div>
-        <div
-          className="accountinfo"
-          onClick={() => {
-            axios
-              .post(
-                "http://ec2-13-125-66-192.ap-northeast-2.compute.amazonaws.com:8000/user/login/",
-                {
-                  email: "test@naver.com",
-                  password: "pass2580",
-                },
-                {
-                  withCredentials: true,
-                }
-              )
-              .then((res) => {
-                console.log(res);
-              });
-          }}
-        >
-          <div>홍길동</div>
-          <div>학번 0000-00000</div>
+        <div>
+          <GoogleButton />
+          {loginState ? (
+            <div
+              className="accountinfo"
+              onClick={() => {
+                axios
+                  .post(
+                    "http://ec2-13-125-66-192.ap-northeast-2.compute.amazonaws.com:8000/user/login/",
+                    {
+                      email: "test@naver.com",
+                      password: "pass2580",
+                    },
+                    {
+                      withCredentials: true,
+                    }
+                  )
+                  .then((res) => {
+                    console.log(res);
+                  });
+              }}
+            >
+              <div>{name}</div>
+              <div>학번 {studentId}</div>
+            </div>
+          ) : (
+            <GoogleButton />
+          )}
         </div>
       </div>
       <div className="headerdown">
@@ -67,9 +112,13 @@ const Header = () => {
             </div>
           ))}
         </div>
-        <div className="mypage">
-          <a href={"/mypage"}> 마이페이지</a>
-        </div>
+        {loginState && (
+          <div className="mypage">
+            <a href={"/mypage"}> 마이페이지</a>
+            &nbsp;
+            <a onClick={logout}>로그아웃</a>
+          </div>
+        )}
       </div>
     </div>
   );

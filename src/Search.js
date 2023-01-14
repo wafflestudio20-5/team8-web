@@ -1,14 +1,18 @@
 import "./Search.css";
 import { useCourseDataContext } from "./Context";
 import React, { useEffect, useState } from "react";
+import Course from "./Course";
 
 const Search = () => {
-  const { count, courses, page, setPage } = useCourseDataContext();
+  const { word, count, courses, page, setPage, setGetting } =
+    useCourseDataContext();
   const [startNum, setStartNum] = useState(1);
   const [pageButtons, setPageButtons] = useState([]);
+  const [checkedInputs, setCheckedInputs] = useState("");
 
   useEffect(() => {
     function setButtons() {
+      setGetting(true);
       const r = [];
       for (let i = startNum; i < startNum + 5 && i <= count / 10 + 1; i++) {
         r.push(
@@ -17,6 +21,7 @@ const Search = () => {
             className={page === i ? "pageNum clicked" : "pageNum"}
             onClick={() => {
               setPage(i);
+              setGetting(true);
               console.log(page);
             }}
           >
@@ -27,25 +32,41 @@ const Search = () => {
       setPageButtons(r);
     }
     setButtons();
-  }, [count, page, setPage, startNum]);
+  }, [count, page, setPage, startNum, setGetting]);
 
   useEffect(() => {
-    console.log(page);
     setPage(startNum);
-    console.log(page);
   }, [startNum, setPage]);
 
   return (
-    <body>
+    <div>
       <div id="wrap">
         <div className="list-body">
           <div className="list-area">
-            <div className="padding"></div>
-            <div className="first">검색 결과</div>
+            <div className="first">
+              <div className="result">
+                <div className="oneline">
+                  <div className="blue">'{word}'&nbsp;</div> 검색 결과
+                </div>
+              </div>
+              <div className="oneline">
+                <div className="num">{count}</div>건의 교과목이 검색되었습니다.
+              </div>
+            </div>
+
             {courses.map((course) => (
-              <div className="item">{course.name}</div>
+              <div className="item">
+                <Course
+                  course={course}
+                  key={course.id}
+                  checkedInputs={checkedInputs}
+                  setCheckedInputs={setCheckedInputs}
+                />
+              </div>
             ))}
-            <div>총 {count}건</div>
+            <div className="line">
+              총 <div className="num">{count}</div>건
+            </div>
             <div className="pageButton">
               <button
                 type="button"
@@ -88,9 +109,30 @@ const Search = () => {
           </div>
         </div>
       </div>
-      <footer>footer</footer>
-      <div className="nav"></div>
-    </body>
+      <div className="bottom">
+        <a href="https://www.snu.ac.kr/personal_information">
+          개인정보취급방침
+        </a>{" "}
+        &nbsp;|&nbsp;
+        <a href="https://www.snu.ac.kr/prohibition_of_unauthorized_email_collection">
+          이메일무단수집거부
+        </a>
+        <br />
+        <span className="darkgray-word">
+          Copyright (C) 2020 SEOUL NATIONAL UNIVERSITY. All Rights Reserved.
+        </span>
+      </div>
+      <div className="search-nav">
+        <button className="interest-button">관심강좌 저장</button>
+        <button className="search-cart-button"> 장바구니 담기</button>
+
+        <div className="nav-bottom">
+          <div className="nav-code">00</div>
+          <input className="nav-code-input" placeholder="입력"></input>
+        </div>
+        <button className="enroll-button"> 수강신청</button>
+      </div>
+    </div>
   );
 };
 

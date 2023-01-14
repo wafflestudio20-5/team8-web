@@ -1,7 +1,3 @@
-body {
-  margin: 0;
-  padding: 0;
-}
 #wrap {
   min-height: 100vh;
   position: relative;
@@ -24,34 +20,41 @@ body {
   border-collapse: collapse;
   text-align: left;
 }
-.padding {
-  height: 145px;
-}
 .first {
   text-align: center;
-  font-size: 25px;
-  border-bottom: 2px solid black;
+  border-bottom: 2px solid #888a96;
   padding-bottom: 20px;
   height: 100px;
+  margin-top: 20px;
+}
+.blue {
+  color: #0f3e8e;
+}
+.line {
+  display: flex;
+}
+.oneline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.first .result {
+  font-size: 25px;
+  font-weight: bold;
+}
+.num {
+  color: red;
 }
 .item {
-  border-bottom: 1px solid black;
-  padding-top: 10px;
+  border-bottom: 1px solid #e0e2f2;
   font-size: 16px;
   font-weight: normal;
-  height: 130px;
+  padding: 0;
 }
-footer {
-  height: 120px;
-  width: 100%;
-  bottom: 0px;
-  position: absolulte;
-  background-color: bisque;
-}
-.nav {
-  background-color: blue;
+.search-nav {
+  background-color: #0f3e8e;
   width: 145px;
-  height: 300px;
+  height: 240px;
   border-radius: 20px;
   position: fixed;
   top: 200px;
@@ -68,6 +71,8 @@ button {
   margin-left: 5px;
   width: 30px;
   height: 30px;
+  background: white;
+  border: 1px solid black;
 }
 .pageNum {
   width: auto;
@@ -79,4 +84,69 @@ button {
   color: blue;
   font-weight: bold;
   text-decoration: underline;
+}
+.interest-button {
+  border-color: white;
+  border-radius: 10px;
+  background: transparent;
+  font-weight: bold;
+  color: white;
+  width: 120px;
+  margin-left: 13px;
+  margin-top: 27px;
+}
+
+.search-cart-button {
+  border: none;
+  background: #376dc8;
+  color: white;
+  font-weight: bold;
+  width: 120px;
+  margin-left: 13px;
+  margin-top: 10px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.nav-bottom {
+  border-top: 1px solid black;
+  width: 120px;
+  margin-left: 13px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding-top: 15px;
+  height: 40px;
+}
+.nav-code {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  background: #c0c0c0;
+  height: 100%;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  text-align: center;
+  font-size: 15px;
+  padding-top: 10px;
+  height: 30px;
+}
+.nav-code-input {
+  grid-column-start: 2;
+  grid-column-end: 3;
+  border: 1px solid black;
+  width: 50px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  text-align: center;
+  font-size: 17px;
+}
+.enroll-button {
+  border: none;
+  background: #f34c38;
+  color: white;
+  font-weight: bold;
+  width: 120px;
+  margin-left: 13px;
+  margin-top: 10px;
+  border-radius: 10px;
+  margin-bottom: 15px;
 }

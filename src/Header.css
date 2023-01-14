@@ -1,12 +1,13 @@
 .headerbox {
   height: 145px;
-  width: 100vw;
+  width: 100%;
   border-bottom: 1px solid #dedede;
   display: flex;
   flex-direction: column;
 }
 .headerup {
   padding: 0 3%;
+  padding-right: 250px;
   height: 65%;
   border-bottom: 1px solid #dedede;
   display: flex;
