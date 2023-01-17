@@ -12,20 +12,6 @@ import axios from 'axios'
 import { useEffect } from 'react'
 
 function App() {
-  useEffect(() => {
-    axios
-      .post('https://snu-sugang.o-r.kr/user/login/', {
-        email: 'rachel2003@snu.ac.kr',
-        password: 'password',
-      })
-      .then((res) => {
-        console.log(res.data)
-      })
-      .catch((e) => {
-        console.log(e)
-      })
-  })
-
   const [modal, setModal] = useState(false)
   const [searchopen, setSearchopen] = useState(false)
   return (

@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 import axios from 'axios'
+import { useState } from 'react'
+import { depart, subject, culture, culture2 } from './data'
 const Wrapper = styled.div`
   position: absolute;
   top: 100px;
@@ -132,9 +134,13 @@ const Searchitem = styled.div`
     color: #666;
   }
 `
-const Searchselect = ({ selectdata, id }) => {
+const Searchselect = ({ selectdata, setdata = null }) => {
   return (
-    <select id={id}>
+    <select
+      onChange={(e) => {
+        if (setdata) setdata(e.target.value)
+      }}
+    >
       <option>전체</option>
       {selectdata.map((data) => {
         return <option key={data}>{data}</option>
@@ -145,25 +151,47 @@ const Searchselect = ({ selectdata, id }) => {
 const Searchcourse = ({ setSearchopen, searchopen }) => {
   const submit = (e) => {
     e.preventDefault()
+    axios
+      .get('https://snu-sugang.o-r.kr/lectures?', {
+        params: {
+          //   grade: e.target[3].value,
+          //   degree: e.target[4].value,
+          //   college: e.target[5].value,
+          //   department: e.target[6].value,
+          //   curriculum: '전필',
+          //   keyword: '컴퓨터',
+          //   exception: e.target[20].value,
+          grade: 2,
+          degree: '학사',
+          college: '공과대학',
+          department: '컴퓨터공학부',
+          curriculum: '전필',
+          keyword: '컴퓨터',
+          exception: '구조',
+        },
+      })
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
-  const subject = [
-    '교양',
-    '전필',
-    '전선',
-    '일선',
-    '교직',
-    '논문',
-    '대학원',
-    '공통',
-    '학사',
-  ]
+
+  const [cult, setCult] = useState()
+  const [dep, setDep] = useState()
   return (
     <Wrapper searchopen={searchopen}>
       <form onSubmit={submit}>
         <Top>
           <span>상세검색 년도 강좌를 검색합니다.</span>
           <div>
-            <button>
+            <button
+              onClick={() => {
+                setCult(null)
+                setDep(null)
+              }}
+            >
               <input type="reset" />
             </button>
             <Close
@@ -180,16 +208,42 @@ const Searchcourse = ({ setSearchopen, searchopen }) => {
             <Searchitem>
               <span>학년</span>
               <div>
-                <Searchselect id={'search1'} selectdata={['학사']} />
-                <Searchselect id={'search2'} selectdata={['1학년']} />
+                <Searchselect
+                  selectdata={[
+                    '학사',
+                    '석사',
+                    '박사',
+                    '석박사통합',
+                    '학석사연계',
+                    '학석사통합',
+                    '복합학위',
+                  ]}
+                  onchange={(e) => {
+                    console.log(e.target.value)
+                  }}
+                />
+                <Searchselect
+                  selectdata={Array(5)
+                    .fill(1)
+                    .map((data, i) => i + 1 + '학년')}
+                />
               </div>
             </Searchitem>
             <Searchitem>
               <span>개설학과</span>
               <div>
-                <Searchselect id={'search3'} selectdata={['']} />
-                <Searchselect id={'search4'} selectdata={['']} />
-                <Searchselect id={'search5'} selectdata={['']} />
+                <Searchselect
+                  selectdata={depart.map((i) => i.name)}
+                  setdata={setDep}
+                />
+                <Searchselect
+                  selectdata={
+                    dep && dep !== '전체'
+                      ? depart.find((data) => data.name === dep).data
+                      : ['']
+                  }
+                />
+                <Searchselect selectdata={['']} />
               </div>
             </Searchitem>
             <Searchitem>
@@ -197,7 +251,7 @@ const Searchcourse = ({ setSearchopen, searchopen }) => {
               <div>
                 {subject.map((data, i) => (
                   <div key={data}>
-                    <input type="checkbox" id={`subject${i}`} />
+                    <input type="checkbox" />
                     <span>{data}</span>
                   </div>
                 ))}
@@ -209,25 +263,26 @@ const Searchcourse = ({ setSearchopen, searchopen }) => {
               <span>교양영역</span>
               <div>
                 <Searchselect
-                  id={'search6'}
-                  selectdata={[
-                    '학문의 기초',
-                    '학문의 세계',
-                    '선택교양',
-                    '전공영역',
-                  ]}
+                  selectdata={culture.map((data) => data.title)}
+                  setdata={setCult}
                 />
-                <Searchselect id={'search7'} selectdata={['']} />
+                <Searchselect
+                  selectdata={
+                    cult && cult !== '전체'
+                      ? culture.find((data) => data.title === cult).data
+                      : culture2
+                  }
+                />
               </div>
             </Searchitem>
             <Searchitem>
               <span>과정구분</span>
-              <Searchselect id={'search8'} selectdata={['학사', '대학원']} />
+              <Searchselect selectdata={['학사', '대학원']} />
             </Searchitem>
             <Searchitem>
               <span>검색제외 설정</span>
               <div>
-                <input id={'search9'} type="text" />
+                <input type="text" />
                 <span>
                   입력하는 단어가 포함된 강좌명을 검색결과에서 제외하라는 조건을
                   설정합니다. 여러 개의 단어는 쉼표(,)로 구분해서 입력하세요.

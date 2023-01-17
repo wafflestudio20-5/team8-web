@@ -1,5 +1,6 @@
 import styled from 'styled-components'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 const Wrapper = styled.div`
   z-index: 2;
   width: 95%;
@@ -180,6 +181,19 @@ const Back = styled.div`
 `
 
 const Coursedetail = ({ modal, setModal }) => {
+  const [data, setData] = useState()
+  useEffect(() => {
+    axios
+      .get('https://snu-sugang.o-r.kr/lectures/1/')
+      .then((res) => {
+        console.log(res.data)
+        setData(res.data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [])
+
   const [tabnum, setTabnum] = useState(0)
   const tab = [
     '강좌상세조회',
@@ -191,7 +205,7 @@ const Coursedetail = ({ modal, setModal }) => {
     'Cross-Listing 교과목',
   ]
   const detail = [
-    { title: '정원', content: '0' },
+    { title: '정원', content: data?.maximum },
     { title: '계절학기 학점당 수강료', content: '0' },
     { title: '수업진행 언어', content: '0' },
     { title: '성적부여형태', content: '0' },
@@ -211,7 +225,10 @@ const Coursedetail = ({ modal, setModal }) => {
     { title: '일반원격강좌', content: '0' },
   ]
   const detail3 = [
-    { title: ' 강의평가(5점만점)', content: '0' },
+    {
+      title: ' 강의평가(5점만점)',
+      content: Math.round(data?.rate * 100) / 100,
+    },
     { title: '전자출결 사용여부', content: '0' },
     { title: '면담시간', content: '0' },
     { title: '비고', content: '0' },
@@ -274,14 +291,14 @@ const Coursedetail = ({ modal, setModal }) => {
               </li>
               <li>
                 <span>교수명</span>
-                <span>과</span>
+                <span>{data?.department}</span>
               </li>
             </ul>
             <ul>
               <li>
-                <strong>강좌명</strong>
+                <strong>{data?.name}</strong>
               </li>
-              <li>강좌번호</li>
+              <li>{data?.number}</li>
               <li>
                 학점-강의 실습
                 <em>0-0-0</em>
@@ -359,13 +376,13 @@ const Coursedetail = ({ modal, setModal }) => {
             <thead>
               <tr>
                 <th>학점</th>
-                <th>개설학과</th>
-                <th>대표교수</th>{' '}
+                <th>과</th>
+                <th>교수</th>
               </tr>
               <tr>
-                <td>3</td>
-                <td>과</td>
-                <td>교수</td>
+                <td>{data?.credit}</td>
+                <td>{data?.department}</td>
+                <td>{data?.professor}</td>
               </tr>
             </thead>
           </table>
@@ -431,7 +448,7 @@ const Coursedetail = ({ modal, setModal }) => {
                 <tr>
                   <th>4.정원외신청</th>
                   <td>수용가능인원</td>
-                  <td colSpan={6}>최대 명</td>
+                  <td colSpan={6}>최대 {data?.maximum}명</td>
                 </tr>
                 <tr>
                   <th rowSpan={2}>5.수강생 참고사항</th>

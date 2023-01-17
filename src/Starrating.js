@@ -9,7 +9,7 @@ const Star_rating = styled.div`
   -webkit-text-stroke-color: #2b2a29;
 `
 const Star_ratings_fill = styled.div`
-  width: ${({ rating }) => rating * 10}%;
+  width: ${({ rating }) => rating * 20}%;
   color: #fff58c;
   padding: 0;
   position: absolute;

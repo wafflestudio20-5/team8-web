@@ -35,20 +35,43 @@ const Reviewlist = styled.div`
     border-bottom: 1px solid #e7e7e7;
   }
 `
+const Pagelist = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+`
+const Pagebutton = styled.button`
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid #e7e7e7;
+  border-radius: 50%;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #333;
+  margin: 0 0.5rem;
+  cursor: pointer;
+  background: ${(props) => (props.picked ? 'gray' : '#fff')};
+`
 
 const Review = () => {
   const [reviews, setReviews] = useState([])
+  const [page, setPage] = useState(1)
+  const [totalPage, setTotalPage] = useState(1)
+  const page1 = parseInt(page / 5) * 5 + 1
+  const dummy = [0, 1, 2, 3, 4]
   useEffect(() => {
     axios
-      .get('https://snu-sugang.o-r.kr/lectures/1/reviews')
+      .get(`https://snu-sugang.o-r.kr/lectures/1/reviews/?page=${page}`)
       .then((res) => {
         setReviews(res.data.results)
+        setTotalPage(parseInt((res.data.count - 1) / 10 + 1))
         console.log(res.data)
       })
       .catch((e) => {
         console.log(e)
       })
-  }, [])
+  }, [page])
   return (
     <Reviewpage>
       <h1>과목 리뷰 과목명 교수명</h1>
@@ -97,6 +120,54 @@ const Review = () => {
           </thead>
         </table>
       </Reviewlist>
+      <Pagelist>
+        <button
+          disabled={page1 <= 5}
+          onClick={() => {
+            setPage(parseInt(page / 5 - 1) * 5)
+          }}
+        >
+          {'<<'}
+        </button>
+        <button
+          disabled={page === 1}
+          onClick={() => {
+            setPage(page - 1)
+          }}
+        >
+          {'<'}
+        </button>
+        {dummy.map((i) => {
+          return (
+            page1 + i <= totalPage && (
+              <Pagebutton
+                onClick={() => {
+                  setPage(page1 + i)
+                }}
+                picked={page1 + i === page}
+              >
+                {page1 + i}
+              </Pagebutton>
+            )
+          )
+        })}
+        <button
+          disabled={page === totalPage}
+          onClick={() => {
+            setPage(page + 1)
+          }}
+        >
+          {'>'}
+        </button>
+        <button
+          disabled={page1 + 4 >= totalPage}
+          onClick={() => {
+            setPage(parseInt(page / 5 + 1) * 5 + 1)
+          }}
+        >
+          {'>>'}
+        </button>
+      </Pagelist>
     </Reviewpage>
   )
 }

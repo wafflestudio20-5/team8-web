@@ -2,15 +2,24 @@ import styled from 'styled-components'
 import axios from 'axios'
 import Starrating from './Starrating'
 import { useEffect, useState } from 'react'
-import { clear } from '@testing-library/user-event/dist/clear'
+import Newreview from './Newreview'
 const Revcon = styled.div`
   display: flex;
   flex-direction: column;
   padding: 1rem 3rem;
 `
 const Reviewbox = styled.div`
-  div:nth-child(1) {
+  > div:nth-child(1) {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  > div > div:nth-child(1) {
     width: fit-content;
+  }
+  button {
+    width: 3rem;
   }
   display: flex;
   flex-direction: column;
@@ -63,6 +72,7 @@ const Icon = styled.div`
 `
 const Reviewcontent = () => {
   const [picked, setPicked] = useState(0)
+  const [isedit, setIsedit] = useState(false)
   const times = [
     { time: '분', value: 1000 * 60 },
     { time: '시간', value: 1000 * 60 * 60 },
@@ -87,7 +97,7 @@ const Reviewcontent = () => {
   const [comments, setComments] = useState([])
   useEffect(() => {
     axios
-      .get('https://snu-sugang.o-r.kr/lectures/1/reviews/1')
+      .get('https://snu-sugang.o-r.kr/lectures/1/reviews/23/')
       .then((res) => {
         console.log(res.data)
         setReviews(res.data)
@@ -96,7 +106,7 @@ const Reviewcontent = () => {
         console.log(e)
       })
     axios
-      .get('https://snu-sugang.o-r.kr/lectures/1/reviews/1/comments')
+      .get('https://snu-sugang.o-r.kr/lectures/1/reviews/1/comments/')
       .then((res) => {
         console.log(res.data)
         setComments(res.data.results)
@@ -108,7 +118,7 @@ const Reviewcontent = () => {
   const submit = (e) => {
     axios
       .post(
-        'https://snu-sugang.o-r.kr/lectures/1/reviews/1/comments/',
+        'https://snu-sugang.o-r.kr/lectures/1/reviews/23/comments/',
         {
           content: e.target.comment.value,
         },
@@ -131,17 +141,57 @@ const Reviewcontent = () => {
   const [edit, setEdit] = useState('')
   return (
     <Revcon>
-      <Reviewbox>
-        <div>
-          <Starrating rating={reviews.rating} />
-        </div>
-        <span>제목 :{reviews.title}</span>
-        {reviews.content}
-      </Reviewbox>
+      {isedit ? (
+        <Newreview setIsedit={setIsedit} isedit={true} edit={reviews} />
+      ) : (
+        <Reviewbox>
+          <div>
+            <div>
+              <Starrating rating={reviews.rating} />
+            </div>
+            {reviews.created_by ?? (
+              <div>
+                <button
+                  onClick={() => {
+                    setIsedit(true)
+                  }}
+                >
+                  수정
+                </button>
+                <button
+                  onClick={() => {
+                    axios
+                      .delete(
+                        `https://snu-sugang.o-r.kr/lectures/1/reviews/${reviews.id}/`,
+                        {
+                          headers: {
+                            Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+                            'Content-Type': 'application/json',
+                          },
+                        },
+                      )
+                      .then((res) => {
+                        console.log(res.data)
+                        window.location.href = '/review'
+                      })
+                      .catch((e) => {
+                        console.log(e)
+                      })
+                  }}
+                >
+                  삭제
+                </button>
+              </div>
+            )}
+          </div>
+          <span>제목 :{reviews.title}</span>
+          {reviews.content}
+        </Reviewbox>
+      )}
       <Commentlist>
         <span>댓글</span>
         {comments.map((item) => (
-          <Commentbox>
+          <Commentbox key={item.id}>
             {picked === item.id ? (
               <div>
                 <textarea
@@ -153,18 +203,30 @@ const Reviewcontent = () => {
                 <button
                   onClick={() => {
                     setPicked(0)
-                    axios.put(
-                      `https://snu-sugang.o-r.kr/lectures/1/reviews/1/comments/${item.id}/`,
-                      {
-                        content: edit,
-                      },
-                      {
-                        headers: {
-                          Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
-                          'Content-Type': 'application/json',
+                    axios
+                      .put(
+                        `https://snu-sugang.o-r.kr/lectures/1/reviews/23/comments/${item.id}/`,
+                        {
+                          content: edit,
                         },
-                      },
-                    )
+                        {
+                          headers: {
+                            Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+                            'Content-Type': 'application/json',
+                          },
+                        },
+                      )
+                      .then((res) => {
+                        console.log(res.data)
+                        setComments(
+                          comments.map((comment) =>
+                            comment.id === item.id ? res.data : comment,
+                          ),
+                        )
+                      })
+                      .catch((e) => {
+                        console.log(e)
+                      })
                   }}
                 >
                   수정
