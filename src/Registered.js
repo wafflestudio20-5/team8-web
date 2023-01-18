@@ -1,14 +1,17 @@
 import "./Registered.css";
-import { useUserDataContext } from "./Context";
+import { useUserDataContext, useCourseDataContext } from "./Context";
+import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import Course from "./Course";
 import axios from "axios";
 
 const Registered = () => {
   const { cookies } = useUserDataContext();
+  const { delEnroll } = useCourseDataContext();
   const [checkedInputs, setCheckedInputs] = useState("");
   const [registered_courses, setRegistered_courses] = useState([]);
   const [count, setCount] = useState(0);
+  const navigate = useNavigate();
   useEffect(() => {
     function getInterests() {
       axios
@@ -46,18 +49,32 @@ const Registered = () => {
                 </div>
                 <div className="content">
                   <div className="button">
-                    <button>선택삭제</button>
-                    <button>관심강좌</button>
+                    <button onClick={() => delEnroll(checkedInputs)}>
+                      선택삭제
+                    </button>
+                    <button onClick={() => navigate(`/interest/`)}>
+                      관심강좌
+                    </button>
                   </div>
                   <span>
                     <span>
-                      신청가능학점&nbsp; <span>{}</span>학점/
+                      신청가능학점&nbsp; <span>21</span>학점/
                     </span>
                     <span>
-                      신청학점&nbsp;<span>{}</span>학점/
+                      신청학점&nbsp;
+                      <span>
+                        {registered_courses
+                          .map(function (x) {
+                            return x.credit;
+                          })
+                          .reduce(function (a, b) {
+                            return a + b;
+                          }, 0)}
+                      </span>
+                      학점/
                     </span>
                     <span>
-                      신청강좌&nbsp;<span>{}</span>강좌
+                      신청강좌&nbsp;<span>{count}</span>강좌
                     </span>
                   </span>
                 </div>

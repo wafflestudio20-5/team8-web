@@ -7,6 +7,7 @@ import {
 } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import { toast } from "react-toastify";
 
 const UserDataContext = createContext();
 export function UserDataProvider({ children }) {
@@ -62,16 +63,17 @@ export function CourseDataProvider({ children }) {
   const [page, setPage] = useState(1);
   const [search_word, setSearch_word] = useState("");
   const [word, setWord] = useState("");
-  const [getting, setGetting] = useState(true);
+  const [getting, setGetting] = useState(false);
+  const [interest_courses, setInterest_courses] = useState([]);
+  const [cart_courses, setCart_courses] = useState([]);
+  const [enroll_courses, setEnroll_courses] = useState([]);
   const fetchData = useCallback(() => {
     if (getting === false) return;
     setWord(search_word);
     axios
-      .get(`https://snu-sugang.o-r.kr/lectures/?page=${page}`, {
-        data: {
-          keyword: search_word,
-        },
-      })
+      .get(
+        `https://snu-sugang.o-r.kr/lectures/?keyword=${search_word}&page=${page}`
+      )
       .then((res) => {
         console.log(res);
         setCourses(res.data.results);
@@ -85,6 +87,198 @@ export function CourseDataProvider({ children }) {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  function getInterests() {
+    axios
+      .get(`https://snu-sugang.o-r.kr/interest/`, {
+        headers: {
+          Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+          "Content-Type": `application/json`,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        setInterest_courses(res.data.results);
+        setCount(res.data.count);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err.response.data.course);
+      });
+  }
+
+  function getCart() {
+    axios
+      .get(`https://snu-sugang.o-r.kr/cart/`, {
+        headers: {
+          Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+          "Content-Type": `application/json`,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        setCart_courses(res.data.results);
+        setCount(res.data.count);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  function getEnroll() {
+    axios
+      .get(`https://snu-sugang.o-r.kr/pending/`, {
+        headers: {
+          Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+          "Content-Type": `application/json`,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        setEnroll_courses(res.data.results);
+        setCount(res.data.count);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  const addEnroll = async (id) => {
+    axios
+      .post(
+        `https://snu-sugang.o-r.kr/registered/`,
+        {
+          id: id,
+        },
+        {
+          headers: {
+            Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+            "Content-Type": `application/json`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        toast.info("수강신청 되었습니다.");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err.response.data.course[0]);
+      });
+  };
+
+  const addInterest = async (id) => {
+    axios
+      .post(
+        `https://snu-sugang.o-r.kr/interest/`,
+        {
+          id: id,
+        },
+        {
+          headers: {
+            Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+            "Content-Type": `application/json`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        toast.info("관심강좌로 저장되었습니다.");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err.response.data.course[0]);
+      });
+  };
+
+  const addCart = async (id) => {
+    axios
+      .post(
+        `https://snu-sugang.o-r.kr/cart/`,
+        {
+          id: id,
+        },
+        {
+          headers: {
+            Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+            "Content-Type": `application/json`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        toast.info("장바구니로 저장되었습니다.");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err.response.data.course[0]);
+      });
+  };
+  const delEnroll = async (id) => {
+    axios
+      .delete(`https://snu-sugang.o-r.kr/registered/`, {
+        headers: {
+          Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+          "Content-Type": `application/json`,
+        },
+        data: {
+          id: id,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        toast.info("삭제되었습니다.");
+        getEnroll();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const delInterest = async (id) => {
+    axios
+      .delete(`https://snu-sugang.o-r.kr/interest/`, {
+        headers: {
+          Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+          "Content-Type": `application/json`,
+        },
+        data: {
+          id: id,
+        },
+      })
+      .then((res) => {
+        toast.info("삭제되었습니다.");
+        getInterests();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const delCart = async (id) => {
+    axios
+      .delete(
+        `https://snu-sugang.o-r.kr/cart/`,
+
+        {
+          headers: {
+            Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+            "Content-Type": `application/json`,
+          },
+          data: {
+            id: id,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        toast.info("삭제되었습니다.");
+        getCart();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <CourseDataContext.Provider
       value={{
@@ -97,6 +291,18 @@ export function CourseDataProvider({ children }) {
         setGetting,
         word,
         setWord,
+        addEnroll,
+        addInterest,
+        addCart,
+        delEnroll,
+        delInterest,
+        delCart,
+        interest_courses,
+        getInterests,
+        cart_courses,
+        getCart,
+        enroll_courses,
+        getEnroll,
       }}
     >
       {children}

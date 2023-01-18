@@ -1,13 +1,17 @@
 import "./Enroll.css";
-import { useUserDataContext } from "./Context";
-import React, { useContext, useState } from "react";
+import { useUserDataContext, useCourseDataContext } from "./Context";
+import React, { useContext, useState, useEffect } from "react";
 import Course from "./Course";
 
 const Enroll = () => {
   const { cookies } = useUserDataContext();
+  const { addEnroll, count, enroll_courses, getEnroll } =
+    useCourseDataContext();
   const [checkedInputs, setCheckedInputs] = useState("");
-  const [enroll_courses, setEnroll_courses] = useState([]);
-  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    getEnroll();
+  }, [getEnroll]);
 
   return (
     <div>
@@ -23,13 +27,23 @@ const Enroll = () => {
               </div>
               <span className="content">
                 <span>
-                  신청가능학점&nbsp; <span>{}</span>학점/
+                  신청가능학점&nbsp; <span>21</span>학점/
                 </span>
                 <span>
-                  신청학점&nbsp;<span>{}</span>학점/
+                  신청학점&nbsp;
+                  <span>
+                    {enroll_courses
+                      .map(function (x) {
+                        return x.credit;
+                      })
+                      .reduce(function (a, b) {
+                        return a + b;
+                      }, 0)}
+                  </span>
+                  학점/
                 </span>
                 <span>
-                  신청강좌&nbsp;<span>{}</span>강좌
+                  신청강좌&nbsp;<span>{count}</span>강좌
                 </span>
               </span>
             </div>
@@ -69,7 +83,13 @@ const Enroll = () => {
           <div className="nav-code">00</div>
           <input className="nav-code-input" placeholder="입력"></input>
         </div>
-        <button className="enroll-button"> 수강신청</button>
+        <button
+          className="enroll-button"
+          onClick={() => addEnroll(checkedInputs)}
+        >
+          {" "}
+          수강신청
+        </button>
       </div>
     </div>
   );

@@ -1,34 +1,19 @@
 import "./Cart.css";
-import { useUserDataContext } from "./Context";
+import { useUserDataContext, useCourseDataContext } from "./Context";
 import React, { useEffect, useState } from "react";
 import Course from "./Course";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const { cookies } = useUserDataContext();
+  const { delCart, count, getCart, cart_courses } = useCourseDataContext();
   const [checkedInputs, setCheckedInputs] = useState("");
-  const [cart_courses, setCart_courses] = useState([]);
-  const [count, setCount] = useState(0);
+
+  const navigate = useNavigate();
   useEffect(() => {
-    function getInterests() {
-      axios
-        .get(`https://snu-sugang.o-r.kr/cart/`, {
-          headers: {
-            Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
-            "Content-Type": `application/json`,
-          },
-        })
-        .then((res) => {
-          console.log(res);
-          setCart_courses(res.data.results);
-          setCount(res.data.count);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-    getInterests();
-  }, []);
+    getCart();
+  }, [getCart]);
 
   return (
     <div>
@@ -52,15 +37,25 @@ const Cart = () => {
             <div className="header">
               <span className="content">
                 <span>
-                  신청가능학점&nbsp; <span>{}</span>학점/
+                  신청가능학점&nbsp; <span>21</span>학점/
                 </span>
                 <span>
-                  담은 학점&nbsp;<span>{}</span>학점
+                  담은 학점&nbsp;
+                  <span>
+                    {cart_courses
+                      .map(function (x) {
+                        return x.credit;
+                      })
+                      .reduce(function (a, b) {
+                        return a + b;
+                      }, 0)}
+                  </span>
+                  학점
                 </span>
               </span>
               <div className="button">
-                <button>선택삭제</button>
-                <button>관심강좌</button>
+                <button onClick={() => delCart(checkedInputs)}>선택삭제</button>
+                <button onClick={() => navigate("/interest/")}>관심강좌</button>
               </div>
               <div>장바구니가 비었습니다.</div>
               <div>

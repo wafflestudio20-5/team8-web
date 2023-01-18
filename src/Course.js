@@ -18,14 +18,14 @@ const Course = ({ key, course, setCheckedInputs, checkedInputs }) => {
       <div className="container">
         <div className="round">
           <input
-            id={`checkbox ${key}`}
+            id={`${key}`}
             type="checkbox"
             onChange={(e) => {
-              changeHandler(e.currentTarget.checked, `checkbox ${key}`);
+              changeHandler(e.currentTarget.checked, `${key}`);
             }}
-            checked={checkedInputs?.includes(`checkbox ${key}`)}
+            checked={checkedInputs === `${key}`}
           />
-          <label htmlFor={`checkbox ${key}`}></label>
+          <label htmlFor={`${key}`}></label>
         </div>
       </div>
       <div className="course-info-body">

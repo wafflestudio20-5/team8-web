@@ -1,35 +1,26 @@
 import "./Interest.css";
-import { useUserDataContext } from "./Context";
+import { useUserDataContext, useCourseDataContext } from "./Context";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Course from "./Course";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const Interest = () => {
-  const { cookies } = useUserDataContext();
+  const {
+    delInterest,
+    addEnroll,
+    addCart,
+    getInterests,
+    interest_courses,
+    count,
+  } = useCourseDataContext();
   const [checkedInputs, setCheckedInputs] = useState("");
-  const [interest_courses, setInterest_courses] = useState([]);
-  const [count, setCount] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    function getInterests() {
-      axios
-        .get(`https://snu-sugang.o-r.kr/interest/`, {
-          headers: {
-            Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
-            "Content-Type": `application/json`,
-          },
-        })
-        .then((res) => {
-          console.log(res);
-          setInterest_courses(res.data.results);
-          setCount(res.data.count);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
     getInterests();
-  }, []);
+  }, [getInterests]);
 
   return (
     <div>
@@ -40,15 +31,29 @@ const Interest = () => {
               <div className="title">관심강좌</div>
               <div className="body">
                 <span>
-                  <button>&nbsp;&nbsp;선택삭제&nbsp;&nbsp;</button>
-                  <button>&nbsp;&nbsp;시간표 보기&nbsp;&nbsp;</button>
+                  <button onClick={() => delInterest(checkedInputs)}>
+                    &nbsp;&nbsp;선택삭제&nbsp;&nbsp;
+                  </button>
+                  <button onClick={() => navigate("/timetable/")}>
+                    &nbsp;&nbsp;시간표 보기&nbsp;&nbsp;
+                  </button>
                 </span>
                 <span className="content">
                   <span>
-                    총 학점 <span>{}</span>학점/
+                    총 학점{" "}
+                    <span>
+                      {interest_courses
+                        .map(function (x) {
+                          return x.credit;
+                        })
+                        .reduce(function (a, b) {
+                          return a + b;
+                        }, 0)}
+                    </span>
+                    학점/
                   </span>
                   <span>
-                    총 강좌 <span>{}</span>건
+                    총 강좌 <span>{count}</span>건
                   </span>
                 </span>
               </div>
@@ -81,13 +86,22 @@ const Interest = () => {
         </span>
       </div>
       <div className="interest-nav">
-        <button className="cart-button"> 장바구니 담기</button>
+        <button className="cart-button" onClick={() => addCart(checkedInputs)}>
+          {" "}
+          장바구니 담기
+        </button>
 
         <div className="nav-bottom">
           <div className="nav-code">00</div>
           <input className="nav-code-input" placeholder="입력"></input>
         </div>
-        <button className="enroll-button"> 수강신청</button>
+        <button
+          className="enroll-button"
+          onClick={() => addEnroll(checkedInputs)}
+        >
+          {" "}
+          수강신청
+        </button>
       </div>
     </div>
   );

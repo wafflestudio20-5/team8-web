@@ -4,8 +4,17 @@ import React, { useEffect, useState } from "react";
 import Course from "./Course";
 
 const Search = () => {
-  const { word, count, courses, page, setPage, setGetting } =
-    useCourseDataContext();
+  const {
+    word,
+    count,
+    courses,
+    page,
+    setPage,
+    setGetting,
+    addInterest,
+    addCart,
+    addEnroll,
+  } = useCourseDataContext();
   const [startNum, setStartNum] = useState(1);
   const [pageButtons, setPageButtons] = useState([]);
   const [checkedInputs, setCheckedInputs] = useState("");
@@ -123,14 +132,37 @@ const Search = () => {
         </span>
       </div>
       <div className="search-nav">
-        <button className="interest-button">관심강좌 저장</button>
-        <button className="search-cart-button"> 장바구니 담기</button>
+        <button
+          className="interest-button"
+          onClick={() => {
+            addInterest(checkedInputs);
+          }}
+        >
+          관심강좌 저장
+        </button>
+        <button
+          className="search-cart-button"
+          onClick={() => {
+            addCart(checkedInputs);
+          }}
+        >
+          {" "}
+          장바구니 담기
+        </button>
 
         <div className="nav-bottom">
           <div className="nav-code">00</div>
           <input className="nav-code-input" placeholder="입력"></input>
         </div>
-        <button className="enroll-button"> 수강신청</button>
+        <button
+          className="enroll-button"
+          onClick={() => {
+            addEnroll(checkedInputs);
+          }}
+        >
+          {" "}
+          수강신청
+        </button>
       </div>
     </div>
   );
