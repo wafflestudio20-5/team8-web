@@ -67,6 +67,7 @@ export function CourseDataProvider({ children }) {
   const [interest_courses, setInterest_courses] = useState([]);
   const [cart_courses, setCart_courses] = useState([]);
   const [enroll_courses, setEnroll_courses] = useState([]);
+  const [registered_courses, setRegistered_courses] = useState([]);
   const fetchData = useCallback(() => {
     if (getting === false) return;
     setWord(search_word);
@@ -87,7 +88,23 @@ export function CourseDataProvider({ children }) {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
-
+  function getRegistered() {
+    axios
+      .get(`https://snu-sugang.o-r.kr/registered/`, {
+        headers: {
+          Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+          "Content-Type": `application/json`,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        setRegistered_courses(res.data.results);
+        setCount(res.data.count);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
   function getInterests() {
     axios
       .get(`https://snu-sugang.o-r.kr/interest/`, {
@@ -214,7 +231,7 @@ export function CourseDataProvider({ children }) {
         toast.error(err.response.data.course[0]);
       });
   };
-  const delEnroll = async (id) => {
+  const delRegistered = async (id) => {
     axios
       .delete(`https://snu-sugang.o-r.kr/registered/`, {
         headers: {
@@ -228,7 +245,7 @@ export function CourseDataProvider({ children }) {
       .then((res) => {
         console.log(res);
         toast.info("삭제되었습니다.");
-        getEnroll();
+        getRegistered();
       })
       .catch((err) => {
         console.log(err);
@@ -294,7 +311,7 @@ export function CourseDataProvider({ children }) {
         addEnroll,
         addInterest,
         addCart,
-        delEnroll,
+        delRegistered,
         delInterest,
         delCart,
         interest_courses,
@@ -303,6 +320,8 @@ export function CourseDataProvider({ children }) {
         getCart,
         enroll_courses,
         getEnroll,
+        registered_courses,
+        getRegistered,
       }}
     >
       {children}

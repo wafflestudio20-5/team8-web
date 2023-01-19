@@ -55,12 +55,25 @@
   padding-left: 25px;
   padding-right: 25px;
 }
-.enroll-first .button button .clicked {
+.enroll-first .button .clicked {
   background: #0f3e8e;
+  color: white;
 }
 .enroll-first .content {
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding-top: 0px;
+  display: flex;
+  justify-content: space-between;
+  height: 30px;
+}
+.enroll-first input {
+  height: 20px;
+}
+.enroll-first .searchButton {
+  background: #0f3e8e;
+  color: white;
+  width: auto;
+  height: 25px;
+  margin-left: 0;
 }
 
 .num {

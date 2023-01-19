@@ -7,31 +7,13 @@ import axios from "axios";
 
 const Registered = () => {
   const { cookies } = useUserDataContext();
-  const { delEnroll } = useCourseDataContext();
+  const { delRegistered, getRegistered, registered_courses, count } =
+    useCourseDataContext();
   const [checkedInputs, setCheckedInputs] = useState("");
-  const [registered_courses, setRegistered_courses] = useState([]);
-  const [count, setCount] = useState(0);
   const navigate = useNavigate();
   useEffect(() => {
-    function getInterests() {
-      axios
-        .get(`https://snu-sugang.o-r.kr/registered/`, {
-          headers: {
-            Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
-            "Content-Type": `application/json`,
-          },
-        })
-        .then((res) => {
-          console.log(res);
-          setRegistered_courses(res.data.results);
-          setCount(res.data.count);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-    getInterests();
-  }, []);
+    getRegistered();
+  }, [getRegistered]);
 
   return (
     <div>
@@ -49,7 +31,7 @@ const Registered = () => {
                 </div>
                 <div className="content">
                   <div className="button">
-                    <button onClick={() => delEnroll(checkedInputs)}>
+                    <button onClick={() => delRegistered(checkedInputs)}>
                       선택삭제
                     </button>
                     <button onClick={() => navigate(`/interest/`)}>

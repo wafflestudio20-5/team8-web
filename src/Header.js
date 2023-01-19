@@ -16,7 +16,7 @@ const Header = () => {
   ];
 
   const { loginState, setLoginState, name, studentId } = useUserDataContext();
-  const { search_word, setSearch_word, setGetting } = useCourseDataContext();
+  const { setSearch_word, setGetting } = useCourseDataContext();
   let navigate = useNavigate();
   const logout = () => {
     // axios.post(~~ logout)
