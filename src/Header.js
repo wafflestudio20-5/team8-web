@@ -39,7 +39,8 @@ const Header = () => {
       <div className="headerup">
         <div>
           <a href="/">
-            <img src={'/img_logo_main.png'} alt={'logo'} className="logo" />
+            <img src={"/img_logo_main.png"} alt={"logo"} className="logo" />
+
 
             <span className="logoname">2022-겨울학기</span>
           </a>
