@@ -1,17 +1,17 @@
-import Header from "./Header";
-import Body from "./Body";
-import Search from "./Search";
-import Interest from "./Interest";
-import Cart from "./Cart";
-import Register from "./Register";
-import Registered from "./Registered";
-import Mypage from "./Mypage";
-import TimeTable from "./TimeTable";
-import Enroll from "./Enroll";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import "./App.css";
+import Header from './Header'
+import Body from './Body'
+import Search from './Search'
+import Interest from './Interest'
+import Cart from './Cart'
+import Register from './Register'
+import Registered from './Registered'
+import Mypage from './Mypage'
+import TimeTable from './TimeTable'
+import Enroll from './Enroll'
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import './App.css'
 
 function App() {
   return (
@@ -31,7 +31,7 @@ function App() {
           <Route path="/timetable" element={<TimeTable />} />
           <Route path="/enroll" element={<Enroll />} />
           <Route path="/search" element={<Search />} />
-          <Route path="*" element={<Navigate to={""} />} />
+          <Route path="*" element={<Navigate to={''} />} />
         </Routes>
         <ToastContainer
           position="top-right"
@@ -41,7 +41,7 @@ function App() {
         />
       </BrowserRouter>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
