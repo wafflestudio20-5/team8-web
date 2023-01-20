@@ -1,9 +1,9 @@
-.login-box{
-    position: absolute;
-    top: 2.5%;
-    right: 3%;
+.login-box {
+  position: absolute;
+  top: 13%;
+  right: 3%;
 }
-.google-button{
-    width: 110px;
-    height: 50px;
+.google-button {
+  width: 110px;
+  height: 50px;
 }

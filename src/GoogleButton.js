@@ -14,17 +14,14 @@ const GoogleButton = ({ onSocial }) => {
   const {
     loginState,
     setLoginState,
+    email,
     setEmail,
     setPassword,
     setName,
     setCollege,
     setCookie,
-    cookies,
-    setDepartment,
-    setStudentId,
-    setYearOfEntrance,
-    setProgram,
-    setGrade,
+    cookie,
+    loginFunc,
   } = useUserDataContext();
 
   useEffect(() => {
@@ -41,47 +38,9 @@ const GoogleButton = ({ onSocial }) => {
     console.log(response);
     let userEmail = response.profileObj.email;
     let userPassword = response.profileObj.googleId;
-    if (userEmail.includes("@snu.ac.kr")) {
-      axios
-        .post("https://snu-sugang.o-r.kr/user/login/", {
-          email: userEmail,
-          password: userPassword,
-        })
-        .then((response) => {
-          console.log("login success");
-          console.log(response.data);
-          toast.success("로그인되었습니다.");
-          setLoginState(true);
-          setEmail(userEmail);
-          setPassword(userPassword);
-          setCookie("token", response.data.token);
-          // 구현 필요!! axios.post --> get user info and set all the contexts
-          axios
-              .get("https://snu-sugang.o-r.kr/user/current/", {
-                headers: {
-                  Authorization: `token ${cookies.token}`,
-                  "Content-Type": `application/json`,
-                },
-              }).then((response) => {
-                let arr = response.data;
-                console.log(arr);
-            setGrade(arr.academic_year);
-            setCollege(arr.college);
-            setDepartment(arr.department);
-            setName(arr.name);
-            setProgram(arr.program);
-            setStudentId(arr.student_id);
-            setYearOfEntrance(arr.year_of_entrance);
-          })
-        })
-        .catch((e) => {
-          console.log("error");
-          console.log(e);
-          toast.error("로그인에 실패했습니다.");
-        });
-    } else {
-      toast.error("SNU 이메일로 로그인해주세요.");
-    }
+    setEmail(response.profileObj.email);
+    setPassword(response.profileObj.googleId);
+    loginFunc(userEmail, userPassword);
   };
 
   const loginFailure = (response) => {
@@ -110,7 +69,7 @@ const GoogleButton = ({ onSocial }) => {
           let arr = response.profileObj.name.split(" / ");
           setName(arr[0]);
           setCollege(arr[2]);
-          let link = "/signup";
+          let link = "/register";
           navigate(link);
         });
     } else {

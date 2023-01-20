@@ -20,12 +20,13 @@
   border-collapse: collapse;
   text-align: left;
 }
-.first {
-  text-align: center;
+.enroll-first {
+  text-align: left;
   border-bottom: 2px solid #888a96;
-  padding-bottom: 20px;
-  height: 100px;
-  margin-top: 20px;
+  padding-bottom: 0;
+  margin-top: 35px;
+  padding-left: 10px;
+  height: 180px;
 }
 .blue {
   color: #0f3e8e;
@@ -38,10 +39,43 @@
   align-items: center;
   justify-content: center;
 }
-.first .result {
-  font-size: 25px;
-  font-weight: bold;
+.enroll-first .title {
+  font-size: 30px;
 }
+.enroll-first .button button {
+  margin-top: 20px;
+  background: white;
+  border: 1px solid black;
+  border-radius: 0;
+  margin-left: 0;
+  width: auto;
+  height: 50px;
+  margin-bottom: 40px;
+  font-size: 15px;
+  padding-left: 25px;
+  padding-right: 25px;
+}
+.enroll-first .button .clicked {
+  background: #0f3e8e;
+  color: white;
+}
+.enroll-first .content {
+  padding-top: 0px;
+  display: flex;
+  justify-content: space-between;
+  height: 30px;
+}
+.enroll-first input {
+  height: 20px;
+}
+.enroll-first .searchButton {
+  background: #0f3e8e;
+  color: white;
+  width: auto;
+  height: 25px;
+  margin-left: 0;
+}
+
 .num {
   color: red;
 }
@@ -51,13 +85,13 @@
   font-weight: normal;
   padding: 0;
 }
-.search-nav {
+.nav {
   background-color: #0f3e8e;
   width: 145px;
-  height: 240px;
+  height: 120px;
   border-radius: 20px;
   position: fixed;
-  top: 200px;
+  top: 300px;
   right: 7%;
   z-index: 890;
 }
@@ -85,25 +119,15 @@ button {
   font-weight: bold;
   text-decoration: underline;
 }
-.interest-button {
-  border-color: white;
-  border-radius: 10px;
-  background: transparent;
-  font-weight: bold;
-  color: white;
-  width: 120px;
-  margin-left: 13px;
-  margin-top: 27px;
-}
 
-.search-cart-button {
+.cart-button {
   border: none;
   background: #376dc8;
   color: white;
   font-weight: bold;
   width: 120px;
   margin-left: 13px;
-  margin-top: 10px;
+  margin-top: 27px;
   border-radius: 10px;
   margin-bottom: 15px;
 }
