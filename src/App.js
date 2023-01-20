@@ -1,34 +1,45 @@
-import logo from './logo.svg'
-import { Route, Routes } from 'react-router-dom'
-import './App.css'
-import { createContext, useState } from 'react'
 import Header from './Header'
-import Coursedetail from './Coursedetail'
-import Searchcourse from './Searchcourse'
-import Review from './Review'
-import Newreview from './Newreview'
-import Reviewcontent from './Reviewcontent'
-import axios from 'axios'
-import { useEffect } from 'react'
+import Body from './Body'
+import Search from './Search'
+import Interest from './Interest'
+import Cart from './Cart'
+import Register from './Register'
+import Registered from './Registered'
+import Mypage from './Mypage'
+import TimeTable from './TimeTable'
+import Enroll from './Enroll'
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import './App.css'
 
 function App() {
-  const [modal, setModal] = useState(false)
-  const [searchopen, setSearchopen] = useState(false)
   return (
     <div>
-      <Header searchopen={searchopen} setSearchopen={setSearchopen} />
-      <Searchcourse searchopen={searchopen} setSearchopen={setSearchopen} />
-      {modal && <Coursedetail modal={modal} setModal={setModal} />}
-      <div>
+      <BrowserRouter>
+        <header>
+          <Header />
+        </header>
+        <div className="padding"></div>
         <Routes>
-          <Route path="/" element={<h1>Home</h1>} />
-          <Route path="/mypage" element={<h1>mypage</h1>} />
-          <Route path="/events" element={<h1>Events</h1>} />
-          <Route path="/review" element={<Review />} />
-          <Route path="/newreview" element={<Newreview />} />
-          <Route path="/reviewcontent" element={<Reviewcontent />} />
+          <Route path="/" element={<Body />} />
+          <Route path="/interest" element={<Interest />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/registered" element={<Registered />} />
+          <Route path="/mypage" element={<Mypage />} />
+          <Route path="/timetable" element={<TimeTable />} />
+          <Route path="/enroll" element={<Enroll />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="*" element={<Navigate to={''} />} />
         </Routes>
-      </div>
+        <ToastContainer
+          position="top-right"
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
+      </BrowserRouter>
     </div>
   )
 }

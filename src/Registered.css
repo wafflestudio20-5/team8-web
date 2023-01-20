@@ -1,0 +1,55 @@
+.Registered {
+  padding-left: 2.5%;
+  margin-top: 0px;
+  width: 95%;
+}
+
+.Registered-first {
+  text-align: left;
+  padding-bottom: 0;
+  margin-top: 50px;
+  padding-left: 10px;
+}
+.Registered-first .title {
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+
+.Registered-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-bottom: 100px;
+}
+.Registered-list {
+  grid-column-start: 1;
+  grid-column-end: 2;
+}
+.Registered-list .header {
+  border-bottom: 2px solid #888a96;
+  padding-bottom: 20px;
+  font-size: 14px;
+}
+.Registered-list .content {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+.Registered-list span {
+  padding-top: 8px;
+}
+
+.Registered-list .button button {
+  background: #f2f2f2;
+  width: auto;
+  border-radius: 17px;
+  border: none;
+  height: 35px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.Registered-timetable {
+  grid-column-start: 2;
+  grid-column-end: 3;
+}

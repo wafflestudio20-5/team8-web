@@ -7,6 +7,13 @@
   pointer-events: none;
 }
 
+<<<<<<< HEAD
+=======
+.padding {
+  height: 145px;
+}
+
+>>>>>>> 19cd579921c8a48db3aabfed820d8f3893ca629a
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -24,6 +31,17 @@
   color: white;
 }
 
+<<<<<<< HEAD
+=======
+header {
+  position: fixed;
+  top: 0px;
+  z-index: 10;
+  left: 0;
+  right: 0;
+  background: white;
+}
+>>>>>>> 19cd579921c8a48db3aabfed820d8f3893ca629a
 .App-link {
   color: #61dafb;
 }
