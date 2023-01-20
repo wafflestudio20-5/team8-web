@@ -1,0 +1,152 @@
+#wrap {
+  min-height: 100vh;
+  position: relative;
+  width: 100%;
+}
+
+.list-body {
+  display: grid;
+  grid-template-columns: 10% auto 20%;
+  margin-top: 15px;
+  padding-bottom: 120px;
+}
+
+.list-area {
+  grid-column-start: 2;
+  grid-column-end: 3;
+  width: 97%;
+  padding: 8px 10px;
+  flex-grow: 1;
+  border-collapse: collapse;
+  text-align: left;
+}
+.first {
+  text-align: center;
+  border-bottom: 2px solid #888a96;
+  padding-bottom: 20px;
+  height: 100px;
+  margin-top: 20px;
+}
+.blue {
+  color: #0f3e8e;
+}
+.line {
+  display: flex;
+}
+.oneline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.first .result {
+  font-size: 25px;
+  font-weight: bold;
+}
+.num {
+  color: red;
+}
+.item {
+  border-bottom: 1px solid #e0e2f2;
+  font-size: 16px;
+  font-weight: normal;
+  padding: 0;
+}
+.search-nav {
+  background-color: #0f3e8e;
+  width: 145px;
+  height: 240px;
+  border-radius: 20px;
+  position: fixed;
+  top: 200px;
+  right: 7%;
+  z-index: 890;
+}
+.pageButton {
+  padding-top: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+button {
+  margin-left: 5px;
+  width: 30px;
+  height: 30px;
+  background: white;
+  border: 1px solid black;
+}
+.pageNum {
+  width: auto;
+  background-color: white;
+  border: none;
+  color: black;
+}
+.pageNum.clicked {
+  color: blue;
+  font-weight: bold;
+  text-decoration: underline;
+}
+.interest-button {
+  border-color: white;
+  border-radius: 10px;
+  background: transparent;
+  font-weight: bold;
+  color: white;
+  width: 120px;
+  margin-left: 13px;
+  margin-top: 27px;
+}
+
+.search-cart-button {
+  border: none;
+  background: #376dc8;
+  color: white;
+  font-weight: bold;
+  width: 120px;
+  margin-left: 13px;
+  margin-top: 10px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.nav-bottom {
+  border-top: 1px solid black;
+  width: 120px;
+  margin-left: 13px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding-top: 15px;
+  height: 40px;
+}
+.nav-code {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  background: #c0c0c0;
+  height: 100%;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  text-align: center;
+  font-size: 15px;
+  padding-top: 10px;
+  height: 30px;
+}
+.nav-code-input {
+  grid-column-start: 2;
+  grid-column-end: 3;
+  border: 1px solid black;
+  width: 50px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  text-align: center;
+  font-size: 17px;
+}
+.enroll-button {
+  border: none;
+  background: #f34c38;
+  color: white;
+  font-weight: bold;
+  width: 120px;
+  margin-left: 13px;
+  margin-top: 10px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
