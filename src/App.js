@@ -8,7 +8,6 @@ import Registered from "./Registered";
 import Mypage from "./Mypage";
 import TimeTable from "./TimeTable";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-import { withRouter } from "react-router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
@@ -39,4 +38,4 @@ function App() {
   );
 }
 
-export default withRouter(App);
+export default App;
