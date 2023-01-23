@@ -104,7 +104,7 @@ const Newreview = ({ setIsedit, isedit = false, edit = null }) => {
                   onChange={() => {
                     setEditrating(i)
                   }}
-                  defaultChecked={edit?.rating == i ? true : false}
+                  defaultChecked={edit?.rate === i ? true : false}
                 />
                 <label htmlFor={`${i}-stars`}>★</label>
               </Fragment>
@@ -114,7 +114,7 @@ const Newreview = ({ setIsedit, isedit = false, edit = null }) => {
             <Backbut
               onClick={() => {
                 if (isedit) setIsedit(false)
-                else window.history.back()
+                else navigate(-1)
               }}
             >
               취소

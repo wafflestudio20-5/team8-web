@@ -3,6 +3,14 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useClassDataContext } from './Context'
 
+const Modalpage = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 98;
+`
 const Wrapper = styled.div`
   z-index: 100;
   width: 95%;
@@ -607,7 +615,7 @@ const Coursedetail = () => {
     }
   }
   return (
-    <div>
+    <Modalpage>
       <Back />
       <Wrapper>
         <Close
@@ -639,7 +647,7 @@ const Coursedetail = () => {
           <Tabcontent tabnum={tabnum} />
         </Container>
       </Wrapper>
-    </div>
+    </Modalpage>
   )
 }
 
