@@ -39,9 +39,7 @@ const Header = () => {
       <div className="headerup">
         <div>
           <a href="/">
-            <img src={"/img_logo_main.png"} alt={"logo"} className="logo" />
-
-
+            <img src={'/img_logo_main.png'} alt={'logo'} className="logo" />
             <span className="logoname">2022-겨울학기</span>
           </a>
           <div className="searchbar">
@@ -115,12 +113,13 @@ const Header = () => {
             </div>
           ))}
         </div>
-
         {loginState && (
           <div className="mypage">
             <a href={'/mypage'}> 마이페이지</a>
             &nbsp;
-            <a onClick={logout}>로그아웃</a>
+            <a href={'/'} onClick={logout}>
+              로그아웃
+            </a>
           </div>
         )}
       </div>

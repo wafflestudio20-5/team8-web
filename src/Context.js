@@ -23,6 +23,56 @@ export function UserDataProvider({ children }) {
   const [yearOfEntrance, setYearOfEntrance] = useState(2023);
   const [cookies, setCookie] = useCookies(["token"]);
 
+<<<<<<< HEAD
+  function loginFunc(userEmail, userPassword) {
+    console.log("login trial");
+    console.log(userEmail);
+    console.log(userPassword);
+    if (userEmail.includes("@snu")) {
+      axios
+        .post("https://snu-sugang.o-r.kr/user/login/", {
+          email: userEmail,
+          password: userPassword,
+        })
+        .then((response) => {
+          console.log("login success");
+          console.log(response.data.token);
+          toast.success("로그인되었습니다.");
+          setCookie("token", response.data.token);
+        })
+        .then(
+          axios
+            .get("https://snu-sugang.o-r.kr/user/current/", {
+              headers: {
+                Authorization: `token ${cookies.token}`,
+                "Content-Type": `application/json`,
+              },
+            })
+            .then((response) => {
+              let arr = response.data;
+              console.log(arr);
+              setGrade(arr.academic_year);
+              setCollege(arr.college);
+              setDepartment(arr.department);
+              setName(arr.name);
+              setProgram(arr.program);
+              setStudentId(arr.student_id);
+              setYearOfEntrance(arr.year_of_entrance);
+            })
+        )
+        .then(setLoginState(true))
+        .catch((e) => {
+          console.log("error");
+          console.log(e);
+          toast.error("로그인에 실패했습니다.");
+        });
+    } else {
+      toast.error("SNU 이메일로 로그인해주세요.");
+    }
+  }
+
+=======
+>>>>>>> 25af9ca66f477d918b6b00a77e21145b8dd4ccec
   return (
     <UserDataContext.Provider
       value={{
@@ -48,6 +98,10 @@ export function UserDataProvider({ children }) {
         setGrade,
         cookies,
         setCookie,
+<<<<<<< HEAD
+        loginFunc,
+=======
+>>>>>>> 25af9ca66f477d918b6b00a77e21145b8dd4ccec
       }}
     >
       {children}
