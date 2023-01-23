@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import axios from 'axios'
 import Starrating from './Starrating'
 import { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router'
 import Newreview from './Newreview'
 const Revcon = styled.div`
   display: flex;
@@ -71,6 +72,9 @@ const Icon = styled.div`
   transform: translateX(100%);
 `
 const Reviewcontent = () => {
+  const navigate = useNavigate()
+  const courseid = useParams().courseid
+  const reviewid = useParams().reviewid
   const [picked, setPicked] = useState(0)
   const [isedit, setIsedit] = useState(false)
   const times = [
@@ -97,7 +101,9 @@ const Reviewcontent = () => {
   const [comments, setComments] = useState([])
   useEffect(() => {
     axios
-      .get('https://snu-sugang.o-r.kr/lectures/1/reviews/23/')
+      .get(
+        `https://snu-sugang.o-r.kr/lectures/${courseid}/reviews/${reviewid}/`,
+      )
       .then((res) => {
         console.log(res.data)
         setReviews(res.data)
@@ -106,7 +112,9 @@ const Reviewcontent = () => {
         console.log(e)
       })
     axios
-      .get('https://snu-sugang.o-r.kr/lectures/1/reviews/1/comments/')
+      .get(
+        `https://snu-sugang.o-r.kr/lectures/${courseid}/reviews/${reviewid}/comments/`,
+      )
       .then((res) => {
         console.log(res.data)
         setComments(res.data.results)
@@ -116,9 +124,10 @@ const Reviewcontent = () => {
       })
   }, [])
   const submit = (e) => {
+    e.preventDefault()
     axios
       .post(
-        'https://snu-sugang.o-r.kr/lectures/1/reviews/23/comments/',
+        `https://snu-sugang.o-r.kr/lectures/${courseid}/reviews/${reviewid}/comments/`,
         {
           content: e.target.comment.value,
         },
@@ -132,7 +141,7 @@ const Reviewcontent = () => {
       .then((res) => {
         console.log(res.data)
         e.target.comment.value = ''
-        setComments([...comments, res.data])
+        setComments([res.data, ...comments])
       })
       .catch((e) => {
         console.log(e)
@@ -162,7 +171,7 @@ const Reviewcontent = () => {
                   onClick={() => {
                     axios
                       .delete(
-                        `https://snu-sugang.o-r.kr/lectures/1/reviews/${reviews.id}/`,
+                        `https://snu-sugang.o-r.kr/lectures/${courseid}/reviews/${reviewid}/`,
                         {
                           headers: {
                             Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
@@ -172,7 +181,7 @@ const Reviewcontent = () => {
                       )
                       .then((res) => {
                         console.log(res.data)
-                        window.location.href = '/review'
+                        navigate(`/review/${courseid}`)
                       })
                       .catch((e) => {
                         console.log(e)

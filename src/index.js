@@ -3,15 +3,21 @@ import ReactDOM from 'react-dom/client'
 import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
-import { CourseDataProvider, UserDataProvider } from './Context'
+import {
+  CourseDataProvider,
+  UserDataProvider,
+  ClassDataProvider,
+} from './Context'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <React.StrictMode>
     <CourseDataProvider>
-      <UserDataProvider>
-        <App />
-      </UserDataProvider>
+      <ClassDataProvider>
+        <UserDataProvider>
+          <App />
+        </UserDataProvider>
+      </ClassDataProvider>
     </CourseDataProvider>
   </React.StrictMode>,
 )

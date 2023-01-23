@@ -1,8 +1,10 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import { useClassDataContext } from './Context'
+
 const Wrapper = styled.div`
-  z-index: 2;
+  z-index: 100;
   width: 95%;
   height: 95%;
   background-color: #fff;
@@ -121,6 +123,7 @@ const Tabbutton = styled.button`
   width: 100%;
   height: 100%;
   padding: 0;
+  margin: 0;
   background-color: ${(props) =>
     props.tabnum === props.number ? '#ccc' : '#fff'};
   border: none;
@@ -177,23 +180,16 @@ const Back = styled.div`
   height: 100%;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1;
+  z-index: 99;
 `
 
-const Coursedetail = ({ modal, setModal }) => {
-  const [data, setData] = useState()
+const Coursedetail = () => {
   useEffect(() => {
-    axios
-      .get('https://snu-sugang.o-r.kr/lectures/1/')
-      .then((res) => {
-        console.log(res.data)
-        setData(res.data)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    document.body.style = `overflow: hidden`
+    return () => (document.body.style = `overflow: auto`)
   }, [])
-
+  const { modal, setModal, pickcourses } = useClassDataContext()
+  const data = pickcourses
   const [tabnum, setTabnum] = useState(0)
   const tab = [
     '강좌상세조회',
@@ -476,7 +472,7 @@ const Coursedetail = ({ modal, setModal }) => {
                   <td colSpan={7}></td>
                 </tr>
                 <tr>
-                  <th rowspan={3}>7.장애학생 지원사항</th>
+                  <th rowSpan={3}>7.장애학생 지원사항</th>
                   <td>강의 수강 관련</td>
                   <td colSpan={5}></td>
                 </tr>

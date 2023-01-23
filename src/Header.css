@@ -1,5 +1,8 @@
 .headerbox {
+  z-index: 10;
+  background: white;
   position: sticky;
+  top: 0;
   height: 145px;
   border-bottom: 1px solid #dedede;
   display: flex;

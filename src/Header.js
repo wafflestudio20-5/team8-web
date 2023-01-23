@@ -6,7 +6,7 @@ import { toast } from 'react-toastify'
 import { useState } from 'react'
 import axios from 'axios'
 
-const Header = () => {
+const Header = ({ setSearchopen }) => {
   const menu = [
     { title: '관심강좌', link: '/interest' },
     { title: '시간표', link: '/timetable' },
@@ -39,9 +39,7 @@ const Header = () => {
       <div className="headerup">
         <div>
           <a href="/">
-            <img src={"/img_logo_main.png"} alt={"logo"} className="logo" />
-
-
+            <img src={'/img_logo_main.png'} alt={'logo'} className="logo" />
             <span className="logoname">2022-겨울학기</span>
           </a>
           <div className="searchbar">
@@ -67,7 +65,12 @@ const Header = () => {
                 className="searchicon"
               />
             </div>
-            <div className="search_list">
+            <div
+              className="search_list"
+              onClick={() => {
+                setSearchopen(true)
+              }}
+            >
               <img
                 src={'/search_list.png'}
                 alt={'searchlist'}
@@ -115,12 +118,13 @@ const Header = () => {
             </div>
           ))}
         </div>
-
         {loginState && (
           <div className="mypage">
             <a href={'/mypage'}> 마이페이지</a>
             &nbsp;
-            <a onClick={logout}>로그아웃</a>
+            <a href={'/'} onClick={logout}>
+              로그아웃
+            </a>
           </div>
         )}
       </div>

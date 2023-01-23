@@ -4,24 +4,83 @@ import {
   useEffect,
   useState,
   useContext,
-} from "react";
-import axios from "axios";
-import { useCookies } from "react-cookie";
-import { toast } from "react-toastify";
-
-const UserDataContext = createContext();
+} from 'react'
+import axios from 'axios'
+import { useCookies } from 'react-cookie'
+import { toast } from 'react-toastify'
+const ClassDataContext = createContext()
+export const ClassDataProvider = ({ children }) => {
+  const [modal, setModal] = useState(false)
+  const [pickcourses, setPickcourses] = useState([])
+  return (
+    <ClassDataContext.Provider
+      value={{ modal, setModal, pickcourses, setPickcourses }}
+    >
+      {children}
+    </ClassDataContext.Provider>
+  )
+}
+export const useClassDataContext = () => useContext(ClassDataContext)
+const UserDataContext = createContext()
 export function UserDataProvider({ children }) {
-  const [loginState, setLoginState] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [college, setCollege] = useState("");
-  const [department, setDepartment] = useState("");
-  const [studentId, setStudentId] = useState("");
-  const [grade, setGrade] = useState(1);
-  const [program, setProgram] = useState("학사");
-  const [yearOfEntrance, setYearOfEntrance] = useState(2023);
-  const [cookies, setCookie] = useCookies(["token"]);
+  const [loginState, setLoginState] = useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [name, setName] = useState('')
+  const [college, setCollege] = useState('')
+  const [department, setDepartment] = useState('')
+  const [studentId, setStudentId] = useState('')
+  const [grade, setGrade] = useState(1)
+  const [program, setProgram] = useState('학사')
+  const [yearOfEntrance, setYearOfEntrance] = useState(2023)
+  const [cookies, setCookie] = useCookies(['token'])
+
+  function loginFunc(userEmail, userPassword) {
+    console.log('login trial')
+    console.log(userEmail)
+    console.log(userPassword)
+    if (userEmail.includes('@snu')) {
+      axios
+        .post('https://snu-sugang.o-r.kr/user/login/', {
+          email: userEmail,
+          password: userPassword,
+        })
+        .then((response) => {
+          console.log('login success')
+          console.log(response.data.token)
+          toast.success('로그인되었습니다.')
+          setCookie('token', response.data.token)
+        })
+        .then(
+          axios
+            .get('https://snu-sugang.o-r.kr/user/current/', {
+              headers: {
+                Authorization: `token ${cookies.token}`,
+                'Content-Type': `application/json`,
+              },
+            })
+            .then((response) => {
+              let arr = response.data
+              console.log(arr)
+              setGrade(arr.academic_year)
+              setCollege(arr.college)
+              setDepartment(arr.department)
+              setName(arr.name)
+              setProgram(arr.program)
+              setStudentId(arr.student_id)
+              setYearOfEntrance(arr.year_of_entrance)
+            }),
+        )
+        .then(setLoginState(true))
+        .catch((e) => {
+          console.log('error')
+          console.log(e)
+          toast.error('로그인에 실패했습니다.')
+        })
+    } else {
+      toast.error('SNU 이메일로 로그인해주세요.')
+    }
+  }
 
   return (
     <UserDataContext.Provider
@@ -48,80 +107,86 @@ export function UserDataProvider({ children }) {
         setGrade,
         cookies,
         setCookie,
+        loginFunc,
       }}
     >
       {children}
     </UserDataContext.Provider>
-  );
+  )
 }
-export const useUserDataContext = () => useContext(UserDataContext);
+export const useUserDataContext = () => useContext(UserDataContext)
 
-const CourseDataContext = createContext();
+const CourseDataContext = createContext()
 export function CourseDataProvider({ children }) {
-  const [courses, setCourses] = useState([]);
-  const [count, setCount] = useState(0);
-  const [page, setPage] = useState(1);
-  const [search_word, setSearch_word] = useState("");
-  const [word, setWord] = useState("");
-  const [getting, setGetting] = useState(false);
-  const [interest_courses, setInterest_courses] = useState([]);
-  const [cart_courses, setCart_courses] = useState([]);
-  const [enroll_courses, setEnroll_courses] = useState([]);
-  const [registered_courses, setRegistered_courses] = useState([]);
+  const [courses, setCourses] = useState([])
+  const [count, setCount] = useState(0)
+  const [page, setPage] = useState(1)
+  const [search_word, setSearch_word] = useState('')
+  const [word, setWord] = useState('')
+  const [getting, setGetting] = useState(false)
+  const [interest_courses, setInterest_courses] = useState([])
+  const [cart_courses, setCart_courses] = useState([])
+  const [enroll_courses, setEnroll_courses] = useState([])
+  const [registered_courses, setRegistered_courses] = useState([])
+  const [registerparam, setRegisterparam] = useState([])
   const fetchData = useCallback(() => {
-    if (getting === false) return;
-    setWord(search_word);
+    if (getting === false) return
+    setWord(search_word)
     axios
-      .get(
-        `https://snu-sugang.o-r.kr/lectures/?keyword=${search_word}&page=${page}`
-      )
+      .get(`https://snu-sugang.o-r.kr/lectures?`, {
+        params: {
+          keyword: search_word,
+          page: page,
+          ...registerparam,
+        },
+      })
       .then((res) => {
-        console.log(res);
-        setCourses(res.data.results);
-        setCount(res.data.count);
+        console.log(res)
+        setCourses(res.data.results)
+        setCount(res.data.count)
       })
       .catch((err) => {
-        console.log(err);
-      });
-    setGetting(false);
-  }, [page, search_word, getting]);
+        console.log(err)
+      })
+    setGetting(false)
+  }, [page, search_word, getting])
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    fetchData()
+  }, [fetchData])
   function getRegistered() {
     axios
       .get(`https://snu-sugang.o-r.kr/registered/`, {
         headers: {
           Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
-          "Content-Type": `application/json`,
+          'Content-Type': `application/json`,
         },
       })
       .then((res) => {
-        console.log(res);
-        setRegistered_courses(res.data.results);
-        setCount(res.data.count);
+        console.log(res)
+        setRegistered_courses(res.data.results)
+        setCount(res.data.count)
       })
       .catch((err) => {
-        console.log(err);
-      });
+        console.log(err)
+      })
   }
   function getInterests() {
     axios
       .get(`https://snu-sugang.o-r.kr/interest/`, {
         headers: {
           Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
-          "Content-Type": `application/json`,
+          'Content-Type': `application/json`,
         },
       })
       .then((res) => {
-        console.log(res);
-        setInterest_courses(res.data.results);
-        setCount(res.data.count);
+        console.log(res)
+        setInterest_courses(res.data.results)
+        setCount(res.data.count)
       })
       .catch((err) => {
-        console.log(err);
-        toast.error(err.response.data.course);
-      });
+        console.log(err)
+        toast.error(err.response.data.course)
+      })
   }
 
   function getCart() {
@@ -129,17 +194,17 @@ export function CourseDataProvider({ children }) {
       .get(`https://snu-sugang.o-r.kr/cart/`, {
         headers: {
           Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
-          "Content-Type": `application/json`,
+          'Content-Type': `application/json`,
         },
       })
       .then((res) => {
-        console.log(res);
-        setCart_courses(res.data.results);
-        setCount(res.data.count);
+        console.log(res)
+        setCart_courses(res.data.results)
+        setCount(res.data.count)
       })
       .catch((err) => {
-        console.log(err);
-      });
+        console.log(err)
+      })
   }
 
   function getEnroll() {
@@ -147,17 +212,17 @@ export function CourseDataProvider({ children }) {
       .get(`https://snu-sugang.o-r.kr/pending/`, {
         headers: {
           Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
-          "Content-Type": `application/json`,
+          'Content-Type': `application/json`,
         },
       })
       .then((res) => {
-        console.log(res);
-        setEnroll_courses(res.data.results);
-        setCount(res.data.count);
+        console.log(res)
+        setEnroll_courses(res.data.results)
+        setCount(res.data.count)
       })
       .catch((err) => {
-        console.log(err);
-      });
+        console.log(err)
+      })
   }
 
   const addEnroll = async (id) => {
@@ -170,19 +235,19 @@ export function CourseDataProvider({ children }) {
         {
           headers: {
             Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
-            "Content-Type": `application/json`,
+            'Content-Type': `application/json`,
           },
-        }
+        },
       )
       .then((res) => {
-        console.log(res);
-        toast.info("수강신청 되었습니다.");
+        console.log(res)
+        toast.info('수강신청 되었습니다.')
       })
       .catch((err) => {
-        console.log(err);
-        toast.error(err.response.data.course[0]);
-      });
-  };
+        console.log(err)
+        toast.error(err.response.data.course[0])
+      })
+  }
 
   const addInterest = async (id) => {
     axios
@@ -194,19 +259,19 @@ export function CourseDataProvider({ children }) {
         {
           headers: {
             Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
-            "Content-Type": `application/json`,
+            'Content-Type': `application/json`,
           },
-        }
+        },
       )
       .then((res) => {
-        console.log(res);
-        toast.info("관심강좌로 저장되었습니다.");
+        console.log(res)
+        toast.info('관심강좌로 저장되었습니다.')
       })
       .catch((err) => {
-        console.log(err);
-        toast.error(err.response.data.course[0]);
-      });
-  };
+        console.log(err)
+        toast.error(err.response.data.course[0])
+      })
+  }
 
   const addCart = async (id) => {
     axios
@@ -218,59 +283,59 @@ export function CourseDataProvider({ children }) {
         {
           headers: {
             Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
-            "Content-Type": `application/json`,
+            'Content-Type': `application/json`,
           },
-        }
+        },
       )
       .then((res) => {
-        console.log(res);
-        toast.info("장바구니로 저장되었습니다.");
+        console.log(res)
+        toast.info('장바구니로 저장되었습니다.')
       })
       .catch((err) => {
-        console.log(err);
-        toast.error(err.response.data.course[0]);
-      });
-  };
+        console.log(err)
+        toast.error(err.response.data.course[0])
+      })
+  }
   const delRegistered = async (id) => {
     axios
       .delete(`https://snu-sugang.o-r.kr/registered/`, {
         headers: {
           Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
-          "Content-Type": `application/json`,
+          'Content-Type': `application/json`,
         },
         data: {
           id: id,
         },
       })
       .then((res) => {
-        console.log(res);
-        toast.info("삭제되었습니다.");
-        getRegistered();
+        console.log(res)
+        toast.info('삭제되었습니다.')
+        getRegistered()
       })
       .catch((err) => {
-        console.log(err);
-      });
-  };
+        console.log(err)
+      })
+  }
 
   const delInterest = async (id) => {
     axios
       .delete(`https://snu-sugang.o-r.kr/interest/`, {
         headers: {
           Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
-          "Content-Type": `application/json`,
+          'Content-Type': `application/json`,
         },
         data: {
           id: id,
         },
       })
       .then((res) => {
-        toast.info("삭제되었습니다.");
-        getInterests();
+        toast.info('삭제되었습니다.')
+        getInterests()
       })
       .catch((err) => {
-        console.log(err);
-      });
-  };
+        console.log(err)
+      })
+  }
 
   const delCart = async (id) => {
     axios
@@ -280,22 +345,22 @@ export function CourseDataProvider({ children }) {
         {
           headers: {
             Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
-            "Content-Type": `application/json`,
+            'Content-Type': `application/json`,
           },
           data: {
             id: id,
           },
-        }
+        },
       )
       .then((res) => {
-        console.log(res);
-        toast.info("삭제되었습니다.");
-        getCart();
+        console.log(res)
+        toast.info('삭제되었습니다.')
+        getCart()
       })
       .catch((err) => {
-        console.log(err);
-      });
-  };
+        console.log(err)
+      })
+  }
   return (
     <CourseDataContext.Provider
       value={{
@@ -322,10 +387,11 @@ export function CourseDataProvider({ children }) {
         getEnroll,
         registered_courses,
         getRegistered,
+        setRegisterparam,
       }}
     >
       {children}
     </CourseDataContext.Provider>
-  );
+  )
 }
-export const useCourseDataContext = () => useContext(CourseDataContext);
+export const useCourseDataContext = () => useContext(CourseDataContext)

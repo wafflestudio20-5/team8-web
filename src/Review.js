@@ -2,6 +2,8 @@ import styled from 'styled-components'
 import Starrating from './Starrating'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { useParams, useNavigate } from 'react-router'
+
 const Reviewpage = styled.div`
   display: flex;
   flex-direction: column;
@@ -55,6 +57,8 @@ const Pagebutton = styled.button`
 `
 
 const Review = () => {
+  const courseid = useParams().courseid
+  const navigate = useNavigate()
   const [reviews, setReviews] = useState([])
   const [page, setPage] = useState(1)
   const [totalPage, setTotalPage] = useState(1)
@@ -62,7 +66,9 @@ const Review = () => {
   const dummy = [0, 1, 2, 3, 4]
   useEffect(() => {
     axios
-      .get(`https://snu-sugang.o-r.kr/lectures/1/reviews/?page=${page}`)
+      .get(
+        `https://snu-sugang.o-r.kr/lectures/${courseid}/reviews/?page=${page}`,
+      )
       .then((res) => {
         setReviews(res.data.results)
         setTotalPage(parseInt((res.data.count - 1) / 10 + 1))
@@ -77,7 +83,7 @@ const Review = () => {
       <h1>과목 리뷰 과목명 교수명</h1>
       <button
         onClick={() => {
-          window.location.href = '/newreview'
+          navigate(`/newreview/${courseid}`)
         }}
       >
         글쓰기
@@ -104,7 +110,7 @@ const Review = () => {
                 <tr
                   key={review.id}
                   onClick={() => {
-                    window.location.href = '/reviewcontent'
+                    navigate(`/reviewcontent/${courseid}/${review.id}`)
                   }}
                 >
                   <td>
@@ -141,6 +147,7 @@ const Review = () => {
           return (
             page1 + i <= totalPage && (
               <Pagebutton
+                key-={page1 + i}
                 onClick={() => {
                   setPage(page1 + i)
                 }}
