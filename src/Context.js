@@ -23,6 +23,7 @@ export function UserDataProvider({ children }) {
   const [yearOfEntrance, setYearOfEntrance] = useState(2023);
   const [cookies, setCookie] = useCookies(["token"]);
 
+<<<<<<< HEAD
   function loginFunc(userEmail, userPassword) {
     console.log("login trial");
     console.log(userEmail);
@@ -70,6 +71,8 @@ export function UserDataProvider({ children }) {
     }
   }
 
+=======
+>>>>>>> 25af9ca66f477d918b6b00a77e21145b8dd4ccec
   return (
     <UserDataContext.Provider
       value={{
@@ -95,7 +98,10 @@ export function UserDataProvider({ children }) {
         setGrade,
         cookies,
         setCookie,
+<<<<<<< HEAD
         loginFunc,
+=======
+>>>>>>> 25af9ca66f477d918b6b00a77e21145b8dd4ccec
       }}
     >
       {children}

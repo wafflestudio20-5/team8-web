@@ -1,19 +1,27 @@
 {
-  "name": "myapp",
+  "name": "waffle_toy",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
+
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.2.2",
     "gapi-script": "^1.2.0",
+<<<<<<< HEAD
     "http-proxy-middleware": "^2.0.6",
+=======
+>>>>>>> 25af9ca66f477d918b6b00a77e21145b8dd4ccec
     "react": "^18.2.0",
     "react-cookie": "^4.1.1",
     "react-dom": "^18.2.0",
     "react-google-login": "^5.2.2",
+<<<<<<< HEAD
     "react-router": "^6.6.2",
+=======
+>>>>>>> 25af9ca66f477d918b6b00a77e21145b8dd4ccec
     "react-router-dom": "^6.6.1",
     "react-scripts": "5.0.1",
     "react-toastify": "^9.1.1",
@@ -23,9 +31,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "set \"GENERATE_SOURCEMAP=false\" &&  react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "aws s3 sync ./build s3://react-assignment-2 --profile=waffle-react-seminar"
   },
   "eslintConfig": {
     "extends": [
