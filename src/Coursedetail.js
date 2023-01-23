@@ -10,6 +10,7 @@ const Modalpage = styled.div`
   width: 100%;
   height: 100%;
   z-index: 98;
+  background-color: rgba(0, 0, 0, 0.5);
 `
 const Wrapper = styled.div`
   z-index: 100;
@@ -180,15 +181,6 @@ const Overview = styled.div`
   border-top: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
   padding: 10px;
-`
-
-const Back = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 99;
 `
 
 const Coursedetail = () => {
@@ -616,7 +608,6 @@ const Coursedetail = () => {
   }
   return (
     <Modalpage>
-      <Back />
       <Wrapper>
         <Close
           onClick={() => {

@@ -5,16 +5,16 @@ import { useUserDataContext, useCourseDataContext } from './Context'
 import { useNavigate } from 'react-router-dom'
 import { depart, subject, culture, culture2 } from './data'
 const Wrapper = styled.div`
-  position: absolute;
+  position: fixed;
   top: 100px;
   left: 15%;
   border: 1px solid #0f3e8e;
   border-radius: 10px;
   background: #fff;
   width: 70%;
-  height: ${(props) => (props.searchopen ? '80%' : '0')};
+  height: ${(props) => (props.searchopen ? '60%' : '0')};
   opacity: ${(props) => (props.searchopen ? '1' : '0')};
-  z-index: ${(props) => (props.searchopen ? '1' : '-1')};
+  z-index: ${(props) => (props.searchopen ? '20' : '-1')};
   transition: all 1s;
 `
 const Footer = styled.button`
@@ -52,6 +52,7 @@ const Top = styled.div`
     font-size: 14px;
   }
   button:first-child {
+    width: 6rem;
     height: 26px;
     border: 1px solid #e5e5e5;
     border-radius: 18px;
