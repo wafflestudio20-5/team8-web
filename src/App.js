@@ -21,7 +21,7 @@ import "./App.css";
 import { useState } from "react";
 
 function App() {
-  const [modal, setModal] = useState(true);
+  const [modal, setModal] = useState(false);
   const [searchopen, setSearchopen] = useState(false);
 
   return (

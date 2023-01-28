@@ -1,7 +1,30 @@
+.time-table-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-bottom: 120px;
+    margin-left: 7vw;
+    margin-right: 3vw;
+}
+.timetable-list-area {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    width: 97%;
+    padding: 8px 10px;
+    flex-grow: 1;
+    border-collapse: collapse;
+    text-align: left;
+}
 .time-table-container{
+    grid-column-start: 2;
+    grid-column-end: 6;
     margin-top: 30px;
-    margin-left: 50%;
-    margin-right: 100px;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+#timetable-wrap {
+    min-height: 100vh;
+    position: relative;
+    width: 100%;
 }
 .table-container{
     display: grid;

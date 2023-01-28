@@ -14,12 +14,16 @@ const GoogleButton = ({ onSocial }) => {
   const {
     loginState,
     setLoginState,
+
+    email,
+
     setEmail,
     setPassword,
     setName,
     setCollege,
     setCookie,
     cookie,
+    loginFunc,
   } = useUserDataContext();
 
   useEffect(() => {
@@ -36,6 +40,11 @@ const GoogleButton = ({ onSocial }) => {
     console.log(response);
     let userEmail = response.profileObj.email;
     let userPassword = response.profileObj.googleId;
+
+    setEmail(response.profileObj.email);
+    setPassword(response.profileObj.googleId);
+    loginFunc(userEmail, userPassword);
+
     if (userEmail.includes("@snu.ac.kr")) {
       axios
         .post("https://snu-sugang.o-r.kr/user/login/", {

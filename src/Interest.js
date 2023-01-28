@@ -14,6 +14,7 @@ const Interest = () => {
     getInterests,
     interest_courses,
     count,
+    addTT,
   } = useCourseDataContext();
   const [checkedInputs, setCheckedInputs] = useState("");
   const navigate = useNavigate();
@@ -89,6 +90,10 @@ const Interest = () => {
         <button className="cart-button" onClick={() => addCart(checkedInputs)}>
           {" "}
           장바구니 담기
+        </button>
+        <button className="tt-button" onClick={() => addTT(checkedInputs)}>
+          {" "}
+          시간표에 추가
         </button>
 
         <div className="nav-bottom">

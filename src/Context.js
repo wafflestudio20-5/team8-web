@@ -8,6 +8,7 @@ import {
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import { toast } from "react-toastify";
+import { useStateDataContext } from "./StateContext";
 
 const UserDataContext = createContext();
 export function UserDataProvider({ children }) {
@@ -22,6 +23,53 @@ export function UserDataProvider({ children }) {
   const [program, setProgram] = useState("학사");
   const [yearOfEntrance, setYearOfEntrance] = useState(2023);
   const [cookies, setCookie] = useCookies(["token"]);
+
+  function loginFunc(userEmail, userPassword) {
+    console.log("login trial");
+    console.log(userEmail);
+    console.log(userPassword);
+    if (userEmail.includes("@snu")) {
+      axios
+        .post("https://snu-sugang.o-r.kr/user/login/", {
+          email: userEmail,
+          password: userPassword,
+        })
+        .then((response) => {
+          console.log("login success");
+          console.log(response.data.token);
+          toast.success("로그인되었습니다.");
+          setCookie("token", response.data.token);
+        })
+        .then(
+          axios
+            .get("https://snu-sugang.o-r.kr/user/current/", {
+              headers: {
+                Authorization: `token ${cookies.token}`,
+                "Content-Type": `application/json`,
+              },
+            })
+            .then((response) => {
+              let arr = response.data;
+              console.log(arr);
+              setGrade(arr.academic_year);
+              setCollege(arr.college);
+              setDepartment(arr.department);
+              setName(arr.name);
+              setProgram(arr.program);
+              setStudentId(arr.student_id);
+              setYearOfEntrance(arr.year_of_entrance);
+            })
+        )
+        .then(setLoginState(true))
+        .catch((e) => {
+          console.log("error");
+          console.log(e);
+          toast.error("로그인에 실패했습니다.");
+        });
+    } else {
+      toast.error("SNU 이메일로 로그인해주세요.");
+    }
+  }
 
   return (
     <UserDataContext.Provider
@@ -48,6 +96,7 @@ export function UserDataProvider({ children }) {
         setGrade,
         cookies,
         setCookie,
+        loginFunc,
       }}
     >
       {children}
@@ -58,6 +107,7 @@ export const useUserDataContext = () => useContext(UserDataContext);
 
 const CourseDataContext = createContext();
 export function CourseDataProvider({ children }) {
+  const { state, fetchState } = useStateDataContext();
   const [courses, setCourses] = useState([]);
   const [count, setCount] = useState(0);
   const [page, setPage] = useState(1);
@@ -68,6 +118,7 @@ export function CourseDataProvider({ children }) {
   const [cart_courses, setCart_courses] = useState([]);
   const [enroll_courses, setEnroll_courses] = useState([]);
   const [registered_courses, setRegistered_courses] = useState([]);
+  const [TT_courses, setTT_courses] = useState([]);
   const fetchData = useCallback(() => {
     if (getting === false) return;
     setWord(search_word);
@@ -114,7 +165,6 @@ export function CourseDataProvider({ children }) {
         },
       })
       .then((res) => {
-        console.log(res);
         setInterest_courses(res.data.results);
         setCount(res.data.count);
       })
@@ -141,6 +191,24 @@ export function CourseDataProvider({ children }) {
         console.log(err);
       });
   }
+  function getTT() {
+    console.log("gettingTT");
+    axios
+      .get(`https://snu-sugang.o-r.kr/timetable/3/`, {
+        headers: {
+          Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+          "Content-Type": `application/json`,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        setTT_courses(res.data.results);
+        setCount(res.data.count);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   function getEnroll() {
     axios
@@ -159,6 +227,28 @@ export function CourseDataProvider({ children }) {
         console.log(err);
       });
   }
+  const TT2Cart = async () => {
+    fetchState();
+    if (state !== 1) {
+      toast.error("장바구니 신청 기간이 아닙니다");
+      return;
+    }
+    axios
+      .post(`https://snu-sugang.o-r.kr/cart/3/`, {
+        headers: {
+          Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+          "Content-Type": `application/json`,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        toast.info("장바구니로 이동 되었습니다.");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err.response.data);
+      });
+  };
 
   const addEnroll = async (id) => {
     axios
@@ -209,6 +299,11 @@ export function CourseDataProvider({ children }) {
   };
 
   const addCart = async (id) => {
+    fetchState();
+    if (state !== 1) {
+      toast.error("장바구니 신청 기간이 아닙니다");
+      return;
+    }
     axios
       .post(
         `https://snu-sugang.o-r.kr/cart/`,
@@ -229,6 +324,29 @@ export function CourseDataProvider({ children }) {
       .catch((err) => {
         console.log(err);
         toast.error(err.response.data.course[0]);
+      });
+  };
+  const addTT = async (id) => {
+    axios
+      .post(
+        `https://snu-sugang.o-r.kr/timetable/3/`,
+        {
+          id: id,
+        },
+        {
+          headers: {
+            Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+            "Content-Type": `application/json`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        toast.info("시간표에 추가되었습니다.");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err.response.data[0]);
       });
   };
   const delRegistered = async (id) => {
@@ -296,6 +414,30 @@ export function CourseDataProvider({ children }) {
         console.log(err);
       });
   };
+  const delTT = async (id) => {
+    axios
+      .delete(
+        `https://snu-sugang.o-r.kr/timetable/3/`,
+
+        {
+          headers: {
+            Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+            "Content-Type": `application/json`,
+          },
+          data: {
+            id: id,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        toast.info("삭제되었습니다.");
+        getTT();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <CourseDataContext.Provider
       value={{
@@ -322,6 +464,11 @@ export function CourseDataProvider({ children }) {
         getEnroll,
         registered_courses,
         getRegistered,
+        addTT,
+        getTT,
+        delTT,
+        TT_courses,
+        TT2Cart,
       }}
     >
       {children}

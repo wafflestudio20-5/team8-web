@@ -1,9 +1,13 @@
 import "./Enroll.css";
 import { useUserDataContext, useCourseDataContext } from "./Context";
+import { useStateDataContext } from "./StateContext";
 import React, { useContext, useState, useEffect } from "react";
 import Course from "./Course";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Enroll = () => {
+  let navigate = useNavigate();
   const { cookies } = useUserDataContext();
   const {
     addEnroll,
@@ -17,13 +21,20 @@ const Enroll = () => {
     setSearch_word,
     registered_courses,
   } = useCourseDataContext();
+  const { state, fetchState } = useStateDataContext();
   const [checkedInputs, setCheckedInputs] = useState("");
   const [clicked, setClicked] = useState("cart");
 
   useEffect(() => {
+    fetchState();
+    if (state !== 3) {
+      navigate("/");
+      if (state !== 4) toast.error("아직 수강신청 기간이 아닙니다");
+      else toast.error("수강신청 기간이 지났습니다");
+    }
     if (clicked === "cart") getEnroll();
     if (clicked === "interest") getInterests();
-  }, [clicked, getEnroll, getInterests]);
+  }, [clicked, getEnroll, getInterests, state, fetchState, navigate]);
 
   return (
     <div>
