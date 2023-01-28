@@ -1,6 +1,7 @@
 import "./TimeTable.css";
 import { useCourseDataContext, useUserDataContext } from "./Context";
 import React, { useContext, useState, useMemo, useEffect } from "react";
+
 import axios from "axios";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
@@ -112,6 +113,7 @@ const TimeTable = () => {
   const changeTimeToNum = (time) => {
     let arr = time.split(":");
     let num = (parseInt(arr[0]) - 8) * 2 + 2;
+
     let minute = parseInt(arr[1]);
     if (minute >= 45) num += 2;
     else if (minute >= 30) num += 1;
@@ -119,17 +121,20 @@ const TimeTable = () => {
   };
 
   const { getTT, TT_courses, count, delTT, TT2Cart } = useCourseDataContext();
+
   const [checkedInputs, setCheckedInputs] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
     getTT();
+
   }, []);
 
   const allCells = () => {
     const cellArr = [];
     let parsedTime = [];
     let dayNum = 2,
+
       startTime = 2,
       endTime = 3,
       courseCount = 0;
@@ -156,12 +161,14 @@ const TimeTable = () => {
             {TT_courses[i].name}
           </StyledCell>
         );
+
       }
     }
     return cellArr;
   };
 
   return (
+
     <div>
       <div id="timetable-wrap">
         <div className="time-table-list">
@@ -186,6 +193,7 @@ const TimeTable = () => {
                       }).reduce(function (a, b) {
                         return a + b;
                       }, 0)}
+
                     </span>
                     학점/
                   </span>
@@ -193,6 +201,7 @@ const TimeTable = () => {
                     총 강좌 <span>{count}</span>건
                   </span>
                 </span>
+
               </div>
             </div>
 
@@ -240,6 +249,7 @@ const TimeTable = () => {
         </span>
       </div>
     </div>
+
   );
 };
 

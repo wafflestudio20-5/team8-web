@@ -97,6 +97,7 @@ export function UserDataProvider({ children }) {
         cookies,
         setCookie,
         loginFunc,
+
       }}
     >
       {children}

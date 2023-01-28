@@ -15,6 +15,7 @@ const GoogleButton = ({ onSocial }) => {
     loginState,
     setLoginState,
 
+
     email,
 
     setEmail,
@@ -23,7 +24,9 @@ const GoogleButton = ({ onSocial }) => {
     setCollege,
     setCookie,
     cookie,
+
     loginFunc,
+
   } = useUserDataContext();
 
   useEffect(() => {
