@@ -23,7 +23,9 @@ const GoogleButton = ({ onSocial }) => {
     setCollege,
     setCookie,
     cookie,
+
     loginFunc,
+
   } = useUserDataContext();
 
   useEffect(() => {

@@ -71,6 +71,7 @@ export function UserDataProvider({ children }) {
     }
   }
 
+
   return (
     <UserDataContext.Provider
       value={{
@@ -96,7 +97,9 @@ export function UserDataProvider({ children }) {
         setGrade,
         cookies,
         setCookie,
+
         loginFunc,
+
       }}
     >
       {children}

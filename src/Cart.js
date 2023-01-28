@@ -1,3 +1,4 @@
+
 import "./Cart.css";
 import { useUserDataContext, useCourseDataContext } from "./Context";
 import React, { useEffect, useState } from "react";
@@ -22,12 +23,14 @@ const StyledCell = styled.div`
   grid-row-end: ${(props) => props.rowEnd || "2"};
   color: black;
   background-color: ${(props) => props.backgroundColor || "yellow"};
+
   display: grid;
   align-items: center;
   text-align: center;
   opacity: 1;
   padding-left: 10px;
   padding-right: 10px;
+
 `;
 const Rows = styled.div`
   grid-column-start: 2;
@@ -48,10 +51,12 @@ const Columns = styled.div`
 const Cart = () => {
   const time = () => {
     const timeArr = [];
+
     for (let i = 0; i < 15; i++) {
       timeArr.push(
         <TimeCell rowStart={2 * i + 2} rowEnd={2 * i + 3}>
           {8 + i}
+
         </TimeCell>
       );
     }
@@ -120,8 +125,23 @@ const Cart = () => {
   const { delCart, count, getCart, cart_courses } = useCourseDataContext();
   const [checkedInputs, setCheckedInputs] = useState("");
 
-  const navigate = useNavigate();
+
+  const changeTimeToNum = (time) => {
+    let arr = time.split(':')
+    let num = (parseInt(arr[0]) - 8) * 2 + 2
+    let minute = parseInt(arr[1])
+    if (minute >= 45) num += 2
+    else if (minute >= 30) num += 1
+    return num
+  }
+
+  const { cookies } = useUserDataContext()
+  const { delCart, count, getCart, cart_courses } = useCourseDataContext()
+  const [checkedInputs, setCheckedInputs] = useState('')
+
+  const navigate = useNavigate()
   useEffect(() => {
+
     getCart();
   }, []);
 
@@ -141,6 +161,7 @@ const Cart = () => {
         dayNum = changeDayToNum(parsedTime[j].day);
         startTime = changeTimeToNum(parsedTime[j].start_time);
         endTime = changeTimeToNum(parsedTime[j].end_time);
+
         cellArr.push(
           <StyledCell
             columnStart={dayNum}
@@ -153,12 +174,14 @@ const Cart = () => {
             cell="true"
           >
             {cart_courses[i].name}
+
           </StyledCell>
         );
       }
     }
     return cellArr;
   };
+
 
   return (
     <div>
@@ -189,10 +212,10 @@ const Cart = () => {
                   <span>
                     {cart_courses
                       .map(function (x) {
-                        return x.credit;
+                        return x.credit
                       })
                       .reduce(function (a, b) {
-                        return a + b;
+                        return a + b
                       }, 0)}
                   </span>
                   학점
@@ -200,7 +223,7 @@ const Cart = () => {
               </span>
               <div className="button">
                 <button onClick={() => delCart(checkedInputs)}>선택삭제</button>
-                <button onClick={() => navigate("/interest/")}>관심강좌</button>
+                <button onClick={() => navigate('/interest/')}>관심강좌</button>
               </div>
               {cart_courses
                 .map(function (x) {
@@ -252,7 +275,7 @@ const Cart = () => {
       <div className="bottom">
         <a href="https://www.snu.ac.kr/personal_information">
           개인정보취급방침
-        </a>{" "}
+        </a>{' '}
         &nbsp;|&nbsp;
         <a href="https://www.snu.ac.kr/prohibition_of_unauthorized_email_collection">
           이메일무단수집거부
@@ -263,7 +286,7 @@ const Cart = () => {
         </span>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Cart;
+export default Cart
