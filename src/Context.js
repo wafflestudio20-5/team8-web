@@ -258,7 +258,6 @@ export function CourseDataProvider({ children }) {
           })
           .catch((err) => {
             console.log(err);
-            toast.error(err.response.data);
           });
       })
       .catch((err) => {
@@ -267,26 +266,47 @@ export function CourseDataProvider({ children }) {
   };
 
   const addEnroll = async (id) => {
-    axios
-      .post(
-        `https://snu-sugang.o-r.kr/registered/`,
-        {
-          id: id,
-        },
-        {
-          headers: {
-            Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
-            "Content-Type": `application/json`,
-          },
-        }
-      )
+    await axios
+      .get(`https://snu-sugang.o-r.kr/state/`)
       .then((res) => {
         console.log(res);
-        toast.info("수강신청 되었습니다.");
+        console.log(res.data.period);
+
+        return res.data.period;
+      })
+      .then((state) => {
+        if (state !== 3) {
+          console.log(state);
+          toast.error("수강신청 기간이 아닙니다");
+          return true;
+        }
+      })
+      .then((ok) => {
+        if (ok) return;
+        axios
+          .post(
+            `https://snu-sugang.o-r.kr/registered/`,
+            {
+              id: id,
+            },
+            {
+              headers: {
+                Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+                "Content-Type": `application/json`,
+              },
+            }
+          )
+          .then((res) => {
+            console.log(res);
+            toast.info("수강신청 되었습니다.");
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.error(err.response.data.course[0]);
+          });
       })
       .catch((err) => {
         console.log(err);
-        toast.error(err.response.data.course[0]);
       });
   };
 
