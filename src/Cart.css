@@ -58,7 +58,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 40px;
+  padding-bottom: 10px;
   font-size: 14px;
 }
 
@@ -72,6 +72,11 @@
   padding-right: 10px;
   margin-top: 15px;
   margin-bottom: 50px;
+}
+.cart-list .header .empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .cart-timetable {
   grid-column-start: 2;

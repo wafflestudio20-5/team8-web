@@ -202,6 +202,23 @@ const Cart = () => {
                 <button onClick={() => delCart(checkedInputs)}>선택삭제</button>
                 <button onClick={() => navigate("/interest/")}>관심강좌</button>
               </div>
+              {cart_courses
+                .map(function (x) {
+                  return x.credit;
+                })
+                .reduce(function (a, b) {
+                  return a + b;
+                }, 0) !== 0 ? (
+                <div></div>
+              ) : (
+                <div className="empty">
+                  <div>장바구니가 비었습니다.</div>
+                  <div>
+                    검색 또는 관심강좌에서 수강신청 하실 강좌를 장바구니에
+                    담으세요.
+                  </div>
+                </div>
+              )}
             </div>
             {cart_courses.map((course) => (
               <div className="item">

@@ -10,18 +10,19 @@ import { useCookies } from "react-cookie";
 import { toast } from "react-toastify";
 const StateDataContext = createContext();
 export function StateDataProvider({ children }) {
-  const [state, setState] = useState([]);
+  const [state, setState] = useState(0);
   const fetchState = useCallback(() => {
     axios
       .get(`https://snu-sugang.o-r.kr/state/`)
       .then((res) => {
         console.log(res);
+        console.log(res.data.period);
         setState(res.data.period);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [state]);
   useEffect(() => {
     fetchState();
   }, [fetchState]);

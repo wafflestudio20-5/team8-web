@@ -107,7 +107,7 @@ export const useUserDataContext = () => useContext(UserDataContext);
 
 const CourseDataContext = createContext();
 export function CourseDataProvider({ children }) {
-  const { state, fetchState } = useStateDataContext();
+  const { fetchState, state } = useStateDataContext();
   const [courses, setCourses] = useState([]);
   const [count, setCount] = useState(0);
   const [page, setPage] = useState(1);
@@ -228,25 +228,41 @@ export function CourseDataProvider({ children }) {
       });
   }
   const TT2Cart = async () => {
-    fetchState();
-    if (state !== 1) {
-      toast.error("장바구니 신청 기간이 아닙니다");
-      return;
-    }
-    axios
-      .post(`https://snu-sugang.o-r.kr/cart/3/`, {
-        headers: {
-          Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
-          "Content-Type": `application/json`,
-        },
-      })
+    await axios
+      .get(`https://snu-sugang.o-r.kr/state/`)
       .then((res) => {
         console.log(res);
-        toast.info("장바구니로 이동 되었습니다.");
+        console.log(res.data.period);
+
+        return res.data.period;
+      })
+      .then((state) => {
+        if (state !== 1) {
+          console.log(state);
+          toast.error("장바구니 신청 기간이 아닙니다");
+          return true;
+        }
+      })
+      .then((ok) => {
+        if (ok) return;
+        axios
+          .post(`https://snu-sugang.o-r.kr/cart/3/`, {
+            headers: {
+              Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+              "Content-Type": `application/json`,
+            },
+          })
+          .then((res) => {
+            console.log(res);
+            toast.info("장바구니로 이동 되었습니다.");
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.error(err.response.data);
+          });
       })
       .catch((err) => {
         console.log(err);
-        toast.error(err.response.data);
       });
   };
 
@@ -299,31 +315,47 @@ export function CourseDataProvider({ children }) {
   };
 
   const addCart = async (id) => {
-    fetchState();
-    if (state !== 1) {
-      toast.error("장바구니 신청 기간이 아닙니다");
-      return;
-    }
-    axios
-      .post(
-        `https://snu-sugang.o-r.kr/cart/`,
-        {
-          id: id,
-        },
-        {
-          headers: {
-            Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
-            "Content-Type": `application/json`,
-          },
-        }
-      )
+    await axios
+      .get(`https://snu-sugang.o-r.kr/state/`)
       .then((res) => {
         console.log(res);
-        toast.info("장바구니로 저장되었습니다.");
+        console.log(res.data.period);
+
+        return res.data.period;
+      })
+      .then((state) => {
+        if (state !== 1) {
+          console.log(state);
+          toast.error("장바구니 신청 기간이 아닙니다");
+          return true;
+        }
+      })
+      .then((ok) => {
+        if (ok) return;
+        axios
+          .post(
+            `https://snu-sugang.o-r.kr/cart/`,
+            {
+              id: id,
+            },
+            {
+              headers: {
+                Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+                "Content-Type": `application/json`,
+              },
+            }
+          )
+          .then((res) => {
+            console.log(res);
+            toast.info("장바구니로 저장되었습니다.");
+          })
+          .catch((err) => {
+            console.log(err);
+            toast.error(err.response.data.course[0]);
+          });
       })
       .catch((err) => {
         console.log(err);
-        toast.error(err.response.data.course[0]);
       });
   };
   const addTT = async (id) => {
@@ -412,6 +444,7 @@ export function CourseDataProvider({ children }) {
       })
       .catch((err) => {
         console.log(err);
+        toast.error(err.response.data.detail);
       });
   };
   const delTT = async (id) => {

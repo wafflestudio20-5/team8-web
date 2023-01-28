@@ -18,7 +18,7 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
   const [modal, setModal] = useState(false);
