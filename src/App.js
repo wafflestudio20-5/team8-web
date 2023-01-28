@@ -1,3 +1,4 @@
+
 import Header from "./Header";
 import Body from "./Body";
 import Search from "./Search";
@@ -19,6 +20,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import { useState, useEffect } from "react";
+
 
 function App() {
   const [modal, setModal] = useState(false);
@@ -49,6 +51,7 @@ function App() {
           <Route path="/reviewcontent" element={<Reviewcontent />} />
 
           <Route path="*" element={<Navigate to={""} />} />
+
         </Routes>
         <ToastContainer
           position="top-right"
@@ -58,7 +61,7 @@ function App() {
         />
       </BrowserRouter>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
