@@ -1,6 +1,8 @@
 import "./TimeTable.css";
 import { useCourseDataContext, useUserDataContext } from "./Context";
-import React, {useContext, useState, useMemo, useEffect} from "react";
+
+import React, { useContext, useState, useMemo, useEffect } from "react";
+
 import axios from "axios";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
@@ -111,83 +113,90 @@ const TimeTable = () => {
 
   const changeTimeToNum = (time) => {
     let arr = time.split(":");
-    let num = (parseInt(arr[0]) - 8)*2+2;
+
+    let num = (parseInt(arr[0]) - 8) * 2 + 2;
+
     let minute = parseInt(arr[1]);
     if (minute >= 45) num += 2;
     else if (minute >= 30) num += 1;
     return num;
   };
 
-  const {
-    getCart,
-    cart_courses,
-    count, delCart
-  } = useCourseDataContext();
+  const { getTT, TT_courses, count, delTT, TT2Cart } = useCourseDataContext();
+
   const [checkedInputs, setCheckedInputs] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    getCart();
+
+    getTT();
+
   }, []);
 
   const allCells = () => {
     const cellArr = [];
     let parsedTime = [];
     let dayNum = 2,
-        startTime = 2,
-        endTime = 3,
-        courseCount = 0;
-    console.log(cart_courses);
-    for (let i = 0; i < cart_courses.length; i++) {
-      parsedTime = cart_courses[i].parsed_time;
+
+      startTime = 2,
+      endTime = 3,
+      courseCount = 0;
+    console.log(TT_courses);
+    for (let i = 0; i < TT_courses.length; i++) {
+      parsedTime = TT_courses[i].parsed_time;
       let color = randomRgbHex();
       for (let j = 0; j < parsedTime.length; j++) {
         courseCount++;
-        dayNum = (changeDayToNum(parsedTime[j].day));
-        startTime = (changeTimeToNum(parsedTime[j].start_time));
-        endTime = (changeTimeToNum(parsedTime[j].end_time));
+        dayNum = changeDayToNum(parsedTime[j].day);
+        startTime = changeTimeToNum(parsedTime[j].start_time);
+        endTime = changeTimeToNum(parsedTime[j].end_time);
         cellArr.push(
-                  <StyledCell
-                    columnStart={dayNum}
-                    columnEnd={dayNum+1}
-                    rowStart={startTime}
-                    rowEnd={endTime}
-                    opacity="1"
-                    backgroundColor={color}
-                    key={courseCount}
-                    cell="true"
-                  >
-                    {cart_courses[i].name}
-                  </StyledCell>);
+          <StyledCell
+            columnStart={dayNum}
+            columnEnd={dayNum + 1}
+            rowStart={startTime}
+            rowEnd={endTime}
+            opacity="1"
+            backgroundColor={color}
+            key={courseCount}
+            cell="true"
+          >
+            {TT_courses[i].name}
+          </StyledCell>
+        );
+
       }
     }
     return cellArr;
   };
 
   return (
-        <div>
-          <div id="timetable-wrap">
-            <div className="time-table-list">
-              <div className="timetable-list-area">
-                <div className="first">
-                  <div className="title">시간표</div>
-                  <div className="body">
+
+    <div>
+      <div id="timetable-wrap">
+        <div className="time-table-list">
+          <div className="timetable-list-area">
+            <div className="first">
+              <div className="title">시간표</div>
+              <div className="body">
                 <span>
-                  <button onClick={() => delCart(checkedInputs)}>
+                  <button onClick={() => delTT(checkedInputs)}>
                     &nbsp;&nbsp;선택삭제&nbsp;&nbsp;
                   </button>
+                  <button onClick={() => TT2Cart()}>
+                    &nbsp;&nbsp;장바구니로 일괄 저장&nbsp;&nbsp;
+                  </button>
                 </span>
-                    <span className="content">
+                <span className="content">
                   <span>
                     총 학점{" "}
                     <span>
-                      {cart_courses
-                          .map(function (x) {
-                            return x.credit;
-                          })
-                          .reduce(function (a, b) {
-                            return a + b;
-                          }, 0)}
+                      {TT_courses.map(function (x) {
+                        return x.credit;
+                      }).reduce(function (a, b) {
+                        return a + b;
+                      }, 0)}
+
                     </span>
                     학점/
                   </span>
@@ -195,53 +204,55 @@ const TimeTable = () => {
                     총 강좌 <span>{count}</span>건
                   </span>
                 </span>
-                  </div>
-                </div>
 
-                {cart_courses.map((course) => (
-                    <div className="item">
-                      <Course
-                          course={course}
-                          key={course.id}
-                          checkedInputs={checkedInputs}
-                          setCheckedInputs={setCheckedInputs}
-                      />
-                    </div>
-                ))}
-              </div>
-              <div className="time-table-container">
-                <h3>수강신청 시간표</h3>
-                <div className="table-container">
-                  <div className="table-header"></div>
-                  <div className="table-header">월</div>
-                  <div className="table-header">화</div>
-                  <div className="table-header">수</div>
-                  <div className="table-header">목</div>
-                  <div className="table-header">금</div>
-                  <div className="table-header">토</div>
-                  {time()}
-                  {rowLines()}
-                  {allCells()}
-                  {columnLines()}
-                </div>
               </div>
             </div>
-          </div>
 
-          <div className="bottom">
-            <a href="https://www.snu.ac.kr/personal_information">
-              개인정보취급방침
-            </a>{" "}
-            &nbsp;|&nbsp;
-            <a href="https://www.snu.ac.kr/prohibition_of_unauthorized_email_collection">
-              이메일무단수집거부
-            </a>
-            <br />
-            <span className="darkgray-word">
-          Copyright (C) 2020 SEOUL NATIONAL UNIVERSITY. All Rights Reserved.
-        </span>
+            {TT_courses.map((course) => (
+              <div className="item">
+                <Course
+                  course={course}
+                  key={course.id}
+                  checkedInputs={checkedInputs}
+                  setCheckedInputs={setCheckedInputs}
+                />
+              </div>
+            ))}
+          </div>
+          <div className="time-table-container">
+            <h3>수강신청 시간표</h3>
+            <div className="table-container">
+              <div className="table-header"></div>
+              <div className="table-header">월</div>
+              <div className="table-header">화</div>
+              <div className="table-header">수</div>
+              <div className="table-header">목</div>
+              <div className="table-header">금</div>
+              <div className="table-header">토</div>
+              {time()}
+              {rowLines()}
+              {allCells()}
+              {columnLines()}
+            </div>
           </div>
         </div>
+      </div>
+
+      <div className="bottom">
+        <a href="https://www.snu.ac.kr/personal_information">
+          개인정보취급방침
+        </a>{" "}
+        &nbsp;|&nbsp;
+        <a href="https://www.snu.ac.kr/prohibition_of_unauthorized_email_collection">
+          이메일무단수집거부
+        </a>
+        <br />
+        <span className="darkgray-word">
+          Copyright (C) 2020 SEOUL NATIONAL UNIVERSITY. All Rights Reserved.
+        </span>
+      </div>
+    </div>
+
   );
 };
 

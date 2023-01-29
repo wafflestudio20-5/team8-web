@@ -14,20 +14,18 @@ const GoogleButton = ({ onSocial }) => {
   const {
     loginState,
     setLoginState,
-<<<<<<< HEAD
+
     email,
-=======
->>>>>>> 25af9ca66f477d918b6b00a77e21145b8dd4ccec
+
     setEmail,
     setPassword,
     setName,
     setCollege,
     setCookie,
     cookie,
-<<<<<<< HEAD
+
     loginFunc,
-=======
->>>>>>> 25af9ca66f477d918b6b00a77e21145b8dd4ccec
+
   } = useUserDataContext();
 
   useEffect(() => {
@@ -44,11 +42,11 @@ const GoogleButton = ({ onSocial }) => {
     console.log(response);
     let userEmail = response.profileObj.email;
     let userPassword = response.profileObj.googleId;
-<<<<<<< HEAD
+
     setEmail(response.profileObj.email);
     setPassword(response.profileObj.googleId);
     loginFunc(userEmail, userPassword);
-=======
+
     if (userEmail.includes("@snu.ac.kr")) {
       axios
         .post("https://snu-sugang.o-r.kr/user/login/", {
@@ -73,7 +71,6 @@ const GoogleButton = ({ onSocial }) => {
     } else {
       toast.error("SNU 이메일로 로그인해주세요.");
     }
->>>>>>> 25af9ca66f477d918b6b00a77e21145b8dd4ccec
   };
 
   const loginFailure = (response) => {
