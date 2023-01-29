@@ -59,7 +59,7 @@
   position: fixed;
   top: 200px;
   right: 7%;
-  z-index: 890;
+  z-index: 3;
 }
 .pageButton {
   padding-top: 50px;

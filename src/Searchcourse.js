@@ -1,18 +1,20 @@
 import styled from 'styled-components'
 import axios from 'axios'
 import { useState } from 'react'
+import { useUserDataContext, useCourseDataContext } from './Context'
+import { useNavigate } from 'react-router-dom'
 import { depart, subject, culture, culture2 } from './data'
 const Wrapper = styled.div`
-  position: absolute;
+  position: fixed;
   top: 100px;
   left: 15%;
   border: 1px solid #0f3e8e;
   border-radius: 10px;
   background: #fff;
   width: 70%;
-  height: ${(props) => (props.searchopen ? '80%' : '0')};
+  height: ${(props) => (props.searchopen ? '60%' : '0')};
   opacity: ${(props) => (props.searchopen ? '1' : '0')};
-  z-index: ${(props) => (props.searchopen ? '1' : '-1')};
+  z-index: ${(props) => (props.searchopen ? '20' : '-1')};
   transition: all 1s;
 `
 const Footer = styled.button`
@@ -50,6 +52,7 @@ const Top = styled.div`
     font-size: 14px;
   }
   button:first-child {
+    width: 6rem;
     height: 26px;
     border: 1px solid #e5e5e5;
     border-radius: 18px;
@@ -149,37 +152,28 @@ const Searchselect = ({ selectdata, setdata = null }) => {
   )
 }
 const Searchcourse = ({ setSearchopen, searchopen }) => {
+  const { setGetting, setRegisterparam } = useCourseDataContext()
   const submit = (e) => {
     e.preventDefault()
-    axios
-      .get('https://snu-sugang.o-r.kr/lectures?', {
-        params: {
-          //   grade: e.target[3].value,
-          //   degree: e.target[4].value,
-          //   college: e.target[5].value,
-          //   department: e.target[6].value,
-          //   curriculum: '전필',
-          //   keyword: '컴퓨터',
-          //   exception: e.target[20].value,
-          grade: 2,
-          degree: '학사',
-          college: '공과대학',
-          department: '컴퓨터공학부',
-          curriculum: '전필',
-          keyword: '컴퓨터',
-          exception: '구조',
-        },
-      })
-      .then((res) => {
-        console.log(res)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    const dummy = [7, 8, 9, 10, 11, 12, 13, 14, 15]
+    const curr = dummy
+      .map((data, i) => (e.target[data].checked ? subject[i] : null))
+      .filter((data) => data)
+    setRegisterparam({
+      grade:
+        e.target[4].value === '전체' ? null : e.target[4].value?.slice(0, 1),
+      degree: e.target[3].value === '전체' ? null : e.target[3].value,
+      college: e.target[5].value === '전체' ? null : e.target[5].value,
+      department: e.target[6].value === '전체' ? null : e.target[6].value,
+      curriculum: curr.join(','),
+      exception: e.target[16].value,
+    })
+    setGetting(true)
+    navigate(`/search`)
   }
 
-  const [cult, setCult] = useState()
   const [dep, setDep] = useState()
+  const navigate = useNavigate()
   return (
     <Wrapper searchopen={searchopen}>
       <form onSubmit={submit}>
@@ -188,8 +182,8 @@ const Searchcourse = ({ setSearchopen, searchopen }) => {
           <div>
             <button
               onClick={() => {
-                setCult(null)
                 setDep(null)
+                setRegisterparam(null)
               }}
             >
               <input type="reset" />
@@ -243,9 +237,10 @@ const Searchcourse = ({ setSearchopen, searchopen }) => {
                       : ['']
                   }
                 />
-                <Searchselect selectdata={['']} />
               </div>
             </Searchitem>
+          </div>
+          <div>
             <Searchitem>
               <span>교과구분</span>
               <div>
@@ -256,28 +251,6 @@ const Searchcourse = ({ setSearchopen, searchopen }) => {
                   </div>
                 ))}
               </div>
-            </Searchitem>
-          </div>
-          <div>
-            <Searchitem>
-              <span>교양영역</span>
-              <div>
-                <Searchselect
-                  selectdata={culture.map((data) => data.title)}
-                  setdata={setCult}
-                />
-                <Searchselect
-                  selectdata={
-                    cult && cult !== '전체'
-                      ? culture.find((data) => data.title === cult).data
-                      : culture2
-                  }
-                />
-              </div>
-            </Searchitem>
-            <Searchitem>
-              <span>과정구분</span>
-              <Searchselect selectdata={['학사', '대학원']} />
             </Searchitem>
             <Searchitem>
               <span>검색제외 설정</span>

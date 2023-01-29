@@ -1,5 +1,8 @@
 .headerbox {
+  z-index: 10;
+  background: white;
   position: sticky;
+  top: 0;
   height: 145px;
   border-bottom: 1px solid #dedede;
   display: flex;
@@ -31,7 +34,7 @@
   font-size: 19px;
 }
 .searchbar {
-  width: 55%;
+  width: 50%;
   height: 50%;
   border: 1px solid #dedede;
   border-radius: 10px;
