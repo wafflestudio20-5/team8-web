@@ -8,6 +8,7 @@ import {
   UserDataProvider,
   ClassDataProvider,
 } from './Context'
+import { StateDataProvider } from './StateContext'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(

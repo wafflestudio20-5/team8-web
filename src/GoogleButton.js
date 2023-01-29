@@ -38,9 +38,35 @@ const GoogleButton = ({ onSocial }) => {
     console.log(response)
     let userEmail = response.profileObj.email
     let userPassword = response.profileObj.googleId
+
     setEmail(response.profileObj.email)
     setPassword(response.profileObj.googleId)
     loginFunc(userEmail, userPassword)
+
+    if (userEmail.includes('@snu.ac.kr')) {
+      axios
+        .post('https://snu-sugang.o-r.kr/user/login/', {
+          email: userEmail,
+          password: userPassword,
+        })
+        .then((response) => {
+          console.log('login success')
+          console.log(response.data.token)
+          toast.success('로그인되었습니다.')
+          setLoginState(true)
+          setEmail(userEmail)
+          setPassword(userPassword)
+          setCookie('token', response.data.token)
+          // 구현 필요!! axios.post --> get user info and set all the contexts
+        })
+        .catch((e) => {
+          console.log('error')
+          console.log(e)
+          toast.error('로그인에 실패했습니다.')
+        })
+    } else {
+      toast.error('SNU 이메일로 로그인해주세요.')
+    }
   }
 
   const loginFailure = (response) => {

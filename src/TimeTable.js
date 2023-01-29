@@ -111,19 +111,22 @@ const TimeTable = () => {
 
   const changeTimeToNum = (time) => {
     let arr = time.split(':')
+
     let num = (parseInt(arr[0]) - 8) * 2 + 2
+
     let minute = parseInt(arr[1])
     if (minute >= 45) num += 2
     else if (minute >= 30) num += 1
     return num
   }
 
-  const { getCart, cart_courses, count, delCart } = useCourseDataContext()
+  const { getTT, TT_courses, count, delTT, TT2Cart } = useCourseDataContext()
+
   const [checkedInputs, setCheckedInputs] = useState('')
   const navigate = useNavigate()
 
   useEffect(() => {
-    getCart()
+    getTT()
   }, [])
 
   const allCells = () => {
@@ -133,9 +136,9 @@ const TimeTable = () => {
       startTime = 2,
       endTime = 3,
       courseCount = 0
-    console.log(cart_courses)
-    for (let i = 0; i < cart_courses.length; i++) {
-      parsedTime = cart_courses[i].parsed_time
+    console.log(TT_courses)
+    for (let i = 0; i < TT_courses.length; i++) {
+      parsedTime = TT_courses[i].parsed_time
       let color = randomRgbHex()
       for (let j = 0; j < parsedTime.length; j++) {
         courseCount++
@@ -153,7 +156,7 @@ const TimeTable = () => {
             key={courseCount}
             cell="true"
           >
-            {cart_courses[i].name}
+            {TT_courses[i].name}
           </StyledCell>,
         )
       }
@@ -170,21 +173,22 @@ const TimeTable = () => {
               <div className="title">시간표</div>
               <div className="body">
                 <span>
-                  <button onClick={() => delCart(checkedInputs)}>
+                  <button onClick={() => delTT(checkedInputs)}>
                     &nbsp;&nbsp;선택삭제&nbsp;&nbsp;
+                  </button>
+                  <button onClick={() => TT2Cart()}>
+                    &nbsp;&nbsp;장바구니로 일괄 저장&nbsp;&nbsp;
                   </button>
                 </span>
                 <span className="content">
                   <span>
                     총 학점{' '}
                     <span>
-                      {cart_courses
-                        .map(function (x) {
-                          return x.credit
-                        })
-                        .reduce(function (a, b) {
-                          return a + b
-                        }, 0)}
+                      {TT_courses.map(function (x) {
+                        return x.credit
+                      }).reduce(function (a, b) {
+                        return a + b
+                      }, 0)}
                     </span>
                     학점/
                   </span>
@@ -195,7 +199,7 @@ const TimeTable = () => {
               </div>
             </div>
 
-            {cart_courses.map((course) => (
+            {TT_courses.map((course) => (
               <div className="item">
                 <Course
                   course={course}

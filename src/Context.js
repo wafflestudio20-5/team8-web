@@ -129,6 +129,8 @@ export function CourseDataProvider({ children }) {
   const [enroll_courses, setEnroll_courses] = useState([])
   const [registered_courses, setRegistered_courses] = useState([])
   const [registerparam, setRegisterparam] = useState([])
+  const { fetchState, state } = useStateDataContext()
+  const [TT_courses, setTT_courses] = useState([])
   const fetchData = useCallback(() => {
     if (getting === false) return
     setWord(search_word)
@@ -206,6 +208,24 @@ export function CourseDataProvider({ children }) {
         console.log(err)
       })
   }
+  function getTT() {
+    console.log('gettingTT')
+    axios
+      .get(`https://snu-sugang.o-r.kr/timetable/3/`, {
+        headers: {
+          Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+          'Content-Type': `application/json`,
+        },
+      })
+      .then((res) => {
+        console.log(res)
+        setTT_courses(res.data.results)
+        setCount(res.data.count)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
 
   function getEnroll() {
     axios
@@ -224,28 +244,86 @@ export function CourseDataProvider({ children }) {
         console.log(err)
       })
   }
-
-  const addEnroll = async (id) => {
-    axios
-      .post(
-        `https://snu-sugang.o-r.kr/registered/`,
-        {
-          id: id,
-        },
-        {
-          headers: {
-            Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
-            'Content-Type': `application/json`,
-          },
-        },
-      )
+  const TT2Cart = async () => {
+    await axios
+      .get(`https://snu-sugang.o-r.kr/state/`)
       .then((res) => {
         console.log(res)
-        toast.info('수강신청 되었습니다.')
+        console.log(res.data.period)
+
+        return res.data.period
+      })
+      .then((state) => {
+        if (state !== 1) {
+          console.log(state)
+          toast.error('장바구니 신청 기간이 아닙니다')
+          return true
+        }
+      })
+      .then((ok) => {
+        if (ok) return
+        axios
+          .post(`https://snu-sugang.o-r.kr/cart/3/`, {
+            headers: {
+              Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+              'Content-Type': `application/json`,
+            },
+          })
+          .then((res) => {
+            console.log(res)
+            toast.info('장바구니로 이동 되었습니다.')
+          })
+          .catch((err) => {
+            console.log(err)
+          })
       })
       .catch((err) => {
         console.log(err)
-        toast.error(err.response.data.course[0])
+      })
+  }
+
+  const addEnroll = async (id) => {
+    await axios
+      .get(`https://snu-sugang.o-r.kr/state/`)
+      .then((res) => {
+        console.log(res)
+        console.log(res.data.period)
+
+        return res.data.period
+      })
+      .then((state) => {
+        if (state !== 3) {
+          console.log(state)
+          toast.error('수강신청 기간이 아닙니다')
+          return true
+        }
+      })
+      .then((ok) => {
+        if (ok) return
+        axios
+          .post(
+            `https://snu-sugang.o-r.kr/registered/`,
+            {
+              id: id,
+            },
+            {
+              headers: {
+                Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+                'Content-Type': `application/json`,
+              },
+            },
+          )
+          .then((res) => {
+            console.log(res)
+            toast.info('수강신청 되었습니다.')
+          })
+          .catch((err) => {
+            console.log(err)
+            toast.error(err.response.data.course[0])
+          })
+      })
+      .catch((err) => {
+        console.log(err)
       })
   }
 
@@ -274,9 +352,53 @@ export function CourseDataProvider({ children }) {
   }
 
   const addCart = async (id) => {
+    await axios
+      .get(`https://snu-sugang.o-r.kr/state/`)
+      .then((res) => {
+        console.log(res)
+        console.log(res.data.period)
+
+        return res.data.period
+      })
+      .then((state) => {
+        if (state !== 1) {
+          console.log(state)
+          toast.error('장바구니 신청 기간이 아닙니다')
+          return true
+        }
+      })
+      .then((ok) => {
+        if (ok) return
+        axios
+          .post(
+            `https://snu-sugang.o-r.kr/cart/`,
+            {
+              id: id,
+            },
+            {
+              headers: {
+                Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+                'Content-Type': `application/json`,
+              },
+            },
+          )
+          .then((res) => {
+            console.log(res)
+            toast.info('장바구니로 저장되었습니다.')
+          })
+          .catch((err) => {
+            console.log(err)
+            toast.error(err.response.data.course[0])
+          })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+  const addTT = async (id) => {
     axios
       .post(
-        `https://snu-sugang.o-r.kr/cart/`,
+        `https://snu-sugang.o-r.kr/timetable/3/`,
         {
           id: id,
         },
@@ -289,11 +411,11 @@ export function CourseDataProvider({ children }) {
       )
       .then((res) => {
         console.log(res)
-        toast.info('장바구니로 저장되었습니다.')
+        toast.info('시간표에 추가되었습니다.')
       })
       .catch((err) => {
         console.log(err)
-        toast.error(err.response.data.course[0])
+        toast.error(err.response.data[0])
       })
   }
   const delRegistered = async (id) => {
@@ -359,6 +481,31 @@ export function CourseDataProvider({ children }) {
       })
       .catch((err) => {
         console.log(err)
+        toast.error(err.response.data.detail)
+      })
+  }
+  const delTT = async (id) => {
+    axios
+      .delete(
+        `https://snu-sugang.o-r.kr/timetable/3/`,
+
+        {
+          headers: {
+            Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+            'Content-Type': `application/json`,
+          },
+          data: {
+            id: id,
+          },
+        },
+      )
+      .then((res) => {
+        console.log(res)
+        toast.info('삭제되었습니다.')
+        getTT()
+      })
+      .catch((err) => {
+        console.log(err)
       })
   }
   return (
@@ -387,7 +534,11 @@ export function CourseDataProvider({ children }) {
         getEnroll,
         registered_courses,
         getRegistered,
-        setRegisterparam,
+        addTT,
+        getTT,
+        delTT,
+        TT_courses,
+        TT2Cart,
       }}
     >
       {children}

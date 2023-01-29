@@ -14,6 +14,7 @@ const Search = () => {
     addInterest,
     addCart,
     addEnroll,
+    addTT,
   } = useCourseDataContext()
   const [startNum, setStartNum] = useState(1)
   const [pageButtons, setPageButtons] = useState([])
@@ -149,6 +150,11 @@ const Search = () => {
           {' '}
           장바구니 담기
         </button>
+        <button className="tt-button" onClick={() => addTT(checkedInputs)}>
+          {' '}
+          시간표에 추가
+        </button>
+
         <div className="nav-bottom">
           <div className="nav-code">00</div>
           <input className="nav-code-input" placeholder="입력"></input>

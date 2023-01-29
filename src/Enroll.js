@@ -1,9 +1,14 @@
 import "./Enroll.css";
 import { useUserDataContext, useCourseDataContext } from "./Context";
-import React, { useContext, useState, useEffect } from "react";
+import { useStateDataContext } from "./StateContext";
+import React, { useCallback, useState, useEffect } from "react";
 import Course from "./Course";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const Enroll = () => {
+  let navigate = useNavigate();
   const { cookies } = useUserDataContext();
   const {
     addEnroll,
@@ -17,13 +22,37 @@ const Enroll = () => {
     setSearch_word,
     registered_courses,
   } = useCourseDataContext();
+
   const [checkedInputs, setCheckedInputs] = useState("");
   const [clicked, setClicked] = useState("cart");
+  const [state, setState] = useState(0);
+
+  const fetchState = async () => {
+    await axios
+      .get(`https://snu-sugang.o-r.kr/state/`)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data.period);
+
+        return res.data.period;
+      })
+      .then((state) => {
+        if (state !== 3) {
+          console.log(state);
+          navigate("/");
+          toast.error("수강신청 기간이 아닙니다");
+        }
+        if (clicked === "cart") getEnroll();
+        if (clicked === "interest") getInterests();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
-    if (clicked === "cart") getEnroll();
-    if (clicked === "interest") getInterests();
-  }, [clicked, getEnroll, getInterests]);
+    fetchState();
+  }, []);
 
   return (
     <div>
