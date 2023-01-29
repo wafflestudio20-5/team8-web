@@ -10,6 +10,7 @@ const Revcon = styled.div`
   padding: 1rem 3rem;
 `
 const Reviewbox = styled.div`
+  margin: 2rem 0;
   > div:nth-child(1) {
     display: flex;
     flex-direction: row;
@@ -24,7 +25,6 @@ const Reviewbox = styled.div`
   }
   display: flex;
   flex-direction: column;
-  width: 100%;
   padding: 1rem;
   border: 1px solid black;
   border-radius: 1rem;
@@ -38,6 +38,9 @@ const Commentlist = styled.div`
   textarea {
     width: 95%;
     margin: 0.5rem;
+  }
+  button[type='submit'] {
+    width: 3rem;
   }
 `
 const Commentbox = styled.div`
@@ -64,6 +67,9 @@ const Commentbox = styled.div`
   img {
     width: 20px;
     height: 20px;
+  }
+  button {
+    width: 4rem;
   }
 `
 const Icon = styled.div`
@@ -194,6 +200,7 @@ const Reviewcontent = () => {
             )}
           </div>
           <span>제목 :{reviews.title}</span>
+          <span>글쓴이 :{reviews.created_by ?? '익명'}</span>
           {reviews.content}
         </Reviewbox>
       )}
@@ -214,7 +221,7 @@ const Reviewcontent = () => {
                     setPicked(0)
                     axios
                       .put(
-                        `https://snu-sugang.o-r.kr/lectures/1/reviews/23/comments/${item.id}/`,
+                        `https://snu-sugang.o-r.kr/lectures/${courseid}/reviews/${reviewid}/comments/${item.id}/`,
                         {
                           content: edit,
                         },
@@ -243,8 +250,8 @@ const Reviewcontent = () => {
               </div>
             ) : (
               <div>
-                <span>{item.content}</span>{' '}
-                <span>{item.created_by ? item.created_by : '익명'}</span>
+                <span>{item.content}</span>
+                <span>{item.created_by ?? '익명'}</span>
                 <span>{elapsedTime(item.created_at)}</span>
               </div>
             )}

@@ -286,7 +286,7 @@ const Coursedetail = () => {
                 <span>0학년</span>
               </li>
               <li>
-                <span>교수명</span>
+                <span>{data.professor}</span>
                 <span>{data?.department}</span>
               </li>
             </ul>

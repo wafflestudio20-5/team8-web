@@ -25,7 +25,12 @@ const Course = ({ key, course, setCheckedInputs, checkedInputs }) => {
       }}
     >
       <div className="container">
-        <div className="round">
+        <div
+          className="round"
+          onClick={(e) => {
+            e.stopPropagation()
+          }}
+        >
           <input
             id={`${key}`}
             type="checkbox"
@@ -60,8 +65,10 @@ const Course = ({ key, course, setCheckedInputs, checkedInputs }) => {
               학점 <em>{course.credit}</em>&nbsp; | &nbsp;
             </span>
             <button
+              className="reviewbtn"
               onClick={(e) => {
                 e.stopPropagation()
+                setPickcourses(course)
                 navigate(`/review/${course.id}`)
               }}
             >

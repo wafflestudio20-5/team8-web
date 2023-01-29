@@ -149,7 +149,6 @@ const Search = () => {
           {' '}
           장바구니 담기
         </button>
-
         <div className="nav-bottom">
           <div className="nav-code">00</div>
           <input className="nav-code-input" placeholder="입력"></input>

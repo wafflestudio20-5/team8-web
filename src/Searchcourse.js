@@ -160,11 +160,12 @@ const Searchcourse = ({ setSearchopen, searchopen }) => {
       .map((data, i) => (e.target[data].checked ? subject[i] : null))
       .filter((data) => data)
     setRegisterparam({
-      grade: e.target[4].value === '전체' ? null : e.target[4]?.slice(0, 1),
+      grade:
+        e.target[4].value === '전체' ? null : e.target[4].value?.slice(0, 1),
       degree: e.target[3].value === '전체' ? null : e.target[3].value,
       college: e.target[5].value === '전체' ? null : e.target[5].value,
       department: e.target[6].value === '전체' ? null : e.target[6].value,
-      curriculum: null,
+      curriculum: curr.join(','),
       exception: e.target[16].value,
     })
     setGetting(true)

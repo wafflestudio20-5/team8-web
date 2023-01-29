@@ -52,6 +52,9 @@ const Backbut = styled.button`
 const Buttonbox = styled.div`
   display: flex;
   gap: 0.5rem;
+  button {
+    width: 3rem;
+  }
 `
 
 const Newreview = ({ setIsedit, isedit = false, edit = null }) => {

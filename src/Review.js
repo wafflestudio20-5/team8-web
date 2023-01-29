@@ -3,11 +3,15 @@ import Starrating from './Starrating'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useParams, useNavigate } from 'react-router'
+import { useClassDataContext } from './Context'
 
 const Reviewpage = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 2rem;
+  > button {
+    width: 6rem;
+  }
 `
 const Reviewlist = styled.div`
   table {
@@ -64,6 +68,7 @@ const Review = () => {
   const [totalPage, setTotalPage] = useState(1)
   const page1 = parseInt(page / 5) * 5 + 1
   const dummy = [0, 1, 2, 3, 4]
+  const { pickcourses } = useClassDataContext()
   useEffect(() => {
     axios
       .get(
@@ -71,8 +76,6 @@ const Review = () => {
       )
       .then((res) => {
         setReviews(res.data.results)
-        setTotalPage(parseInt((res.data.count - 1) / 10 + 1))
-        console.log(res.data)
       })
       .catch((e) => {
         console.log(e)
@@ -80,7 +83,9 @@ const Review = () => {
   }, [page])
   return (
     <Reviewpage>
-      <h1>과목 리뷰 과목명 교수명</h1>
+      <h1>
+        {pickcourses.name}({pickcourses.professor}교수님)
+      </h1>
       <button
         onClick={() => {
           navigate(`/newreview/${courseid}`)
