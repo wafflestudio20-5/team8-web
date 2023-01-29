@@ -4,6 +4,8 @@ import Starrating from './Starrating'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import Newreview from './Newreview'
+import { useUserDataContext } from './Context'
+
 const Revcon = styled.div`
   display: flex;
   flex-direction: column;
@@ -83,6 +85,8 @@ const Reviewcontent = () => {
   const reviewid = useParams().reviewid
   const [picked, setPicked] = useState(0)
   const [isedit, setIsedit] = useState(false)
+  const { cookies, name, loginState } = useUserDataContext()
+
   const times = [
     { time: '분', value: 1000 * 60 },
     { time: '시간', value: 1000 * 60 * 60 },
@@ -139,7 +143,7 @@ const Reviewcontent = () => {
         },
         {
           headers: {
-            Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+            Authorization: `token ${cookies.token}`,
             'Content-Type': 'application/json',
           },
         },
@@ -164,7 +168,7 @@ const Reviewcontent = () => {
             <div>
               <Starrating rating={reviews.rating} />
             </div>
-            {reviews.created_by ?? (
+            {reviews.created_by === name ?? (
               <div>
                 <button
                   onClick={() => {
@@ -180,7 +184,7 @@ const Reviewcontent = () => {
                         `https://snu-sugang.o-r.kr/lectures/${courseid}/reviews/${reviewid}/`,
                         {
                           headers: {
-                            Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+                            Authorization: `token ${cookies.token}`,
                             'Content-Type': 'application/json',
                           },
                         },
@@ -204,102 +208,106 @@ const Reviewcontent = () => {
           {reviews.content}
         </Reviewbox>
       )}
-      <Commentlist>
-        <span>댓글</span>
-        {comments.map((item) => (
-          <Commentbox key={item.id}>
-            {picked === item.id ? (
-              <div>
-                <textarea
-                  defaultValue={item.content}
-                  onChange={(e) => {
-                    setEdit(e.target.value)
-                  }}
-                />
-                <button
-                  onClick={() => {
-                    setPicked(0)
-                    axios
-                      .put(
-                        `https://snu-sugang.o-r.kr/lectures/${courseid}/reviews/${reviewid}/comments/${item.id}/`,
-                        {
-                          content: edit,
-                        },
-                        {
-                          headers: {
-                            Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
-                            'Content-Type': 'application/json',
+      {loginState && (
+        <Commentlist>
+          <span>댓글</span>
+          {comments.map((item) => (
+            <Commentbox key={item.id}>
+              {picked === item.id ? (
+                <div>
+                  <textarea
+                    defaultValue={item.content}
+                    onChange={(e) => {
+                      setEdit(e.target.value)
+                    }}
+                  />
+                  <button
+                    onClick={() => {
+                      setPicked(0)
+                      axios
+                        .put(
+                          `https://snu-sugang.o-r.kr/lectures/${courseid}/reviews/${reviewid}/comments/${item.id}/`,
+                          {
+                            content: edit,
                           },
-                        },
-                      )
-                      .then((res) => {
-                        console.log(res.data)
-                        setComments(
-                          comments.map((comment) =>
-                            comment.id === item.id ? res.data : comment,
-                          ),
-                        )
-                      })
-                      .catch((e) => {
-                        console.log(e)
-                      })
-                  }}
-                >
-                  수정
-                </button>
-              </div>
-            ) : (
-              <div>
-                <span>{item.content}</span>
-                <span>{item.created_by ?? '익명'}</span>
-                <span>{elapsedTime(item.created_at)}</span>
-              </div>
-            )}
-            {item.created_by ? (
-              <Icon>
-                <img
-                  src={'/edit.svg'}
-                  alt="edit"
-                  onClick={() => {
-                    setPicked(item.id)
-                  }}
-                />
-                <img
-                  src={'/delete.svg'}
-                  alt="delete"
-                  onClick={() => {
-                    axios
-                      .delete(
-                        `https://snu-sugang.o-r.kr/lectures/1/reviews/1/comments/${item.id}/`,
-                        {
-                          headers: {
-                            Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
-                            'Content-Type': 'application/json',
+                          {
+                            headers: {
+                              Authorization: `token ${cookies.token}`,
+                              'Content-Type': 'application/json',
+                            },
                           },
-                        },
-                      )
-                      .then((res) => {
-                        console.log(res.data)
-                        setComments(
-                          comments.filter((comment) => comment.id !== item.id),
                         )
-                      })
-                      .catch((e) => {
-                        console.log(e)
-                      })
-                  }}
-                />
-              </Icon>
-            ) : null}
-          </Commentbox>
-        ))}
-        <div>
-          <form onSubmit={submit}>
-            <textarea id="comment" />
-            <button type="submit">작성</button>
-          </form>
-        </div>
-      </Commentlist>
+                        .then((res) => {
+                          console.log(res.data)
+                          setComments(
+                            comments.map((comment) =>
+                              comment.id === item.id ? res.data : comment,
+                            ),
+                          )
+                        })
+                        .catch((e) => {
+                          console.log(e)
+                        })
+                    }}
+                  >
+                    수정
+                  </button>
+                </div>
+              ) : (
+                <div>
+                  <span>{item.content}</span>
+                  <span>{item.created_by ?? '익명'}</span>
+                  <span>{elapsedTime(item.created_at)}</span>
+                </div>
+              )}
+              {item.created_by ? (
+                <Icon>
+                  <img
+                    src={'/edit.svg'}
+                    alt="edit"
+                    onClick={() => {
+                      setPicked(item.id)
+                    }}
+                  />
+                  <img
+                    src={'/delete.svg'}
+                    alt="delete"
+                    onClick={() => {
+                      axios
+                        .delete(
+                          `https://snu-sugang.o-r.kr/lectures/1/reviews/1/comments/${item.id}/`,
+                          {
+                            headers: {
+                              Authorization: `token ${cookies.token}`,
+                              'Content-Type': 'application/json',
+                            },
+                          },
+                        )
+                        .then((res) => {
+                          console.log(res.data)
+                          setComments(
+                            comments.filter(
+                              (comment) => comment.id !== item.id,
+                            ),
+                          )
+                        })
+                        .catch((e) => {
+                          console.log(e)
+                        })
+                    }}
+                  />
+                </Icon>
+              ) : null}
+            </Commentbox>
+          ))}
+          <div>
+            <form onSubmit={submit}>
+              <textarea id="comment" />
+              <button type="submit">작성</button>
+            </form>
+          </div>
+        </Commentlist>
+      )}
     </Revcon>
   )
 }

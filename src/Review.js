@@ -3,7 +3,7 @@ import Starrating from './Starrating'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useParams, useNavigate } from 'react-router'
-import { useClassDataContext } from './Context'
+import { useClassDataContext, useUserDataContext } from './Context'
 
 const Reviewpage = styled.div`
   display: flex;
@@ -61,6 +61,7 @@ const Pagebutton = styled.button`
 `
 
 const Review = () => {
+  const { loginState } = useUserDataContext()
   const courseid = useParams().courseid
   const navigate = useNavigate()
   const [reviews, setReviews] = useState([])
@@ -86,13 +87,15 @@ const Review = () => {
       <h1>
         {pickcourses.name}({pickcourses.professor}교수님)
       </h1>
-      <button
-        onClick={() => {
-          navigate(`/newreview/${courseid}`)
-        }}
-      >
-        글쓰기
-      </button>
+      {loginState && (
+        <button
+          onClick={() => {
+            navigate(`/newreview/${courseid}`)
+          }}
+        >
+          글쓰기
+        </button>
+      )}
       <Reviewlist>
         <table>
           <colgroup>

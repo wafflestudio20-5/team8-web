@@ -3,6 +3,7 @@ import { useParams } from 'react-router'
 import { Fragment, useState, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router'
+import { useUserDataContext } from './Context'
 
 const Star = styled.div`
   display: flex;
@@ -58,6 +59,7 @@ const Buttonbox = styled.div`
 `
 
 const Newreview = ({ setIsedit, isedit = false, edit = null }) => {
+  const { cookies } = useUserDataContext()
   const courseid = useParams().courseid
   const navigate = useNavigate()
   const [token, setToken] = useState('')
@@ -79,7 +81,7 @@ const Newreview = ({ setIsedit, isedit = false, edit = null }) => {
       },
       {
         headers: {
-          Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+          Authorization: `token ${cookies.token}`,
           'Content-Type': `application/json`,
         },
       },
