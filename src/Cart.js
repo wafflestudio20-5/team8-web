@@ -1,130 +1,116 @@
-
-import "./Cart.css";
-import { useUserDataContext, useCourseDataContext } from "./Context";
-import React, { useEffect, useState } from "react";
-import Course from "./Course";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import './Cart.css'
+import { useUserDataContext, useCourseDataContext } from './Context'
+import React, { useEffect, useState } from 'react'
+import Course from './Course'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+import styled from 'styled-components'
 
 const TimeCell = styled.div`
-  grid-column-start: ${(props) => props.columnStart || "1"};
-  grid-column-end: ${(props) => props.columnEnd || "2"};
-  grid-row-start: ${(props) => props.rowStart || "1"};
-  grid-row-end: ${(props) => props.rowEnd || "2"};
+  grid-column-start: ${(props) => props.columnStart || '1'};
+  grid-column-end: ${(props) => props.columnEnd || '2'};
+  grid-row-start: ${(props) => props.rowStart || '1'};
+  grid-row-end: ${(props) => props.rowEnd || '2'};
   display: block;
   text-align: center;
   padding-left: 8px;
-`;
+`
 const StyledCell = styled.div`
-  grid-column-start: ${(props) => props.columnStart || "1"};
-  grid-column-end: ${(props) => props.columnEnd || "2"};
-  grid-row-start: ${(props) => props.rowStart || "1"};
-  grid-row-end: ${(props) => props.rowEnd || "2"};
+  grid-column-start: ${(props) => props.columnStart || '1'};
+  grid-column-end: ${(props) => props.columnEnd || '2'};
+  grid-row-start: ${(props) => props.rowStart || '1'};
+  grid-row-end: ${(props) => props.rowEnd || '2'};
   color: black;
-  background-color: ${(props) => props.backgroundColor || "yellow"};
-
+  background-color: ${(props) => props.backgroundColor || 'yellow'};
   display: grid;
   align-items: center;
   text-align: center;
   opacity: 1;
   padding-left: 10px;
   padding-right: 10px;
-
-`;
+`
 const Rows = styled.div`
   grid-column-start: 2;
   grid-column-end: 8;
-  grid-row-start: ${(props) => props.rowStart || "1"};
-  grid-row-end: ${(props) => props.rowEnd || "2"};
-  border-bottom: ${(props) => props.border || "0.5px solid #dedede"};
-`;
+  grid-row-start: ${(props) => props.rowStart || '1'};
+  grid-row-end: ${(props) => props.rowEnd || '2'};
+  border-bottom: ${(props) => props.border || '0.5px solid #dedede'};
+`
 const Columns = styled.div`
   grid-row-start: 2;
   grid-row-end: 32;
-  grid-column-start: ${(props) => props.columnStart || "3"};
-  grid-column-end: ${(props) => props.columnEnd || "4"};
+  grid-column-start: ${(props) => props.columnStart || '3'};
+  grid-column-end: ${(props) => props.columnEnd || '4'};
   background-color: #ededed;
-  opacity: ${(props) => props.opacity || "0.2"}; /* 80% 불투명도 */
-`;
+  opacity: ${(props) => props.opacity || '0.2'}; /* 80% 불투명도 */
+`
 
 const Cart = () => {
   const time = () => {
-    const timeArr = [];
+    const timeArr = []
 
     for (let i = 0; i < 15; i++) {
       timeArr.push(
         <TimeCell rowStart={2 * i + 2} rowEnd={2 * i + 3}>
           {8 + i}
-
-        </TimeCell>
-      );
+        </TimeCell>,
+      )
     }
-    return timeArr;
-  };
+    return timeArr
+  }
 
   const rowLines = () => {
-    const timeArr = [];
+    const timeArr = []
     for (let i = 2; i <= 30; i++) {
-      if (i % 2 == 0) timeArr.push(<Rows rowStart={i} rowEnd={i + 1} />);
+      if (i % 2 == 0) timeArr.push(<Rows rowStart={i} rowEnd={i + 1} />)
       else
         timeArr.push(
-          <Rows rowStart={i} rowEnd={i + 1} border="1px solid #dedede" />
-        );
+          <Rows rowStart={i} rowEnd={i + 1} border="1px solid #dedede" />,
+        )
     }
-    return timeArr;
-  };
+    return timeArr
+  }
 
   const columnLines = () => {
-    const timeArr = [];
+    const timeArr = []
     for (let i = 1; i <= 3; i++) {
-      timeArr.push(<Columns columnStart={2 * i + 1} columnEnd={2 * i + 2} />);
+      timeArr.push(<Columns columnStart={2 * i + 1} columnEnd={2 * i + 2} />)
     }
-    return timeArr;
-  };
+    return timeArr
+  }
 
   const randomRgb = function () {
-    let r = Math.floor(Math.random() * 127 + 128);
-    let g = Math.floor(Math.random() * 127 + 128);
-    let b = Math.floor(Math.random() * 127 + 128);
-    return [r, g, b];
-  };
+    let r = Math.floor(Math.random() * 127 + 128)
+    let g = Math.floor(Math.random() * 127 + 128)
+    let b = Math.floor(Math.random() * 127 + 128)
+    return [r, g, b]
+  }
 
   const randomRgbHex = () => {
-    let [r, g, b] = randomRgb();
+    let [r, g, b] = randomRgb()
     r =
-      r.toString(16).length === 1 ? "0" + r.toString(16) : (r - 1).toString(16);
+      r.toString(16).length === 1 ? '0' + r.toString(16) : (r - 1).toString(16)
     g =
-      g.toString(16).length === 1 ? "0" + g.toString(16) : (g - 1).toString(16);
+      g.toString(16).length === 1 ? '0' + g.toString(16) : (g - 1).toString(16)
     b =
-      b.toString(16).length === 1 ? "0" + b.toString(16) : (b - 1).toString(16);
-    return "#" + String(r + g + b);
-  };
+      b.toString(16).length === 1 ? '0' + b.toString(16) : (b - 1).toString(16)
+    return '#' + String(r + g + b)
+  }
 
   const changeDayToNum = (day) => {
-    let dayNum = 2;
-    if (day == "MON") dayNum = 2;
-    else if (day == "TUE") dayNum = 3;
-    else if (day == "WED") dayNum = 4;
-    else if (day == "THU") dayNum = 5;
-    else if (day == "FRI") dayNum = 6;
-    else dayNum = 7;
-    return dayNum;
-  };
+    let dayNum = 2
+    if (day == 'MON') dayNum = 2
+    else if (day == 'TUE') dayNum = 3
+    else if (day == 'WED') dayNum = 4
+    else if (day == 'THU') dayNum = 5
+    else if (day == 'FRI') dayNum = 6
+    else dayNum = 7
+    return dayNum
+  }
 
-  const changeTimeToNum = (time) => {
-    let arr = time.split(":");
-    let num = (parseInt(arr[0]) - 8) * 2 + 2;
-    let minute = parseInt(arr[1]);
-    if (minute >= 45) num += 2;
-    else if (minute >= 30) num += 1;
-    return num;
-  };
-
-  const { cookies } = useUserDataContext();
-  const { delCart, count, getCart, cart_courses } = useCourseDataContext();
-  const [checkedInputs, setCheckedInputs] = useState("");
-
+  const { cookies } = useUserDataContext()
+  const { delCart, count, getCart, cart_courses } = useCourseDataContext()
+  const [checkedInputs, setCheckedInputs] = useState('')
 
   const changeTimeToNum = (time) => {
     let arr = time.split(':')
@@ -135,32 +121,27 @@ const Cart = () => {
     return num
   }
 
-  const { cookies } = useUserDataContext()
-  const { delCart, count, getCart, cart_courses } = useCourseDataContext()
-  const [checkedInputs, setCheckedInputs] = useState('')
-
   const navigate = useNavigate()
   useEffect(() => {
-
-    getCart();
-  }, []);
+    getCart()
+  }, [])
 
   const allCells = () => {
-    const cellArr = [];
-    let parsedTime = [];
+    const cellArr = []
+    let parsedTime = []
     let dayNum = 2,
       startTime = 2,
       endTime = 3,
-      courseCount = 0;
-    console.log(cart_courses);
+      courseCount = 0
+    console.log(cart_courses)
     for (let i = 0; i < cart_courses.length; i++) {
-      parsedTime = cart_courses[i].parsed_time;
-      let color = randomRgbHex();
+      parsedTime = cart_courses[i].parsed_time
+      let color = randomRgbHex()
       for (let j = 0; j < parsedTime.length; j++) {
-        courseCount++;
-        dayNum = changeDayToNum(parsedTime[j].day);
-        startTime = changeTimeToNum(parsedTime[j].start_time);
-        endTime = changeTimeToNum(parsedTime[j].end_time);
+        courseCount++
+        dayNum = changeDayToNum(parsedTime[j].day)
+        startTime = changeTimeToNum(parsedTime[j].start_time)
+        endTime = changeTimeToNum(parsedTime[j].end_time)
 
         cellArr.push(
           <StyledCell
@@ -174,14 +155,12 @@ const Cart = () => {
             cell="true"
           >
             {cart_courses[i].name}
-
-          </StyledCell>
-        );
+          </StyledCell>,
+        )
       }
     }
-    return cellArr;
-  };
-
+    return cellArr
+  }
 
   return (
     <div>
@@ -227,10 +206,10 @@ const Cart = () => {
               </div>
               {cart_courses
                 .map(function (x) {
-                  return x.credit;
+                  return x.credit
                 })
                 .reduce(function (a, b) {
-                  return a + b;
+                  return a + b
                 }, 0) !== 0 ? (
                 <div></div>
               ) : (

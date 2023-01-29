@@ -8,6 +8,7 @@ import {
 import axios from 'axios'
 import { useCookies } from 'react-cookie'
 import { toast } from 'react-toastify'
+import { useStateDataContext } from './StateContext'
 const ClassDataContext = createContext()
 export const ClassDataProvider = ({ children }) => {
   const [modal, setModal] = useState(false)
@@ -21,6 +22,7 @@ export const ClassDataProvider = ({ children }) => {
   )
 }
 export const useClassDataContext = () => useContext(ClassDataContext)
+
 const UserDataContext = createContext()
 export function UserDataProvider({ children }) {
   const [loginState, setLoginState] = useState(false)
@@ -107,6 +109,7 @@ export function UserDataProvider({ children }) {
         setGrade,
         cookies,
         setCookie,
+
         loginFunc,
       }}
     >
@@ -118,6 +121,7 @@ export const useUserDataContext = () => useContext(UserDataContext)
 
 const CourseDataContext = createContext()
 export function CourseDataProvider({ children }) {
+  const { fetchState, state } = useStateDataContext()
   const [courses, setCourses] = useState([])
   const [count, setCount] = useState(0)
   const [page, setPage] = useState(1)
@@ -128,20 +132,14 @@ export function CourseDataProvider({ children }) {
   const [cart_courses, setCart_courses] = useState([])
   const [enroll_courses, setEnroll_courses] = useState([])
   const [registered_courses, setRegistered_courses] = useState([])
-  const [registerparam, setRegisterparam] = useState([])
-  const { fetchState, state } = useStateDataContext()
   const [TT_courses, setTT_courses] = useState([])
   const fetchData = useCallback(() => {
     if (getting === false) return
     setWord(search_word)
     axios
-      .get(`https://snu-sugang.o-r.kr/lectures?`, {
-        params: {
-          keyword: search_word,
-          page: page,
-          ...registerparam,
-        },
-      })
+      .get(
+        `https://snu-sugang.o-r.kr/lectures/?keyword=${search_word}&page=${page}`,
+      )
       .then((res) => {
         console.log(res)
         setCourses(res.data.results)
@@ -181,7 +179,6 @@ export function CourseDataProvider({ children }) {
         },
       })
       .then((res) => {
-        console.log(res)
         setInterest_courses(res.data.results)
         setCount(res.data.count)
       })
