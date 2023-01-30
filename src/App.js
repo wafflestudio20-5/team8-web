@@ -30,7 +30,6 @@ function App() {
         <header>
           <Header searchopen={searchopen} setSearchopen={setSearchopen} />
         </header>
-
         <div className="padding"></div>
         <Searchcourse searchopen={searchopen} setSearchopen={setSearchopen} />
         {modal && <Coursedetail modal={modal} setModal={setModal} />}
