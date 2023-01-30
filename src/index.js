@@ -3,18 +3,24 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { CourseDataProvider, UserDataProvider } from "./Context";
+import {
+  CourseDataProvider,
+  UserDataProvider,
+  ClassDataProvider,
+} from "./Context";
 import { StateDataProvider } from "./StateContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <StateDataProvider>
-      <CourseDataProvider>
-        <UserDataProvider>
-          <App />
-        </UserDataProvider>
-      </CourseDataProvider>
+      <UserDataProvider>
+        <CourseDataProvider>
+          <ClassDataProvider>
+            <App />
+          </ClassDataProvider>
+        </CourseDataProvider>
+      </UserDataProvider>
     </StateDataProvider>
   </React.StrictMode>
 );

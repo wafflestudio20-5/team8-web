@@ -1,6 +1,9 @@
 import styled from 'styled-components'
+import { useParams } from 'react-router'
 import { Fragment, useState, useEffect } from 'react'
 import axios from 'axios'
+import { useNavigate } from 'react-router'
+import { useUserDataContext } from './Context'
 
 const Star = styled.div`
   display: flex;
@@ -50,9 +53,15 @@ const Backbut = styled.button`
 const Buttonbox = styled.div`
   display: flex;
   gap: 0.5rem;
+  button {
+    width: 3rem;
+  }
 `
 
 const Newreview = ({ setIsedit, isedit = false, edit = null }) => {
+  const { cookies } = useUserDataContext()
+  const courseid = useParams().courseid
+  const navigate = useNavigate()
   const [token, setToken] = useState('')
   const [editrating, setEditrating] = useState(0)
   const submit = (e) => {
@@ -60,7 +69,8 @@ const Newreview = ({ setIsedit, isedit = false, edit = null }) => {
     console.log(1)
     const func = isedit ? axios.put : axios.post
     const url =
-      'https://snu-sugang.o-r.kr/lectures/1/reviews/' + (isedit ? edit.id : '')
+      `https://snu-sugang.o-r.kr/lectures/${courseid}/reviews/` +
+      (isedit ? edit.id : '')
     func(
       url,
       {
@@ -71,7 +81,7 @@ const Newreview = ({ setIsedit, isedit = false, edit = null }) => {
       },
       {
         headers: {
-          Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+          Authorization: `token ${cookies.token}`,
           'Content-Type': `application/json`,
         },
       },
@@ -82,7 +92,7 @@ const Newreview = ({ setIsedit, isedit = false, edit = null }) => {
       .catch((err) => {
         console.log(err)
       })
-    window.location.href = '/review'
+    navigate(`/review/${courseid}`)
   }
   const dummy = [1, 2, 3, 4, 5]
   return (
@@ -99,7 +109,7 @@ const Newreview = ({ setIsedit, isedit = false, edit = null }) => {
                   onChange={() => {
                     setEditrating(i)
                   }}
-                  defaultChecked={edit?.rating == i ? true : false}
+                  defaultChecked={edit?.rate === i ? true : false}
                 />
                 <label htmlFor={`${i}-stars`}>★</label>
               </Fragment>
@@ -109,7 +119,7 @@ const Newreview = ({ setIsedit, isedit = false, edit = null }) => {
             <Backbut
               onClick={() => {
                 if (isedit) setIsedit(false)
-                else window.history.back()
+                else navigate(-1)
               }}
             >
               취소

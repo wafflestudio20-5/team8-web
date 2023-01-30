@@ -1,4 +1,4 @@
-import "./Body.css";
+import './Body.css'
 
 const Body = () => {
   return (
@@ -46,7 +46,7 @@ const Body = () => {
                   장바구니 초보를 위한 수강신청 안내
                 </div>
               </a>
-              <a href={"/public/manual.pdf"} download>
+              <a href={'/public/manual.pdf'} download>
                 <div className="blue-box">수강신청방법 매뉴얼</div>
               </a>
             </div>
@@ -123,7 +123,7 @@ const Body = () => {
               <span className="blue-words">공지사항</span>
               <div className="additional-info">
                 <a href="https://sugang.snu.ac.kr/sugang/co/co100.action">
-                  더보기>
+                  더보기
                 </a>
               </div>
             </div>
@@ -156,7 +156,7 @@ const Body = () => {
               <span className="blue-words">FAQ</span>
               <div className="additional-info">
                 <a href="https://sugang.snu.ac.kr/sugang/co/co110.action">
-                  더보기>
+                  더보기
                 </a>
               </div>
             </div>
@@ -190,7 +190,7 @@ const Body = () => {
         <div className="bottom">
           <a href="https://www.snu.ac.kr/personal_information">
             개인정보취급방침
-          </a>{" "}
+          </a>{' '}
           &nbsp;|&nbsp;
           <a href="https://www.snu.ac.kr/prohibition_of_unauthorized_email_collection">
             이메일무단수집거부
@@ -202,7 +202,7 @@ const Body = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Body;
+export default Body

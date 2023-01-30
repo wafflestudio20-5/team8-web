@@ -9,6 +9,19 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import { toast } from "react-toastify";
 import { useStateDataContext } from "./StateContext";
+const ClassDataContext = createContext();
+export const ClassDataProvider = ({ children }) => {
+  const [modal, setModal] = useState(false);
+  const [pickcourses, setPickcourses] = useState([]);
+  return (
+    <ClassDataContext.Provider
+      value={{ modal, setModal, pickcourses, setPickcourses }}
+    >
+      {children}
+    </ClassDataContext.Provider>
+  );
+};
+export const useClassDataContext = () => useContext(ClassDataContext);
 
 const UserDataContext = createContext();
 export function UserDataProvider({ children }) {
@@ -23,6 +36,10 @@ export function UserDataProvider({ children }) {
   const [program, setProgram] = useState("학사");
   const [yearOfEntrance, setYearOfEntrance] = useState(2023);
   const [cookies, setCookie] = useCookies(["token"]);
+  setCookie(
+    "token",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og"
+  );
 
   function loginFunc(userEmail, userPassword) {
     console.log("login trial");
@@ -96,6 +113,7 @@ export function UserDataProvider({ children }) {
         setGrade,
         cookies,
         setCookie,
+
         loginFunc,
       }}
     >
@@ -108,6 +126,8 @@ export const useUserDataContext = () => useContext(UserDataContext);
 const CourseDataContext = createContext();
 export function CourseDataProvider({ children }) {
   const { fetchState, state } = useStateDataContext();
+
+  const { cookies } = useUserDataContext();
   const [courses, setCourses] = useState([]);
   const [count, setCount] = useState(0);
   const [page, setPage] = useState(1);
@@ -143,7 +163,7 @@ export function CourseDataProvider({ children }) {
     axios
       .get(`https://snu-sugang.o-r.kr/registered/`, {
         headers: {
-          Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+          Authorization: `token ${cookies.token}`,
           "Content-Type": `application/json`,
         },
       })
@@ -160,7 +180,7 @@ export function CourseDataProvider({ children }) {
     axios
       .get(`https://snu-sugang.o-r.kr/interest/`, {
         headers: {
-          Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+          Authorization: `token ${cookies.token}`,
           "Content-Type": `application/json`,
         },
       })
@@ -178,7 +198,7 @@ export function CourseDataProvider({ children }) {
     axios
       .get(`https://snu-sugang.o-r.kr/cart/`, {
         headers: {
-          Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+          Authorization: `token ${cookies.token}`,
           "Content-Type": `application/json`,
         },
       })
@@ -196,7 +216,7 @@ export function CourseDataProvider({ children }) {
     axios
       .get(`https://snu-sugang.o-r.kr/timetable/3/`, {
         headers: {
-          Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+          Authorization: `token ${cookies.token}`,
           "Content-Type": `application/json`,
         },
       })
@@ -214,7 +234,7 @@ export function CourseDataProvider({ children }) {
     axios
       .get(`https://snu-sugang.o-r.kr/pending/`, {
         headers: {
-          Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+          Authorization: `token ${cookies.token}`,
           "Content-Type": `application/json`,
         },
       })
@@ -228,6 +248,14 @@ export function CourseDataProvider({ children }) {
       });
   }
   const TT2Cart = async () => {
+    if (
+      typeof cookies.token === "undefined" ||
+      cookies.token === null ||
+      cookies.token === ""
+    ) {
+      toast.error("로그인을 해주세요");
+      return;
+    }
     await axios
       .get(`https://snu-sugang.o-r.kr/state/`)
       .then((res) => {
@@ -248,7 +276,7 @@ export function CourseDataProvider({ children }) {
         axios
           .post(`https://snu-sugang.o-r.kr/cart/3/`, {
             headers: {
-              Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+              Authorization: `token ${cookies.token}`,
               "Content-Type": `application/json`,
             },
           })
@@ -266,6 +294,14 @@ export function CourseDataProvider({ children }) {
   };
 
   const addEnroll = async (id) => {
+    if (
+      typeof cookies.token === "undefined" ||
+      cookies.token === null ||
+      cookies.token === ""
+    ) {
+      toast.error("로그인을 해주세요");
+      return;
+    }
     await axios
       .get(`https://snu-sugang.o-r.kr/state/`)
       .then((res) => {
@@ -291,7 +327,7 @@ export function CourseDataProvider({ children }) {
             },
             {
               headers: {
-                Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+                Authorization: `token ${cookies.token}`,
                 "Content-Type": `application/json`,
               },
             }
@@ -311,6 +347,14 @@ export function CourseDataProvider({ children }) {
   };
 
   const addInterest = async (id) => {
+    if (
+      typeof cookies.token === "undefined" ||
+      cookies.token === null ||
+      cookies.token === ""
+    ) {
+      toast.error("로그인을 해주세요");
+      return;
+    }
     axios
       .post(
         `https://snu-sugang.o-r.kr/interest/`,
@@ -319,7 +363,7 @@ export function CourseDataProvider({ children }) {
         },
         {
           headers: {
-            Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+            Authorization: `token ${cookies.token}`,
             "Content-Type": `application/json`,
           },
         }
@@ -335,6 +379,14 @@ export function CourseDataProvider({ children }) {
   };
 
   const addCart = async (id) => {
+    if (
+      typeof cookies.token === "undefined" ||
+      cookies.token === null ||
+      cookies.token === ""
+    ) {
+      toast.error("로그인을 해주세요");
+      return;
+    }
     await axios
       .get(`https://snu-sugang.o-r.kr/state/`)
       .then((res) => {
@@ -360,7 +412,7 @@ export function CourseDataProvider({ children }) {
             },
             {
               headers: {
-                Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+                Authorization: `token ${cookies.token}`,
                 "Content-Type": `application/json`,
               },
             }
@@ -379,6 +431,14 @@ export function CourseDataProvider({ children }) {
       });
   };
   const addTT = async (id) => {
+    if (
+      typeof cookies.token === "undefined" ||
+      cookies.token === null ||
+      cookies.token === ""
+    ) {
+      toast.error("로그인을 해주세요");
+      return;
+    }
     axios
       .post(
         `https://snu-sugang.o-r.kr/timetable/3/`,
@@ -387,7 +447,7 @@ export function CourseDataProvider({ children }) {
         },
         {
           headers: {
-            Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+            Authorization: `token ${cookies.token}`,
             "Content-Type": `application/json`,
           },
         }
@@ -398,14 +458,22 @@ export function CourseDataProvider({ children }) {
       })
       .catch((err) => {
         console.log(err);
-        toast.error(err.response.data[0]);
+        toast.error(err.response.data.course[0]);
       });
   };
   const delRegistered = async (id) => {
+    if (
+      typeof cookies.token === "undefined" ||
+      cookies.token === null ||
+      cookies.token === ""
+    ) {
+      toast.error("로그인을 해주세요");
+      return;
+    }
     axios
       .delete(`https://snu-sugang.o-r.kr/registered/`, {
         headers: {
-          Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+          Authorization: `token ${cookies.token}`,
           "Content-Type": `application/json`,
         },
         data: {
@@ -423,10 +491,18 @@ export function CourseDataProvider({ children }) {
   };
 
   const delInterest = async (id) => {
+    if (
+      typeof cookies.token === "undefined" ||
+      cookies.token === null ||
+      cookies.token === ""
+    ) {
+      toast.error("로그인을 해주세요");
+      return;
+    }
     axios
       .delete(`https://snu-sugang.o-r.kr/interest/`, {
         headers: {
-          Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+          Authorization: `token ${cookies.token}`,
           "Content-Type": `application/json`,
         },
         data: {
@@ -443,13 +519,21 @@ export function CourseDataProvider({ children }) {
   };
 
   const delCart = async (id) => {
+    if (
+      typeof cookies.token === "undefined" ||
+      cookies.token === null ||
+      cookies.token === ""
+    ) {
+      toast.error("로그인을 해주세요");
+      return;
+    }
     axios
       .delete(
         `https://snu-sugang.o-r.kr/cart/`,
 
         {
           headers: {
-            Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+            Authorization: `token ${cookies.token}`,
             "Content-Type": `application/json`,
           },
           data: {
@@ -468,13 +552,21 @@ export function CourseDataProvider({ children }) {
       });
   };
   const delTT = async (id) => {
+    if (
+      typeof cookies.token === "undefined" ||
+      cookies.token === null ||
+      cookies.token === ""
+    ) {
+      toast.error("로그인을 해주세요");
+      return;
+    }
     axios
       .delete(
         `https://snu-sugang.o-r.kr/timetable/3/`,
 
         {
           headers: {
-            Authorization: `token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwIjoxOTg4ODYzNjk0fQ.dw-OMl77XAkiZtklnvjwIgDs4lIJouMshL1LT5Va6og`,
+            Authorization: `token ${cookies.token}`,
             "Content-Type": `application/json`,
           },
           data: {
@@ -489,6 +581,7 @@ export function CourseDataProvider({ children }) {
       })
       .catch((err) => {
         console.log(err);
+        toast.error(err.response.data.detail);
       });
   };
   return (

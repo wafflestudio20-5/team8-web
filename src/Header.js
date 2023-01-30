@@ -6,7 +6,7 @@ import { toast } from 'react-toastify'
 import { useState } from 'react'
 import axios from 'axios'
 
-const Header = () => {
+const Header = ({ setSearchopen }) => {
   const menu = [
     { title: '관심강좌', link: '/interest' },
     { title: '시간표', link: '/timetable' },
@@ -65,7 +65,12 @@ const Header = () => {
                 className="searchicon"
               />
             </div>
-            <div className="search_list">
+            <div
+              className="search_list"
+              onClick={() => {
+                setSearchopen(true)
+              }}
+            >
               <img
                 src={'/search_list.png'}
                 alt={'searchlist'}
