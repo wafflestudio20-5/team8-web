@@ -26,8 +26,8 @@ const StyledCell = styled.div`
   align-items: center;
   text-align: center;
   opacity: 1;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
 `;
 const Rows = styled.div`
   grid-column-start: 2;

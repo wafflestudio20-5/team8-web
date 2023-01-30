@@ -26,8 +26,8 @@ const StyledCell = styled.div`
   align-items: center;
   text-align: center;
   opacity: 1;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
 `;
 const Rows = styled.div`
   grid-column-start: 2;
@@ -93,7 +93,6 @@ const Registered = () => {
       g.toString(16).length === 1 ? "0" + g.toString(16) : (g - 1).toString(16);
     b =
       b.toString(16).length === 1 ? "0" + b.toString(16) : (b - 1).toString(16);
-    console.log(r + g + b);
     return "#" + String(r + g + b);
   };
 

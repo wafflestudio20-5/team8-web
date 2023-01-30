@@ -151,6 +151,7 @@ export function CourseDataProvider({ children }) {
       })
       .catch((err) => {
         console.log(err);
+        toast.error("먼저 로그인해주세요.");
       });
   }
   function getInterests() {

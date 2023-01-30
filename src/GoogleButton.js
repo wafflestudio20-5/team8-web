@@ -20,7 +20,7 @@ const GoogleButton = ({ onSocial }) => {
     setName,
     setCollege,
     setCookie,
-    cookie,
+    cookies,
     loginFunc,
   } = useUserDataContext();
 

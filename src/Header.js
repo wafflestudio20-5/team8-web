@@ -1,7 +1,7 @@
 import "./Header.css";
 import GoogleButton from "./GoogleButton";
 import { useUserDataContext } from "./Context";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useEffect } from "react";
@@ -15,7 +15,7 @@ const Header = () => {
     { title: "수강신청내역", link: "/registered" },
   ];
 
-  const { loginState, setLoginState, cookie, name, studentId } =
+  const { loginState, setLoginState, cookies, name, studentId } =
     useUserDataContext();
 
   let navigate = useNavigate();
@@ -29,10 +29,10 @@ const Header = () => {
     <div className="headerbox">
       <div className="headerup">
         <div>
-          <a href="/">
+          <Link to="/">
             <img src={"/img_logo_main.png"} alt={"logo"} className="logo" />
             <span className="logoname">2022-겨울학기</span>
-          </a>
+          </Link>
           <div className="searchbar">
             <select>
               <option>Search</option>
@@ -67,13 +67,13 @@ const Header = () => {
         <div>
           {menu.map((item) => (
             <div key={item.title}>
-              <a href={item.link}>{item.title}</a>
+              <Link to={item.link}>{item.title}</Link>
             </div>
           ))}
         </div>
         {loginState && (
           <div className="mypage">
-            <a href={"/mypage"}> 마이페이지</a>
+            <Link to={"/mypage"}> 마이페이지</Link>
             &nbsp;
             <a href={"/"} onClick={logout}>
               로그아웃

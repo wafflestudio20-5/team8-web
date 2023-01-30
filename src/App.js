@@ -1,4 +1,3 @@
-
 import Header from "./Header";
 import Body from "./Body";
 import Search from "./Search";
@@ -21,7 +20,6 @@ import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import { useState } from "react";
 
-
 function App() {
   const [modal, setModal] = useState(true);
   const [searchopen, setSearchopen] = useState(false);
@@ -37,21 +35,19 @@ function App() {
         <Searchcourse searchopen={searchopen} setSearchopen={setSearchopen} />
         {modal && <Coursedetail modal={modal} setModal={setModal} />}
         <Routes>
-          <Route path="/" element={<Body />} />
-          <Route path="/interest" element={<Interest />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/registered" element={<Registered />} />
-          <Route path="/mypage" element={<Mypage />} />
-          <Route path="/timetable" element={<TimeTable />} />
-          <Route path="/enroll" element={<Enroll />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/review" element={<Review />} />
-          <Route path="/newreview" element={<Newreview />} />
-          <Route path="/reviewcontent" element={<Reviewcontent />} />
-
-          <Route path="*" element={<Navigate to={""} />} />
-
+          <Route path="/" element={<Body />}></Route>
+          <Route path="/interest" element={<Interest />}></Route>
+          <Route path="/cart" element={<Cart />}></Route>
+          <Route path="/register" element={<Register />}></Route>
+          <Route path="/registered" element={<Registered />}></Route>
+          <Route path="/mypage" element={<Mypage />}></Route>
+          <Route path="/timetable" element={<TimeTable />}></Route>
+          <Route path="/enroll" element={<Enroll />}></Route>
+          <Route path="/search" element={<Search />}></Route>
+          <Route path="/review" element={<Review />}></Route>
+          <Route path="/newreview" element={<Newreview />}></Route>
+          <Route path="/reviewcontent" element={<Reviewcontent />}></Route>
+          <Route path="*" element={<Navigate to={""} />}></Route>
         </Routes>
         <ToastContainer
           position="top-right"
@@ -61,7 +57,7 @@ function App() {
         />
       </BrowserRouter>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
