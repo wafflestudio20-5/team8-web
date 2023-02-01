@@ -1,10 +1,10 @@
-import "./Interest.css";
-import { useUserDataContext, useCourseDataContext } from "./Context";
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Course from "./Course";
-import axios from "axios";
-import { toast } from "react-toastify";
+import './Interest.css'
+import { useUserDataContext, useCourseDataContext } from './Context'
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import Course from './Course'
+import axios from 'axios'
+import { toast } from 'react-toastify'
 
 const Interest = () => {
   const {
@@ -14,15 +14,19 @@ const Interest = () => {
     getInterests,
     interest_courses,
     count,
+
+    addTT,
   } = useCourseDataContext();
   const [checkedInputs, setCheckedInputs] = useState("");
   const navigate = useNavigate();
 
+
   useEffect(() => {
-    getInterests();
-  }, [getInterests]);
+    getInterests()
+  }, [getInterests])
 
   return (
+    <div>
       <div id="wrap">
         <div className="list-body">
           <div className="list-area">
@@ -33,20 +37,20 @@ const Interest = () => {
                   <button onClick={() => delInterest(checkedInputs)}>
                     &nbsp;&nbsp;선택삭제&nbsp;&nbsp;
                   </button>
-                  <button onClick={() => navigate("/timetable/")}>
+                  <button onClick={() => navigate('/timetable/')}>
                     &nbsp;&nbsp;시간표 보기&nbsp;&nbsp;
                   </button>
                 </span>
                 <span className="content">
                   <span>
-                    총 학점{" "}
+                    총 학점{' '}
                     <span>
                       {interest_courses
                         .map(function (x) {
-                          return x.credit;
+                          return x.credit
                         })
                         .reduce(function (a, b) {
-                          return a + b;
+                          return a + b
                         }, 0)}
                     </span>
                     학점/
@@ -70,10 +74,11 @@ const Interest = () => {
             ))}
           </div>
         </div>
+      </div>
       <div className="bottom">
         <a href="https://www.snu.ac.kr/personal_information">
           개인정보취급방침
-        </a>{" "}
+        </a>{' '}
         &nbsp;|&nbsp;
         <a href="https://www.snu.ac.kr/prohibition_of_unauthorized_email_collection">
           이메일무단수집거부
@@ -85,8 +90,12 @@ const Interest = () => {
       </div>
       <div className="interest-nav">
         <button className="cart-button" onClick={() => addCart(checkedInputs)}>
-          {" "}
+          {' '}
           장바구니 담기
+        </button>
+        <button className="tt-button" onClick={() => addTT(checkedInputs)}>
+          {" "}
+          시간표에 추가
         </button>
 
         <div className="nav-bottom">
@@ -97,12 +106,12 @@ const Interest = () => {
           className="enroll-button"
           onClick={() => addEnroll(checkedInputs)}
         >
-          {" "}
+          {' '}
           수강신청
         </button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Interest;
+export default Interest

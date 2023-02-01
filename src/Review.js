@@ -2,10 +2,16 @@ import styled from 'styled-components'
 import Starrating from './Starrating'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { useParams, useNavigate } from 'react-router'
+import { useClassDataContext, useUserDataContext } from './Context'
+
 const Reviewpage = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 2rem;
+  > button {
+    width: 6rem;
+  }
 `
 const Reviewlist = styled.div`
   table {
@@ -55,18 +61,22 @@ const Pagebutton = styled.button`
 `
 
 const Review = () => {
+  const { loginState } = useUserDataContext()
+  const courseid = useParams().courseid
+  const navigate = useNavigate()
   const [reviews, setReviews] = useState([])
   const [page, setPage] = useState(1)
   const [totalPage, setTotalPage] = useState(1)
   const page1 = parseInt(page / 5) * 5 + 1
   const dummy = [0, 1, 2, 3, 4]
+  const { pickcourses } = useClassDataContext()
   useEffect(() => {
     axios
-      .get(`https://snu-sugang.o-r.kr/lectures/1/reviews/?page=${page}`)
+      .get(
+        `https://snu-sugang.o-r.kr/lectures/${courseid}/reviews/?page=${page}`,
+      )
       .then((res) => {
         setReviews(res.data.results)
-        setTotalPage(parseInt((res.data.count - 1) / 10 + 1))
-        console.log(res.data)
       })
       .catch((e) => {
         console.log(e)
@@ -74,14 +84,18 @@ const Review = () => {
   }, [page])
   return (
     <Reviewpage>
-      <h1>과목 리뷰 과목명 교수명</h1>
-      <button
-        onClick={() => {
-          window.location.href = '/newreview'
-        }}
-      >
-        글쓰기
-      </button>
+      <h1>
+        {pickcourses.name}({pickcourses.professor}교수님)
+      </h1>
+      {loginState && (
+        <button
+          onClick={() => {
+            navigate(`/newreview/${courseid}`)
+          }}
+        >
+          글쓰기
+        </button>
+      )}
       <Reviewlist>
         <table>
           <colgroup>
@@ -104,7 +118,7 @@ const Review = () => {
                 <tr
                   key={review.id}
                   onClick={() => {
-                    window.location.href = '/reviewcontent'
+                    navigate(`/reviewcontent/${courseid}/${review.id}`)
                   }}
                 >
                   <td>
@@ -141,6 +155,7 @@ const Review = () => {
           return (
             page1 + i <= totalPage && (
               <Pagebutton
+                key-={page1 + i}
                 onClick={() => {
                   setPage(page1 + i)
                 }}

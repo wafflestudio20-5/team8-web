@@ -54,12 +54,12 @@
 .search-nav {
   background-color: #0f3e8e;
   width: 145px;
-  height: 240px;
+  height: 280px;
   border-radius: 20px;
   position: fixed;
   top: 200px;
   right: 7%;
-  z-index: 890;
+  z-index: 3;
 }
 .pageButton {
   padding-top: 50px;

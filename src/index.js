@@ -1,18 +1,33 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import './index.css'
-import App from './App'
-import reportWebVitals from './reportWebVitals'
-import { CourseDataProvider, UserDataProvider } from './Context'
+
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+
+import {
+  CourseDataProvider,
+  UserDataProvider,
+  ClassDataProvider,
+
+} from "./Context";
+import { StateDataProvider } from "./StateContext";
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <React.StrictMode>
-    <CourseDataProvider>
+    <StateDataProvider>
+
       <UserDataProvider>
-        <App />
+        <CourseDataProvider>
+          <ClassDataProvider>
+            <App />
+          </ClassDataProvider>
+        </CourseDataProvider>
       </UserDataProvider>
-    </CourseDataProvider>
+
+    </StateDataProvider>
   </React.StrictMode>,
 )
 // If you want to start measuring performance in your app, pass a function

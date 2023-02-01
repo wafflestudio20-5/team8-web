@@ -1,7 +1,7 @@
-import "./Search.css";
-import { useCourseDataContext } from "./Context";
-import React, { useEffect, useState } from "react";
-import Course from "./Course";
+import './Search.css'
+import { useCourseDataContext } from './Context'
+import React, { useEffect, useState } from 'react'
+import Course from './Course'
 
 const Search = () => {
   const {
@@ -14,38 +14,40 @@ const Search = () => {
     addInterest,
     addCart,
     addEnroll,
-  } = useCourseDataContext();
-  const [startNum, setStartNum] = useState(1);
-  const [pageButtons, setPageButtons] = useState([]);
-  const [checkedInputs, setCheckedInputs] = useState("");
+    addTT,
+  } = useCourseDataContext()
+  const [startNum, setStartNum] = useState(1)
+  const [pageButtons, setPageButtons] = useState([])
+  const [checkedInputs, setCheckedInputs] = useState('')
 
   useEffect(() => {
     function setButtons() {
-      setGetting(true);
-      const r = [];
+      setGetting(true)
+      const r = []
       for (let i = startNum; i < startNum + 5 && i <= count / 10 + 1; i++) {
         r.push(
           <button
+            key={i}
             type="button"
-            className={page === i ? "pageNum clicked" : "pageNum"}
+            className={page === i ? 'pageNum clicked' : 'pageNum'}
             onClick={() => {
-              setPage(i);
-              setGetting(true);
-              console.log(page);
+              setPage(i)
+              setGetting(true)
+              console.log(page)
             }}
           >
             {i}
-          </button>
-        );
+          </button>,
+        )
       }
-      setPageButtons(r);
+      setPageButtons(r)
     }
-    setButtons();
-  }, [count, page, setPage, startNum, setGetting]);
+    setButtons()
+  }, [count, page, setPage, startNum, setGetting])
 
   useEffect(() => {
-    setPage(startNum);
-  }, [startNum, setPage]);
+    setPage(startNum)
+  }, [startNum, setPage])
 
   return (
     <div>
@@ -64,10 +66,9 @@ const Search = () => {
             </div>
 
             {courses.map((course) => (
-              <div className="item">
+              <div className="item" key={course.id}>
                 <Course
                   course={course}
-                  key={course.id}
                   checkedInputs={checkedInputs}
                   setCheckedInputs={setCheckedInputs}
                 />
@@ -80,18 +81,18 @@ const Search = () => {
               <button
                 type="button"
                 onClick={() => {
-                  setStartNum(1);
+                  setStartNum(1)
                 }}
               >
-                {"<<"}
+                {'<<'}
               </button>
               <button
                 type="button"
                 onClick={() => {
-                  setStartNum(startNum - 5 < 1 ? startNum : startNum - 5);
+                  setStartNum(startNum - 5 < 1 ? startNum : startNum - 5)
                 }}
               >
-                {"<"}
+                {'<'}
               </button>
               {pageButtons}
               <button
@@ -100,19 +101,19 @@ const Search = () => {
                   setStartNum(
                     startNum + 5 > parseInt(count / 10)
                       ? startNum
-                      : startNum + 5
-                  );
+                      : startNum + 5,
+                  )
                 }}
               >
-                {">"}
+                {'>'}
               </button>
               <button
                 type="button"
                 onClick={() => {
-                  setStartNum(parseInt(parseInt(count / 10) / 5) * 5);
+                  setStartNum(parseInt(parseInt(count / 10) / 5) * 5)
                 }}
               >
-                {">>"}
+                {'>>'}
               </button>
             </div>
           </div>
@@ -121,7 +122,7 @@ const Search = () => {
       <div className="bottom">
         <a href="https://www.snu.ac.kr/personal_information">
           개인정보취급방침
-        </a>{" "}
+        </a>{' '}
         &nbsp;|&nbsp;
         <a href="https://www.snu.ac.kr/prohibition_of_unauthorized_email_collection">
           이메일무단수집거부
@@ -135,7 +136,7 @@ const Search = () => {
         <button
           className="interest-button"
           onClick={() => {
-            addInterest(checkedInputs);
+            addInterest(checkedInputs)
           }}
         >
           관심강좌 저장
@@ -143,11 +144,15 @@ const Search = () => {
         <button
           className="search-cart-button"
           onClick={() => {
-            addCart(checkedInputs);
+            addCart(checkedInputs)
           }}
         >
-          {" "}
+          {' '}
           장바구니 담기
+        </button>
+        <button className="tt-button" onClick={() => addTT(checkedInputs)}>
+          {' '}
+          시간표에 추가
         </button>
 
         <div className="nav-bottom">
@@ -157,15 +162,15 @@ const Search = () => {
         <button
           className="enroll-button"
           onClick={() => {
-            addEnroll(checkedInputs);
+            addEnroll(checkedInputs)
           }}
         >
-          {" "}
+          {' '}
           수강신청
         </button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Search;
+export default Search
