@@ -21,7 +21,7 @@ const Mypage = () => {
       <div className="register-contents">
         <form className="form">
           <span className="bold-title">이름 </span>
-          <span className="mypage-content">{name}d</span>
+          <span className="mypage-content">{name}</span>
           <br />
           <span className="bold-title">이메일</span>
           {email}
@@ -37,7 +37,7 @@ const Mypage = () => {
           {yearOfEntrance}
           <br />
           <span className="bold-title">이수 과정</span>
-          <span className="mypage-content">{program}dd</span>
+          <span className="mypage-content">{program}</span>
           <span className="bold-title">학년</span>
           {grade}
         </form>

@@ -26,9 +26,9 @@ const StyledCell = styled.div`
   align-items: center;
   text-align: center;
   opacity: 1;
-  padding-left: 10px;
-  padding-right: 10px;
-`
+  padding-left: 5px;
+  padding-right: 5px;
+`;
 const Rows = styled.div`
   grid-column-start: 2;
   grid-column-end: 8;
@@ -78,24 +78,35 @@ const Registered = () => {
     return timeArr
   }
 
-  const randomRgb = function () {
-    let r = Math.floor(Math.random() * 127 + 128)
-    let g = Math.floor(Math.random() * 127 + 128)
-    let b = Math.floor(Math.random() * 127 + 128)
-    return [r, g, b]
-  }
+  // const randomRgb = function () {
+  //   let r = Math.floor(Math.random() * 127 + 128);
+  //   let g = Math.floor(Math.random() * 127 + 128);
+  //   let b = Math.floor(Math.random() * 127 + 128);
+  //   return [r, g, b];
+  // };
+  //
+  // const randomRgbHex = () => {
+  //   let [r, g, b] = randomRgb();
+  //   r =
+  //     r.toString(16).length === 1 ? "0" + r.toString(16) : (r - 1).toString(16);
+  //   g =
+  //     g.toString(16).length === 1 ? "0" + g.toString(16) : (g - 1).toString(16);
+  //   b =
+  //     b.toString(16).length === 1 ? "0" + b.toString(16) : (b - 1).toString(16);
+  //   return "#" + String(r + g + b);
+  // };
 
-  const randomRgbHex = () => {
-    let [r, g, b] = randomRgb()
-    r =
-      r.toString(16).length === 1 ? '0' + r.toString(16) : (r - 1).toString(16)
-    g =
-      g.toString(16).length === 1 ? '0' + g.toString(16) : (g - 1).toString(16)
-    b =
-      b.toString(16).length === 1 ? '0' + b.toString(16) : (b - 1).toString(16)
-    console.log(r + g + b)
-    return '#' + String(r + g + b)
-  }
+  const colorSet = [
+    "#ffdddd",
+    "#ffeedd",
+    "#ffffdd",
+    "#e5ffdd",
+    "#ddfff6",
+    "#ddeeff",
+    "#e5ddff",
+    "#ffddf6",
+    "#ddffff",
+  ];
 
   const changeDayToNum = (day) => {
     let dayNum = 2
@@ -139,8 +150,8 @@ const Registered = () => {
       courseCount = 0
     console.log(registered_courses)
     for (let i = 0; i < registered_courses.length; i++) {
-      parsedTime = registered_courses[i].parsed_time
-      let color = randomRgbHex()
+      parsedTime = registered_courses[i].parsed_time;
+      let color = colorSet[i];
       for (let j = 0; j < parsedTime.length; j++) {
         courseCount++
         dayNum = changeDayToNum(parsedTime[j].day)

@@ -10,13 +10,17 @@ const Register = () => {
     name,
     email,
     password,
+    college,
     setCollege,
+    department,
     setDepartment,
     studentId,
     setStudentId,
     yearOfEntrance,
     setYearOfEntrance,
+    program,
     setProgram,
+    grade,
     setGrade,
   } = useUserDataContext();
   // 학번, 이름, 이수과정, 학년, 입학년도, 등록횟수, 주전공, 부전공, 복수전공
@@ -33,10 +37,17 @@ const Register = () => {
         name: name,
         email: email,
         password: password,
+        student_id: studentId,
+        college: college,
+        department: department,
+        program: program,
+        academic_year: grade,
+        year_of_entrance: yearOfEntrance,
       })
       .then((response) => {
         console.log("sign-up success");
         console.log(response);
+        toast.success("회원가입 되었습니다.");
         navigate(-1);
       })
       .catch((err) => {

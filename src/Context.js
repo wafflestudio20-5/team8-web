@@ -179,8 +179,9 @@ export function CourseDataProvider({ children }) {
         setCount(res.data.count)
       })
       .catch((err) => {
-        console.log(err)
-      })
+        console.log(err);
+        toast.error("먼저 로그인해주세요.");
+      });
   }
   function getInterests() {
     axios
