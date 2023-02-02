@@ -34,10 +34,39 @@
 
 ## 🧑‍🤝‍🧑 팀원 소개
 
-## ✨ 특징
-
 ## 📚 기술 스택
+
+프론트엔드: react
+<div align=left> 
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=JavaScript&logoColor=white" />
+  <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=CSS3&logoColor=white" />
+  <img src="https://img.shields.io/badge/SASS-hotpink.svg?style=flat&logo=SASS&logoColor=white">
+  <img src="https://img.shields.io/badge/react-61DAFB?style=flat&logo=react&logoColor=black"> 
+  <img src="https://img.shields.io/badge/AWS-%23FF9900.svg?style=flat&logo=amazon-aws&logoColor=white">
+</div>
+
+백엔드: django
+<div align=left> 
+  <img src="https://img.shields.io/badge/python-3670A0?style=flat&logo=python&logoColor=white">
+  <img src="https://img.shields.io/badge/django-092E20?style=flat&logo=django&logoColor=white">
+  <img src="https://img.shields.io/badge/DJANGO-REST-ff1709?style=flat&logo=django&logoColor=white">
+  <img src="https://img.shields.io/badge/postgres-%23316192.svg?style=flat&logo=postgresql&logoColor=white">
+  <img src="https://img.shields.io/badge/gunicorn-%298729.svg?style=flat&logo=gunicorn&logoColor=white">
+  <img src="https://img.shields.io/badge/nginx-%23009639.svg?style=flat&logo=nginx&logoColor=white">
+  <img src="https://img.shields.io/badge/docker-%230db7ed.svg?style=flat&logo=docker&logoColor=white">
+  <img src="https://img.shields.io/badge/AWS-%23FF9900.svg?style=flat&logo=amazon-aws&logoColor=white">
+</div>
+
 
 ## 💻 프로젝트 뷰
 
 ## 🛠 개발 과정
+
+* CORS 오류
+  - 백엔드에서 django를 배포하지 않고 `python manage.py runserver` 로 테스트 서버를 실행하여 프론트와의 연동에서 CORS 오류가 발생하였다.
+  - gunicorn과 nginx를 이용하여 백엔드 서버를 배포하고 https 인증을 적용함으로써 문제를 해결하였다.
+* 관심강좌, 장바구니, 수강신청
+  - 백엔드에서, 한 사용자가 한 강좌를 관심강좌에도, 장바구니에도, 수강신청내역에도 담을 수 있게 만들어야 했다.
+  - 사용자와 강좌 간의 ManyToMany 관계인 관심강좌, 장바구니, 수강신청 사이의 상태 변화 관리를 설계하는 것이 핵심이었다.
+  - 관심강좌, 장바구니, 수강신청의 세 분류를 모두 표현할 수 있는 ManyToMany 관계의 through 모델을 설계하였다.
+  - view를 제작할 때 상속을 이용하여 관심강좌, 장바구니, 수강신청을 내부적으로 동일한 방식으로 처리하게 하였다.
