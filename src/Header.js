@@ -22,6 +22,7 @@ const Header = ({ setSearchopen }) => {
   const logout = () => {
     // axios.post(~~ logout)
     setLoginState(false);
+    localStorage.removeItem("REFRESH_TOKEN");
     navigate("/");
     toast.success("로그아웃되었습니다.");
   };
@@ -37,11 +38,11 @@ const Header = ({ setSearchopen }) => {
 
   const checkState = () => {
     console.log(cookies.token);
-    let result = refreshFunc();
-    if (!result) {
+    refreshFunc();
+    if (!loginState) {
       console.log(cookies.token);
-      navigate(-1);
       setLoginState(false);
+      navigate("/");
     } else {
       console.log("리프레시");
       console.log(cookies.token);
