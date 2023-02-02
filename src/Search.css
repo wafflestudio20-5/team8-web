@@ -94,6 +94,7 @@ button {
   width: 120px;
   margin-left: 13px;
   margin-top: 27px;
+  cursor: pointer;
 }
 
 .search-cart-button {
@@ -106,6 +107,7 @@ button {
   margin-top: 10px;
   border-radius: 10px;
   margin-bottom: 15px;
+  cursor: pointer;
 }
 
 .nav-bottom {
@@ -149,4 +151,26 @@ button {
   margin-top: 10px;
   border-radius: 10px;
   margin-bottom: 15px;
+  cursor: pointer;
+}
+.tt-buttons{
+  border: none;
+  color: white;
+  font-weight: bold;
+  width: 120px;
+  margin-left: 18px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  padding: 0;
+}
+.tt-button-num{
+  border: none;
+  background: #5ea152;
+  color: white;
+  font-weight: bold;
+  width: 30px;
+  border-radius: 10px;
+  margin-left: 5px;
+  cursor: pointer;
 }

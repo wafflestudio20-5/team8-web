@@ -1,83 +1,83 @@
-import './TimeTable.css'
-import { useCourseDataContext, useUserDataContext } from './Context'
-import React, { useContext, useState, useMemo, useEffect } from 'react'
-import axios from 'axios'
-import styled from 'styled-components'
-import { useNavigate } from 'react-router-dom'
-import Course from './Course'
-import { toast } from 'react-toastify'
+import "./TimeTable.css";
+import { useCourseDataContext, useUserDataContext } from "./Context";
+import React, { useContext, useState, useMemo, useEffect } from "react";
+import axios from "axios";
+import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import Course from "./Course";
+import { toast } from "react-toastify";
 
 const TimeCell = styled.div`
-  grid-column-start: ${(props) => props.columnStart || '1'};
-  grid-column-end: ${(props) => props.columnEnd || '2'};
-  grid-row-start: ${(props) => props.rowStart || '1'};
-  grid-row-end: ${(props) => props.rowEnd || '2'};
+  grid-column-start: ${(props) => props.columnStart || "1"};
+  grid-column-end: ${(props) => props.columnEnd || "2"};
+  grid-row-start: ${(props) => props.rowStart || "1"};
+  grid-row-end: ${(props) => props.rowEnd || "2"};
   display: block;
   text-align: center;
   padding-left: 8px;
-`
+`;
 const StyledCell = styled.div`
-  grid-column-start: ${(props) => props.columnStart || '1'};
-  grid-column-end: ${(props) => props.columnEnd || '2'};
-  grid-row-start: ${(props) => props.rowStart || '1'};
-  grid-row-end: ${(props) => props.rowEnd || '2'};
+  grid-column-start: ${(props) => props.columnStart || "1"};
+  grid-column-end: ${(props) => props.columnEnd || "2"};
+  grid-row-start: ${(props) => props.rowStart || "1"};
+  grid-row-end: ${(props) => props.rowEnd || "2"};
   color: black;
-  background-color: ${(props) => props.backgroundColor || 'yellow'};
+  background-color: ${(props) => props.backgroundColor || "yellow"};
   display: grid;
   align-items: center;
   text-align: center;
   opacity: 1;
   padding-left: 10px;
   padding-right: 10px;
-`
+`;
 const Rows = styled.div`
   grid-column-start: 2;
   grid-column-end: 8;
-  grid-row-start: ${(props) => props.rowStart || '1'};
-  grid-row-end: ${(props) => props.rowEnd || '2'};
-  border-bottom: ${(props) => props.border || '0.5px solid #dedede'};
-`
+  grid-row-start: ${(props) => props.rowStart || "1"};
+  grid-row-end: ${(props) => props.rowEnd || "2"};
+  border-bottom: ${(props) => props.border || "0.5px solid #dedede"};
+`;
 const Columns = styled.div`
   grid-row-start: 2;
   grid-row-end: 32;
-  grid-column-start: ${(props) => props.columnStart || '3'};
-  grid-column-end: ${(props) => props.columnEnd || '4'};
+  grid-column-start: ${(props) => props.columnStart || "3"};
+  grid-column-end: ${(props) => props.columnEnd || "4"};
   background-color: #ededed;
-  opacity: ${(props) => props.opacity || '0.2'}; /* 80% 불투명도 */
-`
+  opacity: ${(props) => props.opacity || "0.2"}; /* 80% 불투명도 */
+`;
 
 const TimeTable = () => {
   const time = () => {
-    const timeArr = []
+    const timeArr = [];
     for (let i = 0; i < 15; i++) {
       timeArr.push(
         <TimeCell rowStart={2 * i + 2} rowEnd={2 * i + 3}>
           {8 + i}
-        </TimeCell>,
-      )
+        </TimeCell>
+      );
     }
-    return timeArr
-  }
+    return timeArr;
+  };
 
   const rowLines = () => {
-    const timeArr = []
+    const timeArr = [];
     for (let i = 2; i <= 30; i++) {
-      if (i % 2 == 0) timeArr.push(<Rows rowStart={i} rowEnd={i + 1} />)
+      if (i % 2 == 0) timeArr.push(<Rows rowStart={i} rowEnd={i + 1} />);
       else
         timeArr.push(
-          <Rows rowStart={i} rowEnd={i + 1} border="1px solid #dedede" />,
-        )
+          <Rows rowStart={i} rowEnd={i + 1} border="1px solid #dedede" />
+        );
     }
-    return timeArr
-  }
+    return timeArr;
+  };
 
   const columnLines = () => {
-    const timeArr = []
+    const timeArr = [];
     for (let i = 1; i <= 3; i++) {
-      timeArr.push(<Columns columnStart={2 * i + 1} columnEnd={2 * i + 2} />)
+      timeArr.push(<Columns columnStart={2 * i + 1} columnEnd={2 * i + 2} />);
     }
-    return timeArr
-  }
+    return timeArr;
+  };
 
   // const randomRgb = function () {
   //   let r = Math.floor(Math.random() * 127 + 128);
@@ -111,54 +111,53 @@ const TimeTable = () => {
   ];
 
   const changeDayToNum = (day) => {
-    let dayNum = 2
-    if (day == 'MON') dayNum = 2
-    else if (day == 'TUE') dayNum = 3
-    else if (day == 'WED') dayNum = 4
-    else if (day == 'THU') dayNum = 5
-    else if (day == 'FRI') dayNum = 6
-    else dayNum = 7
-    return dayNum
-  }
+    let dayNum = 2;
+    if (day == "MON") dayNum = 2;
+    else if (day == "TUE") dayNum = 3;
+    else if (day == "WED") dayNum = 4;
+    else if (day == "THU") dayNum = 5;
+    else if (day == "FRI") dayNum = 6;
+    else dayNum = 7;
+    return dayNum;
+  };
 
   const changeTimeToNum = (time) => {
+    let arr = time.split(":");
 
+    let num = (parseInt(arr[0]) - 8) * 2 + 2;
 
-    let arr = time.split(':')
+    let minute = parseInt(arr[1]);
+    if (minute >= 45) num += 2;
+    else if (minute >= 30) num += 1;
+    return num;
+  };
 
-    let num = (parseInt(arr[0]) - 8) * 2 + 2
+  const { getTT, TT_courses, count, delTT, TT2Cart } = useCourseDataContext();
 
-    let minute = parseInt(arr[1])
-    if (minute >= 45) num += 2
-    else if (minute >= 30) num += 1
-    return num
-  }
-
-  const { getTT, TT_courses, count, delTT, TT2Cart } = useCourseDataContext()
-
-  const [checkedInputs, setCheckedInputs] = useState('')
-  const navigate = useNavigate()
+  const [checkedInputs, setCheckedInputs] = useState("");
+  const [num, setNum] = useState(3);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    getTT()
-  }, [])
+    getTT(num);
+  }, [num]);
 
   const allCells = () => {
-    const cellArr = []
-    let parsedTime = []
+    const cellArr = [];
+    let parsedTime = [];
     let dayNum = 2,
       startTime = 2,
       endTime = 3,
-      courseCount = 0
-    console.log(TT_courses)
+      courseCount = 0;
+    console.log(TT_courses);
     for (let i = 0; i < TT_courses.length; i++) {
-      parsedTime = TT_courses[i].parsed_time
+      parsedTime = TT_courses[i].parsed_time;
       let color = colorSet[i];
       for (let j = 0; j < parsedTime.length; j++) {
-        courseCount++
-        dayNum = changeDayToNum(parsedTime[j].day)
-        startTime = changeTimeToNum(parsedTime[j].start_time)
-        endTime = changeTimeToNum(parsedTime[j].end_time)
+        courseCount++;
+        dayNum = changeDayToNum(parsedTime[j].day);
+        startTime = changeTimeToNum(parsedTime[j].start_time);
+        endTime = changeTimeToNum(parsedTime[j].end_time);
         cellArr.push(
           <StyledCell
             columnStart={dayNum}
@@ -171,12 +170,12 @@ const TimeTable = () => {
             cell="true"
           >
             {TT_courses[i].name}
-          </StyledCell>,
-        )
+          </StyledCell>
+        );
       }
     }
-    return cellArr
-  }
+    return cellArr;
+  };
 
   return (
     <div>
@@ -184,24 +183,35 @@ const TimeTable = () => {
         <div className="time-table-list">
           <div className="timetable-list-area">
             <div className="first">
-              <div className="title">시간표</div>
+              <div className="TT-title">
+                <div className="text">시간표</div>
+                <div className="num-button" onClick={() => setNum(3)}>
+                  1
+                </div>
+                <div className="num-button" onClick={() => setNum(4)}>
+                  2
+                </div>
+                <div className="num-button" onClick={() => setNum(5)}>
+                  3
+                </div>
+              </div>
               <div className="body">
                 <span>
-                  <button onClick={() => delTT(checkedInputs)}>
+                  <button onClick={() => delTT(checkedInputs, num)}>
                     &nbsp;&nbsp;선택삭제&nbsp;&nbsp;
                   </button>
-                  <button onClick={() => TT2Cart()}>
+                  <button onClick={() => TT2Cart(num)}>
                     &nbsp;&nbsp;장바구니로 일괄 저장&nbsp;&nbsp;
                   </button>
                 </span>
                 <span className="content">
                   <span>
-                    총 학점{' '}
+                    총 학점{" "}
                     <span>
                       {TT_courses.map(function (x) {
-                        return x.credit
+                        return x.credit;
                       }).reduce(function (a, b) {
-                        return a + b
+                        return a + b;
                       }, 0)}
                     </span>
                     학점/
@@ -246,7 +256,7 @@ const TimeTable = () => {
       <div className="bottom">
         <a href="https://www.snu.ac.kr/personal_information">
           개인정보취급방침
-        </a>{' '}
+        </a>{" "}
         &nbsp;|&nbsp;
         <a href="https://www.snu.ac.kr/prohibition_of_unauthorized_email_collection">
           이메일무단수집거부
@@ -257,7 +267,7 @@ const TimeTable = () => {
         </span>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default TimeTable
+export default TimeTable;

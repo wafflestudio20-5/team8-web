@@ -110,6 +110,7 @@ button {
   margin-left: 13px;
   margin-top: 27px;
   border-radius: 10px;
+  cursor: pointer;
 }
 .tt-button {
   border: none;
@@ -119,7 +120,7 @@ button {
   width: 120px;
   margin-left: 13px;
   border-radius: 10px;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
 }
 
 .nav-bottom {

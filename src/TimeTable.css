@@ -2,8 +2,12 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   padding-bottom: 120px;
-  margin-left: 7vw;
-  margin-right: 3vw;
+  margin-left: 3vw;
+  margin-right: 2vw;
+}
+.TT-title{
+  font-size: 30px;
+  display: inline;
 }
 .timetable-list-area {
   grid-column-start: 1;
@@ -50,4 +54,22 @@
 .special {
   grid-column: 3 / 4;
   grid-row: 15 / 16;
+}
+.text{
+  display: inline;
+  margin-right: 15px;
+}
+.num-button{
+  display: inline-block;
+  margin-right: 10px;
+  width: 40px;
+  text-align: center;
+  cursor: pointer;
+  background: #282c34;
+  color: white;
+  border-radius: 10px;
+  font-size: 20px;
+  height: 35.5px;
+  line-height: 35px;
+  margin-bottom: 0;
 }
