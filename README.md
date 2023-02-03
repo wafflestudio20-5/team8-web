@@ -34,13 +34,14 @@
 
 ## 🧑‍🤝‍🧑 팀원 소개
 
-## 중요한것은 컴플릭트나지 않는 머지
+|역할|이름|github|
 |---|---|---|
-|송채미|전윤경|최서영|
-|[chamcham02 ] (https://github.com/chamcham02)|[cyk0315](https://github.com/cyk0315)|[chlsy07] (https://github.com/chlsy07)|
-|---|---|---|
-|김유신|노현서|황명빈|
-|[catnip033](https://github.com/catnip033)|[serverrepairman] (https://github.com/serverrepairman)|[bean1009] (https://github.com/bean1009)|
+|프론트엔드|송채미|[chamcham02 ] (https://github.com/chamcham02)|
+|프론트엔드|전윤경|[cyk0315](https://github.com/cyk0315)|
+|프론트엔드|최서영|[chlsy07] (https://github.com/chlsy07))|
+|백엔드|김유신|[catnip033](https://github.com/catnip033)|
+|백엔드|노현서|[serverrepairman] (https://github.com/serverrepairman)|
+|백엔드|황명빈|[bean1009] (https://github.com/bean1009)|
 
 ## 📚 기술 스택
 
