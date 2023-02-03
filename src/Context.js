@@ -77,12 +77,15 @@ export function UserDataProvider({ children }) {
           });
       })
       .catch(() => {
-        if (loginState)
+        bool = false;
+        if (loginState) {
           toast.error("토큰이 만료되었습니다. 다시 로그인해주세요.");
-        else toast.error("먼저 로그인해주세요.");
+        } else {
+          toast.error("먼저 로그인해주세요.");
+        }
         setLoginState(false);
         console.log("잘 안됨");
-        bool = false;
+        return false;
       });
     return bool;
   }
@@ -122,8 +125,8 @@ export function UserDataProvider({ children }) {
               setStudentId(arr.student_id);
               setYearOfEntrance(arr.year_of_entrance);
             })
+            .then(() => setLoginState(true))
         )
-        .then(setLoginState(true))
         .catch((e) => {
           console.log("error");
           console.log(e);

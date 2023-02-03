@@ -26,7 +26,7 @@
     "build": "set \"GENERATE_SOURCEMAP=false\" &&  react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "aws s3 sync ./build s3://react-assignment-2 --profile=waffle-react-seminar"
+    "deploy": "aws s3 sync ./build s3://team8-project --profile=team8"
   },
   "eslintConfig": {
     "extends": [

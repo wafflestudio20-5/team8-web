@@ -20,10 +20,10 @@ const Header = ({ setSearchopen }) => {
   const { setSearch_word, setGetting } = useCourseDataContext();
   let navigate = useNavigate();
   const logout = () => {
-    // axios.post(~~ logout)
-    setLoginState(false);
     navigate("/");
+    setLoginState(false);
     toast.success("로그아웃되었습니다.");
+    localStorage.removeItem("REFRESH_TOKEN");
   };
 
   const onSubmitSearch = async (e) => {
@@ -37,11 +37,11 @@ const Header = ({ setSearchopen }) => {
 
   const checkState = () => {
     console.log(cookies.token);
-    let result = refreshFunc();
-    if (!result) {
+    refreshFunc();
+    if (!loginState) {
       console.log(cookies.token);
-      navigate(-1);
       setLoginState(false);
+      navigate("/");
     } else {
       console.log("리프레시");
       console.log(cookies.token);
