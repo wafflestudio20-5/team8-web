@@ -62,7 +62,6 @@ const Newreview = ({ setIsedit, isedit = false, edit = null }) => {
   const { cookies } = useUserDataContext();
   const courseid = useParams().courseid;
   const navigate = useNavigate();
-  const [token, setToken] = useState("");
   const [editrating, setEditrating] = useState(0);
   const submit = (e) => {
     e.preventDefault();

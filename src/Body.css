@@ -124,21 +124,22 @@ a {
   background-color: #487fde;
   border-radius: 10px;
   min-width: 280px;
+  cursor: pointer;
 }
 .manual {
   text-align: center;
   padding-top: 28px;
 }
 .bottom {
-  height: 80px;
   background-color: #f6f6f6;
   padding-top: 25px;
   line-height: 25px;
   padding-left: 8vw;
   text-align: left;
-  padding-right: 100px;
+  padding-right: 130px;
   display: grid;
-  grid-template-columns: 3fr 2fr 1fr;
+  grid-template-columns: 2fr 1fr;
+  padding-bottom: 25px;
  }
 .darkgray-word {
   color: gray;
@@ -147,9 +148,25 @@ a {
 a {
   cursor: pointer;
 }
-.timer-explanation{
+.timer-container{
   float: right;
-  bottom: 20px;
   vertical-align: top;
   margin-left: auto;
+  line-height: 25px;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  padding-top: 3px;
+}
+.refresh-button{
+  margin-left: 20px;
+  width: 105px;
+  background-color: #666666;
+  color: white;
+  font-size: 13px;
+  line-height: 50px;
+  height: 50px;
+  border-radius: 10px;
+  cursor: pointer;
+  position: relative;
+
 }

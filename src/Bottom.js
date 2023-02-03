@@ -1,10 +1,11 @@
 import "./Bottom.css";
 import Timer from "./Timer";
 import { useUserDataContext } from "./Context";
-import { useState } from "react";
+import React, { useState } from "react";
+import { toast } from "react-toastify";
 
 const Bottom = () => {
-  const { loginState, refreshFunc } = useUserDataContext();
+  const { loginState, refreshFunc, initialTime } = useUserDataContext();
   const { update, setUpdate } = useState(false);
   return (
     <div className="bottom">
@@ -23,27 +24,28 @@ const Bottom = () => {
         </span>
       </div>
       {loginState && (
-        <div className="timer-explanation">
-          자동 로그아웃
-          남은시간&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <Timer update={update} />
-          <br />
-          <span className="darkgray-word">
-            10분간 사용하지 않을 경우 자동로그아웃 됩니다.
-          </span>
-        </div>
-      )}
-      {loginState && (
-        <div>
-          <button
-            className="refresh-button"
-            onClick={() => {
-              refreshFunc();
-              setUpdate(!update);
-            }}
-          >
-            지금 로그인 연장
-          </button>
+        <div className="timer-container">
+          <div className="timer-explanation">
+            <span>자동 로그아웃 남은시간</span>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <Timer update={update} />
+            <br />
+            <span className="darkgray-word-1">
+              10분간 사용하지 않을 경우 자동로그아웃 됩니다.
+            </span>
+          </div>
+          <div>
+            <button
+              className="refresh-button"
+              onClick={() => {
+                refreshFunc();
+                initialTime.current = 600;
+                toast.success("로그인 연장되었습니다.");
+              }}
+            >
+              지금 로그인 연장
+            </button>
+          </div>
         </div>
       )}
     </div>

@@ -2,6 +2,7 @@ import "./Body.css";
 import Timer from "./Timer";
 import { useUserDataContext } from "./Context";
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 const Body = () => {
   return (
@@ -49,7 +50,7 @@ const Body = () => {
                   장바구니 초보를 위한 수강신청 안내
                 </div>
               </a>
-              <a href={"/public/manual.pdf"} download>
+              <a href="https://snu-sugang.o-r.kr/files/manual.pdf/">
                 <div className="blue-box">수강신청방법 매뉴얼</div>
               </a>
             </div>
