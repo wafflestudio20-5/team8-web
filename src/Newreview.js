@@ -1,9 +1,9 @@
-import styled from 'styled-components'
-import { useParams } from 'react-router'
-import { Fragment, useState, useEffect } from 'react'
-import axios from 'axios'
-import { useNavigate } from 'react-router'
-import { useUserDataContext } from './Context'
+import styled from "styled-components";
+import { useParams } from "react-router";
+import { Fragment, useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router";
+import { useUserDataContext } from "./Context";
 
 const Star = styled.div`
   display: flex;
@@ -29,12 +29,12 @@ const Star = styled.div`
   label:hover ~ label {
     -webkit-text-fill-color: #fff58c;
   }
-`
+`;
 const Newreviewpage = styled.div`
   display: flex;
   padding: 1rem 3rem;
   flex-direction: column;
-  input[type='text'] {
+  input[type="text"] {
     width: 100%;
   }
   textarea {
@@ -46,55 +46,55 @@ const Newreviewpage = styled.div`
     flex-direction: row;
     justify-content: space-between;
   }
-`
+`;
 const Backbut = styled.button`
   width: 3rem;
-`
+`;
 const Buttonbox = styled.div`
   display: flex;
   gap: 0.5rem;
   button {
     width: 3rem;
   }
-`
+`;
 
 const Newreview = ({ setIsedit, isedit = false, edit = null }) => {
-  const { cookies } = useUserDataContext()
-  const courseid = useParams().courseid
-  const navigate = useNavigate()
-  const [token, setToken] = useState('')
-  const [editrating, setEditrating] = useState(0)
+  const { cookies } = useUserDataContext();
+  const courseid = useParams().courseid;
+  const navigate = useNavigate();
+  const [token, setToken] = useState("");
+  const [editrating, setEditrating] = useState(0);
   const submit = (e) => {
-    e.preventDefault()
-    console.log(1)
-    const func = isedit ? axios.put : axios.post
+    e.preventDefault();
+    console.log(1);
+    const func = isedit ? axios.put : axios.post;
     const url =
       `https://snu-sugang.o-r.kr/lectures/${courseid}/reviews/` +
-      (isedit ? edit.id : '')
+      (isedit ? edit.id : "");
     func(
       url,
       {
         title: e.target.title.value,
         content: e.target.content.value,
         rate: editrating,
-        semester: '2022-2',
+        semester: "2022-2",
       },
       {
         headers: {
           Authorization: `token ${cookies.token}`,
-          'Content-Type': `application/json`,
+          "Content-Type": `application/json`,
         },
-      },
+      }
     )
       .then((res) => {
-        console.log(res)
+        console.log(res);
       })
       .catch((err) => {
-        console.log(err)
-      })
-    navigate(`/review/${courseid}`)
-  }
-  const dummy = [1, 2, 3, 4, 5]
+        console.log(err);
+      });
+    navigate(`/review/${courseid}`);
+  };
+  const dummy = [5, 4, 3, 2, 1];
   return (
     <Newreviewpage>
       <form onSubmit={submit}>
@@ -107,7 +107,7 @@ const Newreview = ({ setIsedit, isedit = false, edit = null }) => {
                   id={`${i}-stars`}
                   name="rating"
                   onChange={() => {
-                    setEditrating(i)
+                    setEditrating(i);
                   }}
                   defaultChecked={edit?.rate === i ? true : false}
                 />
@@ -118,13 +118,13 @@ const Newreview = ({ setIsedit, isedit = false, edit = null }) => {
           <Buttonbox>
             <Backbut
               onClick={() => {
-                if (isedit) setIsedit(false)
-                else navigate(-1)
+                if (isedit) setIsedit(false);
+                else navigate(-1);
               }}
             >
               취소
             </Backbut>
-            <button type="submit">{isedit ? '수정' : '등록'}</button>
+            <button type="submit">{isedit ? "수정" : "등록"}</button>
           </Buttonbox>
         </div>
         <div>
@@ -137,6 +137,6 @@ const Newreview = ({ setIsedit, isedit = false, edit = null }) => {
         </div>
       </form>
     </Newreviewpage>
-  )
-}
-export default Newreview
+  );
+};
+export default Newreview;

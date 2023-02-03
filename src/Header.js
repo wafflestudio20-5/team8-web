@@ -15,15 +15,57 @@ const Header = ({ setSearchopen }) => {
     { title: "수강신청내역", link: "/registered" },
   ];
 
-  const { loginState, setLoginState, cookies, name, studentId, refreshFunc } =
-    useUserDataContext();
+  const {
+    loginState,
+    setLoginState,
+    cookies,
+    name,
+    studentId,
+    refreshFunc,
+    setGrade,
+    setCollege,
+    setDepartment,
+    setName,
+    setProgram,
+    setStudentId,
+    setYearOfEntrance,
+  } = useUserDataContext();
   const { setSearch_word, setGetting } = useCourseDataContext();
   let navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("TOKEN");
+    axios
+      .get("https://snu-sugang.o-r.kr/user/current/", {
+        headers: {
+          Authorization: `token ${token}`,
+          "Content-Type": `application/json`,
+        },
+      })
+      .then((response) => {
+        let arr = response.data;
+        console.log(arr);
+        setGrade(arr.academic_year);
+        setCollege(arr.college);
+        setDepartment(arr.department);
+        setName(arr.name);
+        console.log("이름");
+        console.log(arr.name);
+        setProgram(arr.program);
+        setStudentId(arr.student_id);
+        setYearOfEntrance(arr.year_of_entrance);
+      })
+      .then(() => {
+        setLoginState(true);
+      });
+  }, []);
+
   const logout = () => {
     navigate("/");
     setLoginState(false);
     toast.success("로그아웃되었습니다.");
     localStorage.removeItem("REFRESH_TOKEN");
+    localStorage.removeItem("TOKEN");
   };
 
   const onSubmitSearch = async (e) => {
@@ -33,6 +75,11 @@ const Header = ({ setSearchopen }) => {
     } else {
       await setSearch_word(e.target.value);
     }
+  };
+
+  const submitSearch = async (e) => {
+    setGetting(true);
+    navigate(`/search`);
   };
 
   const checkState = () => {
@@ -71,10 +118,7 @@ const Header = ({ setSearchopen }) => {
             />
             <div>
               <img
-                onClick={() => {
-                  setGetting(true);
-                  navigate(`/search`);
-                }}
+                onClick={submitSearch}
                 src={"/search.png"}
                 alt={"search"}
                 className="searchicon"

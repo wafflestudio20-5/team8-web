@@ -1,4 +1,7 @@
-import './Body.css'
+import "./Body.css";
+import Timer from "./Timer";
+import { useUserDataContext } from "./Context";
+import { useState, useEffect } from "react";
 
 const Body = () => {
   return (
@@ -46,7 +49,7 @@ const Body = () => {
                   장바구니 초보를 위한 수강신청 안내
                 </div>
               </a>
-              <a href={'/public/manual.pdf'} download>
+              <a href={"/public/manual.pdf"} download>
                 <div className="blue-box">수강신청방법 매뉴얼</div>
               </a>
             </div>
@@ -187,22 +190,9 @@ const Body = () => {
             </ul>
           </div>
         </div>
-        <div className="bottom">
-          <a href="https://www.snu.ac.kr/personal_information">
-            개인정보취급방침
-          </a>{' '}
-          &nbsp;|&nbsp;
-          <a href="https://www.snu.ac.kr/prohibition_of_unauthorized_email_collection">
-            이메일무단수집거부
-          </a>
-          <br />
-          <span className="darkgray-word">
-            Copyright (C) 2020 SEOUL NATIONAL UNIVERSITY. All Rights Reserved.
-          </span>
-        </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Body
+export default Body;

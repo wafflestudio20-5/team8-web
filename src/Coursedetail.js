@@ -1,7 +1,7 @@
-import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
-import { useClassDataContext } from './Context'
+import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useClassDataContext } from "./Context";
 
 const Modalpage = styled.div`
   position: fixed;
@@ -11,7 +11,7 @@ const Modalpage = styled.div`
   height: 100%;
   z-index: 98;
   background-color: rgba(0, 0, 0, 0.5);
-`
+`;
 const Wrapper = styled.div`
   z-index: 100;
   width: 95%;
@@ -54,7 +54,7 @@ const Wrapper = styled.div`
     font-weight: 300;
     color: #666;
   }
-`
+`;
 const Detailcap = styled.div`
   display: flex;
   padding: 25px 20px;
@@ -73,7 +73,7 @@ const Detailcap = styled.div`
       width: 50%;
     }
     li > span:not(:first-of-type):before {
-      content: ' ';
+      content: " ";
       border-left: 1px solid #ccc;
       color: #ccc;
       font-size: 1rem;
@@ -86,7 +86,7 @@ const Detailcap = styled.div`
       color: #376dc8;
     }
   }
-`
+`;
 const Close = styled.button`
   position: absolute;
   border: none;
@@ -100,7 +100,7 @@ const Close = styled.button`
     width: 100%;
     height: 100%;
   }
-`
+`;
 const Header = styled.div`
   height: 3rem;
   padding-top: 40px;
@@ -110,11 +110,11 @@ const Header = styled.div`
     margin: auto;
     width: fit-content;
   }
-`
+`;
 const Container = styled.div`
   padding: 10px 40px;
   overflow: auto;
-`
+`;
 const Tap = styled.ul`
   display: flex;
   justify-content: space-between;
@@ -127,16 +127,16 @@ const Tap = styled.ul`
     list-style: none;
     width: 14.28%;
   }
-`
+`;
 const Tabbutton = styled.button`
   width: 100%;
   height: 100%;
   padding: 0;
   margin: 0;
   background-color: ${(props) =>
-    props.tabnum === props.number ? '#ccc' : '#fff'};
+    props.tabnum === props.number ? "#ccc" : "#fff"};
   border: none;
-`
+`;
 const Detailclass = styled.div`
   > div > span {
     font-size: 16px;
@@ -148,7 +148,7 @@ const Detailclass = styled.div`
     display: flex;
     flex-direction: column;
   }
-`
+`;
 const Detailclass2 = styled.div`
   table {
     width: 100%;
@@ -176,67 +176,67 @@ const Detailclass2 = styled.div`
   tr {
     border-bottom: 1px solid #e7e7e7;
   }
-`
+`;
 const Overview = styled.div`
   border-top: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
   padding: 10px;
-`
+`;
 
 const Coursedetail = () => {
   useEffect(() => {
-    document.body.style = `overflow: hidden`
-    return () => (document.body.style = `overflow: auto`)
-  }, [])
-  const { modal, setModal, pickcourses } = useClassDataContext()
-  const data = pickcourses
-  const [tabnum, setTabnum] = useState(0)
+    document.body.style = `overflow: hidden`;
+    return () => (document.body.style = `overflow: auto`);
+  }, []);
+  const { modal, setModal, pickcourses } = useClassDataContext();
+  const data = pickcourses;
+  const [tabnum, setTabnum] = useState(0);
   const tab = [
-    '강좌상세조회',
-    '교과목개요',
-    '강의계획서',
-    '수강반',
-    '2군 교과목',
-    '동일대체 교과목',
-    'Cross-Listing 교과목',
-  ]
+    "강좌상세조회",
+    "교과목개요",
+    "강의계획서",
+    "수강반",
+    "2군 교과목",
+    "동일대체 교과목",
+    "Cross-Listing 교과목",
+  ];
   const detail = [
-    { title: '정원', content: data?.maximum },
-    { title: '계절학기 학점당 수강료', content: '0' },
-    { title: '수업진행 언어', content: '0' },
-    { title: '성적부여형태', content: '0' },
-    { title: '성적평가방법 변경가능', content: '0' },
-    { title: '', content: '-' },
-  ]
+    { title: "정원", content: data?.maximum },
+    { title: "계절학기 학점당 수강료", content: "0" },
+    { title: "수업진행 언어", content: "0" },
+    { title: "성적부여형태", content: "0" },
+    { title: "성적평가방법 변경가능", content: "0" },
+    { title: "", content: "-" },
+  ];
   const detail2 = [
-    { title: '상대평가 교과목', content: '0' },
-    { title: '제한 교과목', content: '0' },
-    { title: '외국인수강 제한교과목', content: '0' },
-    { title: '교직 교과목', content: '0' },
-    { title: '통년 교과목', content: '0' },
-    { title: '반복 교과목 (반복이수학기가능)', content: '0' },
-    { title: '논문연구 교과목', content: '0' },
-    { title: '논문제출자격시험 대체 교과목', content: '0' },
-    { title: '외국어시험 대체 교과목', content: '0' },
-    { title: '일반원격강좌', content: '0' },
-  ]
+    { title: "상대평가 교과목", content: "0" },
+    { title: "제한 교과목", content: "0" },
+    { title: "외국인수강 제한교과목", content: "0" },
+    { title: "교직 교과목", content: "0" },
+    { title: "통년 교과목", content: "0" },
+    { title: "반복 교과목 (반복이수학기가능)", content: "0" },
+    { title: "논문연구 교과목", content: "0" },
+    { title: "논문제출자격시험 대체 교과목", content: "0" },
+    { title: "외국어시험 대체 교과목", content: "0" },
+    { title: "일반원격강좌", content: "0" },
+  ];
   const detail3 = [
     {
-      title: ' 강의평가(5점만점)',
+      title: " 강의평가(5점만점)",
       content: Math.round(data?.rate * 100) / 100,
     },
-    { title: '전자출결 사용여부', content: '0' },
-    { title: '면담시간', content: '0' },
-    { title: '비고', content: '0' },
-  ]
+    { title: "전자출결 사용여부", content: "0" },
+    { title: "면담시간", content: "0" },
+    { title: "비고", content: "0" },
+  ];
   const detail4 = [
-    { title: '년도', content: '0' },
-    { title: '학기', content: '0' },
-    { title: '교과목번호', content: '0' },
-  ]
+    { title: "년도", content: "0" },
+    { title: "학기", content: "0" },
+    { title: "교과목번호", content: "0" },
+  ];
 
   const Detailtable = ({ detail }) => {
-    let app = []
+    let app = [];
     for (let i = 0; i < detail.length; i = i + 2) {
       app.push(
         <tr key={detail[i].title}>
@@ -244,8 +244,8 @@ const Coursedetail = () => {
           <td>{detail[i].content}</td>
           <th>{detail[i + 1].title}</th>
           <td>{detail[i + 1].content}</td>
-        </tr>,
-      )
+        </tr>
+      );
     }
     return (
       <table>
@@ -254,36 +254,36 @@ const Coursedetail = () => {
         </colgroup>
         <tbody>{app}</tbody>
       </table>
-    )
-  }
+    );
+  };
 
   const Tabcontent = ({ tabnum }) => {
     const evaluate = [
-      '출석',
-      '과제',
-      '중간',
-      '기말',
-      '수시평가',
-      '태도',
-      '기타',
-      '합계',
-    ]
+      "출석",
+      "과제",
+      "중간",
+      "기말",
+      "수시평가",
+      "태도",
+      "기타",
+      "합계",
+    ];
     const classmeth = [
-      '플립러닝',
-      '이론위주 수업',
-      '토론위주 수업',
-      '프로젝트수업',
-      '기타',
-    ]
+      "플립러닝",
+      "이론위주 수업",
+      "토론위주 수업",
+      "프로젝트수업",
+      "기타",
+    ];
     if (tabnum === 0) {
       return (
         <Detailclass>
           <Detailcap>
             <ul>
               <li>
-                <span>논문</span>
-                <span>대학원</span>
-                <span>0학년</span>
+                <span>{data.curriculum}</span>
+                <span>{data.degree}</span>
+                <span>{data.grade}학년</span>
               </li>
               <li>
                 <span>{data.professor}</span>
@@ -297,7 +297,9 @@ const Coursedetail = () => {
               <li>{data?.number}</li>
               <li>
                 학점-강의 실습
-                <em>0-0-0</em>
+                <em>
+                  {data.credit}-{data.lecture}-{data.lab}
+                </em>
               </li>
             </ul>
           </Detailcap>
@@ -314,9 +316,9 @@ const Coursedetail = () => {
               <tbody>
                 <tr>
                   <th>교시별 수업형태(강의실 동-호)</th>
-                  <td></td>
-                  <td></td>
-                  <td></td>
+                  {data.classroom.split("/").map((item) => (
+                    <td>{item}</td>
+                  ))}
                 </tr>
               </tbody>
             </table>
@@ -346,7 +348,7 @@ const Coursedetail = () => {
             <Detailtable detail={detail3} />
           </div>
         </Detailclass>
-      )
+      );
     } else if (tabnum === 1) {
       return (
         <Detailclass>
@@ -359,13 +361,13 @@ const Coursedetail = () => {
             <Overview>No content</Overview>
           </div>
         </Detailclass>
-      )
+      );
     } else if (tabnum === 2) {
       return (
         <Detailclass>
           <table>
             <colgroup>
-              <col style={{ width: '15%' }} />
+              <col style={{ width: "15%" }} />
               <col />
               <col />
             </colgroup>
@@ -386,7 +388,7 @@ const Coursedetail = () => {
             <span>파일 다운로드</span>
             <table>
               <colgroup>
-                <col style={{ width: '30%' }} />
+                <col style={{ width: "30%" }} />
                 <col />
               </colgroup>
               <tbody>
@@ -405,10 +407,10 @@ const Coursedetail = () => {
             <span>강의 계획 상세</span>
             <table>
               <colgroup>
-                <col style={{ width: '16%' }} />
-                <col style={{ width: '14%' }} />
-                <col style={{ width: '14%' }} />
-                <col style={{ width: '14%' }} span={4} />
+                <col style={{ width: "16%" }} />
+                <col style={{ width: "14%" }} />
+                <col style={{ width: "14%" }} />
+                <col style={{ width: "14%" }} span={4} />
               </colgroup>
               <tbody>
                 <tr>
@@ -491,7 +493,7 @@ const Coursedetail = () => {
             <span>주차별 강의계획</span>
             <table>
               <colgroup>
-                <col style={{ width: '15%' }} />
+                <col style={{ width: "15%" }} />
                 <col />
               </colgroup>
               <thead>
@@ -506,16 +508,16 @@ const Coursedetail = () => {
             </table>
           </div>
         </Detailclass>
-      )
+      );
     } else if (tabnum === 3) {
       return (
         <Detailclass2>
-          {' '}
+          {" "}
           <table>
             <colgroup>
-              <col style={{ width: '15%' }} />
+              <col style={{ width: "15%" }} />
               <col />
-              <col style={{ width: '25%' }} />
+              <col style={{ width: "25%" }} />
               <col />
             </colgroup>
             <thead>
@@ -531,16 +533,16 @@ const Coursedetail = () => {
             </thead>
           </table>
         </Detailclass2>
-      )
+      );
     } else if (tabnum === 4) {
       return (
         <Detailclass2>
           <table>
             <colgroup>
-              <col style={{ width: '20%' }} />
+              <col style={{ width: "20%" }} />
               <col />
-              <col style={{ width: '20%' }} />
-              <col style={{ width: '20%' }} />
+              <col style={{ width: "20%" }} />
+              <col style={{ width: "20%" }} />
             </colgroup>
             <thead>
               <tr>
@@ -555,15 +557,15 @@ const Coursedetail = () => {
             </thead>
           </table>
         </Detailclass2>
-      )
+      );
     } else if (tabnum === 5) {
       return (
         <Detailclass2>
           <table>
             <colgroup>
-              <col span={2} style={{ width: '15%' }} />
+              <col span={2} style={{ width: "15%" }} />
               <col />
-              <col span={2} style={{ width: '15%' }} />
+              <col span={2} style={{ width: "15%" }} />
             </colgroup>
             <thead>
               <tr>
@@ -579,15 +581,15 @@ const Coursedetail = () => {
             </thead>
           </table>
         </Detailclass2>
-      )
+      );
     } else if (tabnum === 6) {
       return (
         <Detailclass2>
           <table>
             <colgroup>
-              <col span={2} style={{ width: '15%' }} />
+              <col span={2} style={{ width: "15%" }} />
               <col />
-              <col span={2} style={{ width: '15%' }} />
+              <col span={2} style={{ width: "15%" }} />
             </colgroup>
             <thead>
               <tr>
@@ -603,15 +605,15 @@ const Coursedetail = () => {
             </thead>
           </table>
         </Detailclass2>
-      )
+      );
     }
-  }
+  };
   return (
     <Modalpage>
       <Wrapper>
         <Close
           onClick={() => {
-            setModal(false)
+            setModal(false);
           }}
         >
           <img src="/delete.png" />
@@ -627,7 +629,7 @@ const Coursedetail = () => {
                   number={i}
                   tabnum={tabnum}
                   onClick={() => {
-                    setTabnum(i)
+                    setTabnum(i);
                   }}
                 >
                   {item}
@@ -639,7 +641,7 @@ const Coursedetail = () => {
         </Container>
       </Wrapper>
     </Modalpage>
-  )
-}
+  );
+};
 
-export default Coursedetail
+export default Coursedetail;
