@@ -296,7 +296,7 @@ const Coursedetail = () => {
               </li>
               <li>{data?.number}</li>
               <li>
-                학점-강의 실습
+                학점-강의-실습 &nbsp;
                 <em>
                   {data.credit}-{data.lecture}-{data.lab}
                 </em>

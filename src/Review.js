@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router";
 import { useClassDataContext, useUserDataContext } from "./Context";
+import "./Review.css";
 
 const Reviewpage = styled.div`
   display: flex;
@@ -46,7 +47,7 @@ const Pagelist = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 1rem;
+  margin-top: 1.5rem;
 `;
 const Pagebutton = styled.button`
   width: 2rem;
@@ -86,11 +87,12 @@ const Review = () => {
   }, [page]);
   return (
     <Reviewpage>
-      <h1>
+      <h1 className="course-title">
         {pickcourses.name}({pickcourses.professor}교수님)
       </h1>
       {loginState && (
         <button
+          className="write-button"
           onClick={() => {
             navigate(`/newreview/${courseid}`);
           }}

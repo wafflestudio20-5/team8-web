@@ -76,6 +76,7 @@ export function UserDataProvider({ children }) {
             setProgram(arr.program);
             setStudentId(arr.student_id);
             setYearOfEntrance(arr.year_of_entrance);
+            setEmail(arr.email);
           })
           .then(() => {
             setLoginState(true);
@@ -104,18 +105,19 @@ export function UserDataProvider({ children }) {
           password: userPassword,
         })
         .then((response) => {
+          setCookie("token", response.data.token);
           console.log("login success");
           console.log(response);
           console.log(response.data.token);
-          setCookie("token", response.data.token);
           localStorage.setItem("REFRESH_TOKEN", response.data.refresh_token);
           localStorage.setItem("TOKEN", response.data.token);
+          return response.data.token;
         })
-        .then(
+        .then((token) => {
           axios
             .get("https://snu-sugang.o-r.kr/user/current/", {
               headers: {
-                Authorization: `token ${cookies.token}`,
+                Authorization: `token ${token}`,
                 "Content-Type": `application/json`,
               },
             })
@@ -140,8 +142,8 @@ export function UserDataProvider({ children }) {
               console.log("error");
               console.log(e);
               toast.error("로그인에 실패했습니다.");
-            })
-        )
+            });
+        })
         .catch((e) => {
           console.log("error");
           console.log(e);

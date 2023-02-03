@@ -131,7 +131,6 @@ a {
   padding-top: 28px;
 }
 .bottom {
-  height: 80px;
   background-color: #f6f6f6;
   padding-top: 25px;
   line-height: 25px;
@@ -140,6 +139,7 @@ a {
   padding-right: 130px;
   display: grid;
   grid-template-columns: 2fr 1fr;
+  padding-bottom: 25px;
  }
 .darkgray-word {
   color: gray;
