@@ -142,7 +142,7 @@ const Reviewcontent = () => {
       )
       .then((res) => {
         console.log(res.data);
-        setComments(res.data.results);
+        setComments(parseInt((res.data - 1) / 10) + 1);
       })
       .catch((e) => {
         console.log(e);

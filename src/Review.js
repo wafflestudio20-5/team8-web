@@ -78,7 +78,7 @@ const Review = () => {
       )
       .then((res) => {
         setReviews(res.data.results);
-        setTotalPage(res.data.count);
+        setTotalPage(parseInt((res.data.count - 1) / 10) + 1);
       })
       .catch((e) => {
         console.log(e);

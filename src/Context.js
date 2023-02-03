@@ -4,6 +4,7 @@ import {
   useEffect,
   useState,
   useContext,
+  useRef,
 } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
@@ -39,10 +40,14 @@ export function UserDataProvider({ children }) {
   const [cookies, setCookie] = useCookies(["token"]);
   const [refreshed, setRefresh] = useState(1);
 
+  const tempMin = 10;
+  const tempSec = 0;
+  const initialTime = useRef(tempMin * 60 + tempSec);
+
   async function refreshFunc() {
     const refreshToken = localStorage.getItem("REFRESH_TOKEN");
     let bool = true;
-    setRefresh(refreshed * -1);
+    initialTime.current = 600;
     axios
       .post("https://snu-sugang.o-r.kr/user/refresh/", {
         refresh_token: refreshToken,
@@ -73,18 +78,16 @@ export function UserDataProvider({ children }) {
             setYearOfEntrance(arr.year_of_entrance);
           })
           .then(() => {
-            if (!loginState) toast.info("재로그인되었습니다.");
             setLoginState(true);
-            console.log("잘됨");
           });
       })
       .catch(() => {
-        bool = false;
-        if (loginState) {
-          toast.error("토큰이 만료되었습니다. 다시 로그인해주세요.");
-        } else {
-          toast.error("먼저 로그인해주세요.");
-        }
+        // bool = false;
+        // if (loginState) {
+        //   toast.error("토큰이 만료되었습니다. 다시 로그인해주세요.");
+        // } else {
+        //   toast.error("먼저 로그인해주세요.");
+        // }
         setLoginState(false);
         console.log("잘 안됨");
         return false;
@@ -176,6 +179,7 @@ export function UserDataProvider({ children }) {
         setCookie,
         loginFunc,
         refreshFunc,
+        initialTime,
       }}
     >
       {children}
@@ -187,7 +191,6 @@ export const useUserDataContext = () => useContext(UserDataContext);
 const CourseDataContext = createContext();
 export function CourseDataProvider({ children }) {
   const { fetchState, state } = useStateDataContext();
-
   const { cookies, refreshFunc } = useUserDataContext();
   const [courses, setCourses] = useState([]);
   const [count, setCount] = useState(0);
@@ -203,6 +206,7 @@ export function CourseDataProvider({ children }) {
   const [registerparam, setRegisterparam] = useState([]);
 
   const fetchData = useCallback(() => {
+    refreshFunc();
     if (getting === false) return;
     setWord(search_word);
     axios
@@ -227,6 +231,7 @@ export function CourseDataProvider({ children }) {
     fetchData();
   }, [fetchData]);
   function getRegistered() {
+    refreshFunc();
     axios
       .get(`https://snu-sugang.o-r.kr/registered/`, {
         headers: {
@@ -241,10 +246,10 @@ export function CourseDataProvider({ children }) {
       })
       .catch((err) => {
         console.log(err);
-        refreshFunc();
       });
   }
   function getInterests() {
+    refreshFunc();
     axios
       .get(`https://snu-sugang.o-r.kr/interest/`, {
         headers: {
@@ -259,11 +264,11 @@ export function CourseDataProvider({ children }) {
       .catch((err) => {
         console.log(err);
         toast.error(err.response.data.course);
-        refreshFunc();
       });
   }
 
   function getCart() {
+    refreshFunc();
     axios
       .get(`https://snu-sugang.o-r.kr/cart/`, {
         headers: {
@@ -278,11 +283,11 @@ export function CourseDataProvider({ children }) {
       })
       .catch((err) => {
         console.log(err);
-        refreshFunc();
       });
   }
   function getTT(num) {
     console.log("gettingTT");
+    refreshFunc();
     const link = `https://snu-sugang.o-r.kr/timetable/` + num + `/`;
     axios
       .get(link, {
@@ -298,11 +303,11 @@ export function CourseDataProvider({ children }) {
       })
       .catch((err) => {
         console.log(err);
-        refreshFunc();
       });
   }
 
   function getEnroll() {
+    refreshFunc();
     axios
       .get(`https://snu-sugang.o-r.kr/pending/`, {
         headers: {
@@ -317,17 +322,16 @@ export function CourseDataProvider({ children }) {
       })
       .catch((err) => {
         console.log(err);
-        refreshFunc();
       });
   }
   const TT2Cart = async (num) => {
+    refreshFunc();
     if (
       typeof cookies.token === "undefined" ||
       cookies.token === null ||
       cookies.token === ""
     ) {
-      const bool = refreshFunc();
-      if (!bool) return;
+      return;
     }
     await axios
       .get(`https://snu-sugang.o-r.kr/state/`)
@@ -371,13 +375,13 @@ export function CourseDataProvider({ children }) {
   };
 
   const addEnroll = async (id) => {
+    refreshFunc();
     if (
       typeof cookies.token === "undefined" ||
       cookies.token === null ||
       cookies.token === ""
     ) {
-      const bool = refreshFunc();
-      if (!bool) return;
+      return;
     }
     await axios
       .get(`https://snu-sugang.o-r.kr/state/`)
@@ -424,13 +428,13 @@ export function CourseDataProvider({ children }) {
   };
 
   const addInterest = async (id) => {
+    refreshFunc();
     if (
       typeof cookies.token === "undefined" ||
       cookies.token === null ||
       cookies.token === ""
     ) {
-      const bool = refreshFunc();
-      if (!bool) return;
+      return;
     }
     axios
       .post(
@@ -456,13 +460,13 @@ export function CourseDataProvider({ children }) {
   };
 
   const addCart = async (id) => {
+    refreshFunc();
     if (
       typeof cookies.token === "undefined" ||
       cookies.token === null ||
       cookies.token === ""
     ) {
-      const bool = refreshFunc();
-      if (!bool) return;
+      return;
     }
     await axios
       .get(`https://snu-sugang.o-r.kr/state/`)
@@ -508,13 +512,13 @@ export function CourseDataProvider({ children }) {
       });
   };
   const addTT = async (id, num) => {
+    refreshFunc();
     if (
       typeof cookies.token === "undefined" ||
       cookies.token === null ||
       cookies.token === ""
     ) {
-      const bool = refreshFunc();
-      if (!bool) return;
+      return;
     }
     const link = `https://snu-sugang.o-r.kr/timetable/` + num + `/`;
     axios
@@ -541,13 +545,13 @@ export function CourseDataProvider({ children }) {
   };
 
   const delRegistered = async (id) => {
+    refreshFunc();
     if (
       typeof cookies.token === "undefined" ||
       cookies.token === null ||
       cookies.token === ""
     ) {
-      const bool = refreshFunc();
-      if (!bool) return;
+      return;
     }
     axios
       .delete(`https://snu-sugang.o-r.kr/registered/`, {
@@ -570,13 +574,13 @@ export function CourseDataProvider({ children }) {
   };
 
   const delInterest = async (id) => {
+    refreshFunc();
     if (
       typeof cookies.token === "undefined" ||
       cookies.token === null ||
       cookies.token === ""
     ) {
-      const bool = refreshFunc();
-      if (!bool) return;
+      return;
     }
     axios
       .delete(`https://snu-sugang.o-r.kr/interest/`, {
@@ -598,13 +602,13 @@ export function CourseDataProvider({ children }) {
   };
 
   const delCart = async (id) => {
+    refreshFunc();
     if (
       typeof cookies.token === "undefined" ||
       cookies.token === null ||
       cookies.token === ""
     ) {
-      const bool = refreshFunc();
-      if (!bool) return;
+      return;
     }
     axios
       .delete(
@@ -631,13 +635,13 @@ export function CourseDataProvider({ children }) {
       });
   };
   const delTT = async (id, num) => {
+    refreshFunc();
     if (
       typeof cookies.token === "undefined" ||
       cookies.token === null ||
       cookies.token === ""
     ) {
-      const bool = refreshFunc();
-      if (!bool) return;
+      return;
     }
     axios
       .delete(

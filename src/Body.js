@@ -2,8 +2,12 @@ import "./Body.css";
 import Timer from "./Timer";
 import { useUserDataContext } from "./Context";
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 const Body = () => {
+  const download = () => {
+    axios.get("https://snu-sugang.o-r.kr/file/manual.pdf/").then();
+  };
   return (
     <div>
       <div className="whole-container">
@@ -49,9 +53,9 @@ const Body = () => {
                   장바구니 초보를 위한 수강신청 안내
                 </div>
               </a>
-              <a href={"/public/manual.pdf"} download>
-                <div className="blue-box">수강신청방법 매뉴얼</div>
-              </a>
+              <div className="blue-box" onClick={download}>
+                수강신청방법 매뉴얼
+              </div>
             </div>
           </div>
           <div className="body-item">

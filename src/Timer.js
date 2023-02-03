@@ -12,12 +12,11 @@ const Timer = (props) => {
   const [mount, setMount] = useState(false);
   const tempMin = 10;
   const tempSec = 0;
-  const initialTime = useRef(tempMin * 60 + tempSec);
   const interval = useRef(null);
   const [min, setMin] = useState(padNumber(tempMin, 2));
   const [sec, setSec] = useState(padNumber(tempSec, 2));
-
-  const { refreshed, setLoginState } = useUserDataContext();
+  const { refreshed, setLoginState, refreshFunc, initialTime } =
+    useUserDataContext();
 
   useEffect(() => {
     setMount(true);
@@ -36,17 +35,17 @@ const Timer = (props) => {
   useEffect(() => {
     if (initialTime.current <= 0) {
       clearInterval(interval.current);
+      navigate("/");
+      setLoginState(false);
+      toast.info("로그아웃되었습니다.");
+      localStorage.removeItem("REFRESH_TOKEN");
+      localStorage.removeItem("TOKEN");
     }
   }, [sec]);
 
   useEffect(() => {
-    if (mount) {
-      clearInterval(interval.current);
-      console.log("렌더링됨");
-    } else {
-      console.log("이상함");
-    }
-  }, [refreshed, props.update]);
+    initialTime.current = 600;
+  }, [refreshed]);
 
   useEffect(() => {
     if (initialTime.current <= 0) {
