@@ -2,7 +2,8 @@ import styled from "styled-components";
 import Starrating from "./Starrating";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams, useNavigate } from "react-router";
+import { useParams } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { useClassDataContext, useUserDataContext } from "./Context";
 import "./Review.css";
 
@@ -30,13 +31,13 @@ const Reviewlist = styled.div`
   }
   td {
     font-weight: 300;
-    color: #666;
+    color: black;
     height: 4rem;
   }
   th {
     font-weight: 400;
     background: #f8f8f8;
-    color: #333;
+    color: black;
     height: 50px;
   }
   tr {
@@ -63,7 +64,7 @@ const Pagebutton = styled.button`
 `;
 
 const Review = () => {
-  const { loginState } = useUserDataContext();
+  const { loginState, cookies, updateReview } = useUserDataContext();
   const courseid = useParams().courseid;
   const navigate = useNavigate();
   const [reviews, setReviews] = useState([]);
@@ -71,20 +72,52 @@ const Review = () => {
   const [totalPage, setTotalPage] = useState(1);
   const page1 = parseInt(page / 5) * 5 + 1;
   const dummy = [0, 1, 2, 3, 4];
-  const { pickcourses } = useClassDataContext();
+  const { pickcourses, setPickcourses } = useClassDataContext();
   useEffect(() => {
-    axios
-      .get(
-        `https://snu-sugang.o-r.kr/lectures/${courseid}/reviews/?page=${page}`
-      )
-      .then((res) => {
-        setReviews(res.data.results);
-        setTotalPage(parseInt((res.data.count - 1) / 10) + 1);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }, [page]);
+    if (
+      typeof cookies.token === "undefined" ||
+      cookies.token === null ||
+      cookies.token === ""
+    ) {
+      axios
+        .get(
+          `https://snu-sugang.o-r.kr/lectures/${courseid}/reviews/?page=${page}`
+        )
+        .then((res) => {
+          console.log("여기");
+          console.log(res);
+          setPickcourses(res.data.course);
+          setReviews(res.data.results);
+          setTotalPage(parseInt((res.data.count - 1) / 10) + 1);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    } else {
+      axios
+        .get(
+          `https://snu-sugang.o-r.kr/lectures/${courseid}/reviews/?page=${page}`,
+          {
+            headers: {
+              Authorization: `token ${cookies.token}`,
+              "Content-Type": `application/json`,
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res);
+          setPickcourses(res.data.course);
+          console.log(res.data.course.name);
+          console.log(pickcourses.name);
+          setReviews(res.data.results);
+          setTotalPage(parseInt((res.data.count - 1) / 10) + 1);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  }, [page, updateReview]);
+
   return (
     <Reviewpage>
       <h1 className="course-title">
@@ -125,7 +158,7 @@ const Review = () => {
                     navigate(`/reviewcontent/${courseid}/${review.id}`);
                   }}
                 >
-                  <td>
+                  <td className="star-rating">
                     <Starrating rating={review.rate} />
                   </td>
                   <td>{review.title}</td>

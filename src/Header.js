@@ -29,6 +29,7 @@ const Header = ({ setSearchopen }) => {
     setProgram,
     setStudentId,
     setYearOfEntrance,
+    setCookie,
   } = useUserDataContext();
   const { setSearch_word, setGetting } = useCourseDataContext();
   let navigate = useNavigate();
@@ -57,6 +58,10 @@ const Header = ({ setSearchopen }) => {
       })
       .then(() => {
         setLoginState(true);
+      })
+      .catch(() => {
+        setLoginState(false);
+        setCookie("token", "");
       });
   }, []);
 
@@ -66,6 +71,7 @@ const Header = ({ setSearchopen }) => {
     toast.success("로그아웃되었습니다.");
     localStorage.removeItem("REFRESH_TOKEN");
     localStorage.removeItem("TOKEN");
+    setCookie("token", "");
   };
 
   const onSubmitSearch = async (e) => {
@@ -82,19 +88,21 @@ const Header = ({ setSearchopen }) => {
     navigate(`/search`);
   };
 
-  const checkState = () => {
+  async function checkState() {
     console.log(cookies.token);
-    refreshFunc();
-    if (!loginState) {
+    const result = await refreshFunc();
+    console.log(result);
+    if (!loginState && !result) {
       console.log(cookies.token);
       setLoginState(false);
       navigate("/");
+      toast.error("먼저 로그인해주세요.");
     } else {
       console.log("리프레시");
       console.log(cookies.token);
       setLoginState(true);
     }
-  };
+  }
 
   return (
     <div className="headerbox">

@@ -38,7 +38,7 @@ export function UserDataProvider({ children }) {
   const [program, setProgram] = useState("학사");
   const [yearOfEntrance, setYearOfEntrance] = useState(2023);
   const [cookies, setCookie] = useCookies(["token"]);
-  const [refreshed, setRefresh] = useState(1);
+  const [updateReview, setUpdateReview] = useState(false);
 
   const tempMin = 10;
   const tempSec = 0;
@@ -46,7 +46,7 @@ export function UserDataProvider({ children }) {
 
   async function refreshFunc() {
     const refreshToken = localStorage.getItem("REFRESH_TOKEN");
-    let bool = true;
+    let bool = false;
     initialTime.current = 600;
     axios
       .post("https://snu-sugang.o-r.kr/user/refresh/", {
@@ -80,18 +80,12 @@ export function UserDataProvider({ children }) {
           })
           .then(() => {
             setLoginState(true);
+            bool = true;
           });
       })
       .catch(() => {
-        // bool = false;
-        // if (loginState) {
-        //   toast.error("토큰이 만료되었습니다. 다시 로그인해주세요.");
-        // } else {
-        //   toast.error("먼저 로그인해주세요.");
-        // }
         setLoginState(false);
         console.log("잘 안됨");
-        return false;
       });
     return bool;
   }
@@ -182,6 +176,8 @@ export function UserDataProvider({ children }) {
         loginFunc,
         refreshFunc,
         initialTime,
+        updateReview,
+        setUpdateReview,
       }}
     >
       {children}
@@ -567,7 +563,7 @@ export function CourseDataProvider({ children }) {
       })
       .then((res) => {
         console.log(res);
-        toast.info("삭제되었습니다.");
+        toast.success("삭제되었습니다.");
         getRegistered();
       })
       .catch((err) => {

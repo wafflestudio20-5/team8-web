@@ -177,6 +177,17 @@ const TimeTable = () => {
     return cellArr;
   };
 
+  const nonClick = document.querySelectorAll(".non-click");
+  function handleClick(event) {
+    nonClick.forEach((e) => {
+      e.classList.remove("click");
+    });
+    event.target.classList.add("click");
+  }
+  nonClick.forEach((e) => {
+    e.addEventListener("click", handleClick);
+  });
+
   return (
     <div>
       <div id="timetable-wrap">
@@ -185,13 +196,16 @@ const TimeTable = () => {
             <div className="first">
               <div className="TT-title">
                 <div className="text">시간표</div>
-                <div className="num-button" onClick={() => setNum(3)}>
+                <div
+                  className="num-button non-click click"
+                  onClick={() => setNum(3)}
+                >
                   1
                 </div>
-                <div className="num-button" onClick={() => setNum(4)}>
+                <div className="num-button non-click" onClick={() => setNum(4)}>
                   2
                 </div>
-                <div className="num-button" onClick={() => setNum(5)}>
+                <div className="num-button non-click" onClick={() => setNum(5)}>
                   3
                 </div>
               </div>

@@ -59,6 +59,21 @@ const Enroll = () => {
     setPage(startNum);
   }, [startNum, setPage]);
 
+  const [secNum, setSecNum] = useState("");
+  const [ran1, setRan1] = useState(0);
+  const [ran2, setRan2] = useState(0);
+  const [update, setUpdate] = useState(false);
+  useEffect(() => {
+    setRan1(Math.floor(Math.random() * 10));
+    setRan2(Math.floor(Math.random() * 10));
+  }, [update]);
+
+  const checkSec = () => {
+    let realNum = 10 * ran1 + ran2;
+    if (parseInt(secNum) === realNum) return true;
+    else return false;
+  };
+
   const fetchState = async () => {
     await axios
       .get(`https://snu-sugang.o-r.kr/state/`)
@@ -252,21 +267,34 @@ const Enroll = () => {
               ) : (
                 <div></div>
               )}
-              <div className="line">
-                총 <div className="num">{count}</div>건
-              </div>
             </div>
           </div>
         </div>
 
         <div className="nav">
           <div className="nav-bottom">
-            <div className="nav-code">00</div>
-            <input className="nav-code-input" placeholder="입력"></input>
+            <div className="nav-code">
+              {ran1}
+              {ran2}
+            </div>
+            <input
+              className="nav-code-input"
+              placeholder="입력"
+              onChange={(e) => {
+                setSecNum(e.target.value);
+              }}
+            ></input>
           </div>
           <button
             className="enroll-button"
-            onClick={() => addEnroll(checkedInputs)}
+            onClick={() => {
+              setUpdate(!update);
+              if (checkedInputs === "") toast.error("강좌를 선택해주세요.");
+              else {
+                if (checkSec()) addEnroll(checkedInputs);
+                else toast.error("보안문자가 잘못되었습니다.");
+              }
+            }}
           >
             {" "}
             수강신청
