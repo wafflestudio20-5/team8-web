@@ -111,7 +111,7 @@
 
 
 * 수강신청
-  - 장바구니 확정 기간 이후 장바구니 보류 강좌, 관심 강좌, 교과목 검색을 통해 수강 신청 가능합니다.
+  - 장바구니 확정 기간 이후 장바구니 보류 강좌, 관심 강좌, 교과목 검색을 통해 수강 신청 가능합니다. 정원보다 장바구니 인원이 적은 강좌는 자동으로 수강 신청 내역으로 이동합니다.
 ![image](https://user-images.githubusercontent.com/107996757/216634706-817024d9-dfdf-49e3-826d-01740d4fe7e9.png)
 ![image](https://user-images.githubusercontent.com/107996757/216635014-83a419d7-febc-4fb8-b4ef-0ca3bd092bc5.png)
 
