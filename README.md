@@ -37,9 +37,9 @@
 |역할|이름|github|
 |---|---|---|
 |프론트엔드|송채미|[chamcham02 ] (https://github.com/chamcham02)|
-|프론트엔드|전윤경|[cyk0315](https://github.com/cyk0315)|
+|프론트엔드|전윤경|[cyk0315] (https://github.com/cyk0315)|
 |프론트엔드|최서영|[chlsy07] (https://github.com/chlsy07))|
-|백엔드|김유신|[catnip033](https://github.com/catnip033)|
+|백엔드|김유신|[catnip033] (https://github.com/catnip033)|
 |백엔드|노현서|[serverrepairman] (https://github.com/serverrepairman)|
 |백엔드|황명빈|[bean1009] (https://github.com/bean1009)|
 
@@ -68,6 +68,10 @@
 
 
 ## 💻 프로젝트 뷰
+
+* 메인
+![image](https://user-images.githubusercontent.com/107996757/216633468-9cbdc64c-2531-4fc0-be16-6f4faeae6854.png)
+
 
 ## 🛠 개발 과정
 
