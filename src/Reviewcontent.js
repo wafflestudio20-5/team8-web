@@ -1,11 +1,10 @@
-import styled from 'styled-components'
-import axios from 'axios'
-import Starrating from './Starrating'
-import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router'
-import Newreview from './Newreview'
-import { useUserDataContext } from './Context'
-
+import styled from "styled-components";
+import axios from "axios";
+import Starrating from "./Starrating";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router";
+import Newreview from "./Newreview";
+import { useUserDataContext } from "./Context";
 
 const Revcon = styled.div`
   display: flex;
@@ -43,10 +42,10 @@ const Commentlist = styled.div`
     margin: 0.5rem;
   }
 
-  button[type='submit'] {
+  button[type="submit"] {
     width: 3rem;
   }
-`
+`;
 
 const Commentbox = styled.div`
   position: relative;
@@ -76,8 +75,7 @@ const Commentbox = styled.div`
   button {
     width: 4rem;
   }
-
-`
+`;
 
 const Icon = styled.div`
   position: absolute;
@@ -85,14 +83,12 @@ const Icon = styled.div`
   transform: translateX(100%);
 `;
 const Reviewcontent = () => {
-
-  const navigate = useNavigate()
-  const courseid = useParams().courseid
-  const reviewid = useParams().reviewid
-  const [picked, setPicked] = useState(0)
-  const [isedit, setIsedit] = useState(false)
-  const { cookies, name, loginState } = useUserDataContext()
-
+  const navigate = useNavigate();
+  const courseid = useParams().courseid;
+  const reviewid = useParams().reviewid;
+  const [picked, setPicked] = useState(0);
+  const [isedit, setIsedit] = useState(false);
+  const { cookies, name, loginState } = useUserDataContext();
 
   const times = [
     { time: "분", value: 1000 * 60 },
@@ -119,9 +115,13 @@ const Reviewcontent = () => {
   useEffect(() => {
     axios
       .get(
-
         `https://snu-sugang.o-r.kr/lectures/${courseid}/reviews/${reviewid}/`,
-
+        {
+          headers: {
+            Authorization: `token ${cookies.token}`,
+            "Content-Type": "application/json",
+          },
+        }
       )
       .then((res) => {
         console.log(res.data);
@@ -132,9 +132,13 @@ const Reviewcontent = () => {
       });
     axios
       .get(
-
         `https://snu-sugang.o-r.kr/lectures/${courseid}/reviews/${reviewid}/comments/`,
-
+        {
+          headers: {
+            Authorization: `token ${cookies.token}`,
+            "Content-Type": "application/json",
+          },
+        }
       )
       .then((res) => {
         console.log(res.data);
@@ -145,8 +149,7 @@ const Reviewcontent = () => {
       });
   }, []);
   const submit = (e) => {
-
-    e.preventDefault()
+    e.preventDefault();
 
     axios
       .post(
@@ -157,18 +160,14 @@ const Reviewcontent = () => {
         {
           headers: {
             Authorization: `token ${cookies.token}`,
-
-            'Content-Type': 'application/json',
-
+            "Content-Type": "application/json",
           },
         }
       )
       .then((res) => {
-
-        console.log(res.data)
-        e.target.comment.value = ''
-        setComments([res.data, ...comments])
-
+        console.log(res.data);
+        e.target.comment.value = "";
+        setComments([res.data, ...comments]);
       })
       .catch((e) => {
         console.log(e);
@@ -183,7 +182,7 @@ const Reviewcontent = () => {
         <Reviewbox>
           <div>
             <div>
-              <Starrating rating={reviews.rating} />
+              <Starrating rating={reviews.rate} />
             </div>
             {reviews.created_by === name ?? (
               <div>
@@ -203,16 +202,13 @@ const Reviewcontent = () => {
                           headers: {
                             Authorization: `token ${cookies.token}`,
 
-                            'Content-Type': 'application/json',
-
+                            "Content-Type": "application/json",
                           },
                         }
                       )
                       .then((res) => {
-
-                        console.log(res.data)
-                        navigate(`/review/${courseid}`)
-
+                        console.log(res.data);
+                        navigate(`/review/${courseid}`);
                       })
                       .catch((e) => {
                         console.log(e);
@@ -226,7 +222,7 @@ const Reviewcontent = () => {
           </div>
           <span>제목 :{reviews.title}</span>
 
-          <span>글쓴이 :{reviews.created_by ?? '익명'}</span>
+          <span>글쓴이 :{reviews.created_by ?? "익명"}</span>
 
           {reviews.content}
         </Reviewbox>
@@ -241,42 +237,37 @@ const Reviewcontent = () => {
                   <textarea
                     defaultValue={item.content}
                     onChange={(e) => {
-
-                      setEdit(e.target.value)
-
+                      setEdit(e.target.value);
                     }}
                   />
                   <button
                     onClick={() => {
-
-                      setPicked(0)
+                      setPicked(0);
 
                       axios
                         .put(
-                          `https://snu-sugang.o-r.kr/lectures/${courseid}/reviews/${reviewid}/comments/${item.id}/`,
+                          `https://snu-sugang.o-r.kr/lectures/${courseid}/reviews/${reviewid}/ comments/${item.id}/`,
                           {
                             content: edit,
-
                           },
                           {
                             headers: {
                               Authorization: `token ${cookies.token}`,
-                              'Content-Type': 'application/json',
+                              "Content-Type": "application/json",
                             },
-                          },
+                          }
                         )
                         .then((res) => {
-                          console.log(res.data)
+                          console.log(res.data);
                           setComments(
                             comments.map((comment) =>
-                              comment.id === item.id ? res.data : comment,
-                            ),
-                          )
+                              comment.id === item.id ? res.data : comment
+                            )
+                          );
                         })
                         .catch((e) => {
-                          console.log(e)
-                        })
-
+                          console.log(e);
+                        });
                     }}
                   >
                     수정
@@ -286,7 +277,7 @@ const Reviewcontent = () => {
                 <div>
                   <span>{item.content}</span>
 
-                  <span>{item.created_by ?? '익명'}</span>
+                  <span>{item.created_by ?? "익명"}</span>
 
                   <span>{elapsedTime(item.created_at)}</span>
                 </div>
@@ -294,16 +285,14 @@ const Reviewcontent = () => {
               {item.created_by ? (
                 <Icon>
                   <img
-
-                    src={'/edit.svg'}
+                    src={"/edit.svg"}
                     alt="edit"
                     onClick={() => {
-                      setPicked(item.id)
+                      setPicked(item.id);
                     }}
                   />
                   <img
-                    src={'/delete.svg'}
-
+                    src={"/delete.svg"}
                     alt="delete"
                     onClick={() => {
                       axios
@@ -313,22 +302,19 @@ const Reviewcontent = () => {
                             headers: {
                               Authorization: `token ${cookies.token}`,
 
-                              'Content-Type': 'application/json',
+                              "Content-Type": "application/json",
                             },
-                          },
+                          }
                         )
                         .then((res) => {
-                          console.log(res.data)
+                          console.log(res.data);
                           setComments(
-                            comments.filter(
-                              (comment) => comment.id !== item.id,
-                            ),
-                          )
+                            comments.filter((comment) => comment.id !== item.id)
+                          );
                         })
                         .catch((e) => {
-                          console.log(e)
-                        })
-
+                          console.log(e);
+                        });
                     }}
                   />
                 </Icon>

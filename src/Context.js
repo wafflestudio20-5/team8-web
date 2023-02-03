@@ -37,10 +37,12 @@ export function UserDataProvider({ children }) {
   const [program, setProgram] = useState("학사");
   const [yearOfEntrance, setYearOfEntrance] = useState(2023);
   const [cookies, setCookie] = useCookies(["token"]);
+  const [refreshed, setRefresh] = useState(1);
 
-  function refreshFunc() {
+  async function refreshFunc() {
     const refreshToken = localStorage.getItem("REFRESH_TOKEN");
     let bool = true;
+    setRefresh(refreshed * -1);
     axios
       .post("https://snu-sugang.o-r.kr/user/refresh/", {
         refresh_token: refreshToken,
@@ -90,7 +92,7 @@ export function UserDataProvider({ children }) {
     return bool;
   }
 
-  function loginFunc(userEmail, userPassword) {
+  async function loginFunc(userEmail, userPassword) {
     console.log("login trial");
     if (userEmail.includes("@snu")) {
       axios
@@ -102,9 +104,9 @@ export function UserDataProvider({ children }) {
           console.log("login success");
           console.log(response);
           console.log(response.data.token);
-          toast.success("로그인되었습니다.");
           setCookie("token", response.data.token);
           localStorage.setItem("REFRESH_TOKEN", response.data.refresh_token);
+          localStorage.setItem("TOKEN", response.data.token);
         })
         .then(
           axios
@@ -121,11 +123,21 @@ export function UserDataProvider({ children }) {
               setCollege(arr.college);
               setDepartment(arr.department);
               setName(arr.name);
+              console.log("이름");
+              console.log(arr.name);
               setProgram(arr.program);
               setStudentId(arr.student_id);
               setYearOfEntrance(arr.year_of_entrance);
             })
-            .then(() => setLoginState(true))
+            .then(() => {
+              setLoginState(true);
+              toast.success("로그인되었습니다.");
+            })
+            .catch((e) => {
+              console.log("error");
+              console.log(e);
+              toast.error("로그인에 실패했습니다.");
+            })
         )
         .catch((e) => {
           console.log("error");
@@ -188,14 +200,19 @@ export function CourseDataProvider({ children }) {
   const [enroll_courses, setEnroll_courses] = useState([]);
   const [registered_courses, setRegistered_courses] = useState([]);
   const [TT_courses, setTT_courses] = useState([]);
+  const [registerparam, setRegisterparam] = useState([]);
 
   const fetchData = useCallback(() => {
     if (getting === false) return;
     setWord(search_word);
     axios
-      .get(
-        `https://snu-sugang.o-r.kr/lectures/?keyword=${search_word}&page=${page}`
-      )
+      .get(`https://snu-sugang.o-r.kr/lectures/?`, {
+        params: {
+          keyword: search_word,
+          page: page,
+          ...registerparam,
+        },
+      })
       .then((res) => {
         console.log(res);
         setCourses(res.data.results);
@@ -330,12 +347,16 @@ export function CourseDataProvider({ children }) {
         if (ok) return;
         const link = `https://snu-sugang.o-r.kr/cart/` + num + `/`;
         axios
-          .post(link, {
-            headers: {
-              Authorization: `token ${cookies.token}`,
-              "Content-Type": `application/json`,
-            },
-          })
+          .post(
+            link,
+            {},
+            {
+              headers: {
+                Authorization: `token ${cookies.token}`,
+                "Content-Type": `application/json`,
+              },
+            }
+          )
           .then((res) => {
             console.log(res);
             toast.info("장바구니로 이동 되었습니다.");
@@ -620,7 +641,7 @@ export function CourseDataProvider({ children }) {
     }
     axios
       .delete(
-        `https://snu-sugang.o-r.kr/timetable/3/`,
+        `https://snu-sugang.o-r.kr/timetable/${num}/`,
 
         {
           headers: {
@@ -669,6 +690,8 @@ export function CourseDataProvider({ children }) {
         getEnroll,
         registered_courses,
         getRegistered,
+        setRegisterparam,
+        registerparam,
         addTT,
         getTT,
         delTT,

@@ -13,7 +13,10 @@ const Enroll = () => {
   const {
     addEnroll,
     count,
+    setCount,
     enroll_courses,
+    page,
+    setPage,
     getEnroll,
     interest_courses,
     getInterests,
@@ -23,9 +26,38 @@ const Enroll = () => {
     registered_courses,
   } = useCourseDataContext();
 
-  const [checkedInputs, setCheckedInputs] = useState("");
   const [clicked, setClicked] = useState("cart");
-  const [state, setState] = useState(0);
+  const [startNum, setStartNum] = useState(1);
+  const [pageButtons, setPageButtons] = useState([]);
+  const [checkedInputs, setCheckedInputs] = useState("");
+
+  useEffect(() => {
+    function setButtons() {
+      const r = [];
+      for (let i = startNum; i < startNum + 5 && i <= count / 10 + 1; i++) {
+        r.push(
+          <button
+            key={i}
+            type="button"
+            className={page === i ? "pageNum clicked" : "pageNum"}
+            onClick={() => {
+              setPage(i);
+              setGetting(true);
+              console.log(page);
+            }}
+          >
+            {i}
+          </button>
+        );
+      }
+      setPageButtons(r);
+    }
+    setButtons();
+  }, [count, page, setPage, startNum, setGetting]);
+
+  useEffect(() => {
+    setPage(startNum);
+  }, [startNum, setPage]);
 
   const fetchState = async () => {
     await axios
@@ -64,19 +96,28 @@ const Enroll = () => {
               <div className="button">
                 <button
                   className={clicked === "cart" ? "clicked" : ""}
-                  onClick={() => setClicked("cart")}
+                  onClick={() => {
+                    setClicked("cart");
+                    setCount(0);
+                  }}
                 >
                   장바구니 보류강좌
                 </button>
                 <button
                   className={clicked === "interest" ? "clicked" : ""}
-                  onClick={() => setClicked("interest")}
+                  onClick={() => {
+                    setClicked("interest");
+                    setCount(0);
+                  }}
                 >
                   관심강좌
                 </button>
                 <button
                   className={clicked === "search" ? "clicked" : ""}
-                  onClick={() => setClicked("search")}
+                  onClick={() => {
+                    setClicked("search");
+                    setCount(0);
+                  }}
                 >
                   교과목검색
                 </button>
@@ -154,16 +195,60 @@ const Enroll = () => {
                 <div></div>
               )}
               {clicked === "search" ? (
-                courses.map((course) => (
-                  <div className="item">
-                    <Course
-                      course={course}
-                      key={course.id}
-                      checkedInputs={checkedInputs}
-                      setCheckedInputs={setCheckedInputs}
-                    />
+                <div>
+                  {courses.map((course) => (
+                    <div className="item">
+                      <Course
+                        course={course}
+                        key={course.id}
+                        checkedInputs={checkedInputs}
+                        setCheckedInputs={setCheckedInputs}
+                      />
+                    </div>
+                  ))}
+                  <div className="line">
+                    총 <div className="num">{count}</div>건
                   </div>
-                ))
+                  <div className="pageButton">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setStartNum(1);
+                      }}
+                    >
+                      {"<<"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setStartNum(startNum - 5 < 1 ? startNum : startNum - 5);
+                      }}
+                    >
+                      {"<"}
+                    </button>
+                    {pageButtons}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setStartNum(
+                          startNum + 5 > parseInt(count / 10)
+                            ? startNum
+                            : startNum + 5
+                        );
+                      }}
+                    >
+                      {">"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setStartNum(parseInt(parseInt(count / 10) / 5) * 5);
+                      }}
+                    >
+                      {">>"}
+                    </button>
+                  </div>
+                </div>
               ) : (
                 <div></div>
               )}
@@ -174,19 +259,6 @@ const Enroll = () => {
           </div>
         </div>
 
-        <div className="bottom">
-          <a href="https://www.snu.ac.kr/personal_information">
-            개인정보취급방침
-          </a>{" "}
-          &nbsp;|&nbsp;
-          <a href="https://www.snu.ac.kr/prohibition_of_unauthorized_email_collection">
-            이메일무단수집거부
-          </a>
-          <br />
-          <span className="darkgray-word">
-            Copyright (C) 2020 SEOUL NATIONAL UNIVERSITY. All Rights Reserved.
-          </span>
-        </div>
         <div className="nav">
           <div className="nav-bottom">
             <div className="nav-code">00</div>

@@ -74,19 +74,6 @@ const Interest = () => {
           </div>
         </div>
       </div>
-      <div className="bottom">
-        <a href="https://www.snu.ac.kr/personal_information">
-          개인정보취급방침
-        </a>{" "}
-        &nbsp;|&nbsp;
-        <a href="https://www.snu.ac.kr/prohibition_of_unauthorized_email_collection">
-          이메일무단수집거부
-        </a>
-        <br />
-        <span className="darkgray-word">
-          Copyright (C) 2020 SEOUL NATIONAL UNIVERSITY. All Rights Reserved.
-        </span>
-      </div>
       <div className="interest-nav">
         <button className="cart-button" onClick={() => addCart(checkedInputs)}>
           {" "}

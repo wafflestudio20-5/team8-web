@@ -136,11 +136,20 @@ a {
   line-height: 25px;
   padding-left: 8vw;
   text-align: left;
-}
+  padding-right: 100px;
+  display: grid;
+  grid-template-columns: 3fr 2fr 1fr;
+ }
 .darkgray-word {
   color: gray;
   font-size: small;
 }
 a {
   cursor: pointer;
+}
+.timer-explanation{
+  float: right;
+  bottom: 20px;
+  vertical-align: top;
+  margin-left: auto;
 }
