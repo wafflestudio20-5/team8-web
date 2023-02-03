@@ -35,9 +35,12 @@
 ## 🧑‍🤝‍🧑 팀원 소개
 
 ## 중요한것은 컴플릭트나지 않는 머지
+
 |---|---|---|
 |송채미|전윤경|최서영|
-|[chamcham02 ] (https://github.com/chamcham02) |[cyk0315](https://github.com/cyk0315) |[chlsy07] (https://github.com/chlsy07) |
+|[chamcham02 ] (https://github.com/chamcham02)|[cyk0315](https://github.com/cyk0315)|[chlsy07] (https://github.com/chlsy07)|
+
+|---|---|---|
 |김유신|노현서|황명빈|
 |[catnip033](https://github.com/catnip033)|[serverrepairman] (https://github.com/serverrepairman)|[bean1009] (https://github.com/bean1009)|
 
