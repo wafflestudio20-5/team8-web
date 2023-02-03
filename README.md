@@ -72,6 +72,34 @@
 * 메인
 ![image](https://user-images.githubusercontent.com/107996757/216633468-9cbdc64c-2531-4fc0-be16-6f4faeae6854.png)
 
+* 회원가입 및 로그인
+![image](https://user-images.githubusercontent.com/107996757/216636982-96291a0e-bc3b-4f09-99ad-9b415a686207.png)
+![image](https://user-images.githubusercontent.com/107996757/216636919-3c02209e-bb28-4438-901f-9d074ef7f34a.png)
+
+* 마이페이지
+![image](https://user-images.githubusercontent.com/107996757/216635901-91b3f1d7-592d-4ab9-849e-0d2b39af166a.png)
+
+* 강좌 검색
+![image](https://user-images.githubusercontent.com/107996757/216634003-3c38b17e-36ca-4ad0-a484-29fcb6a5e299.png)
+![image](https://user-images.githubusercontent.com/107996757/216634039-e595a977-7abf-4c29-b5ac-590fda5eb921.png)
+
+* 관심강좌
+![image](https://user-images.githubusercontent.com/107996757/216635703-1e77ed70-2393-4878-932a-580bce75bc95.png)
+![image](https://user-images.githubusercontent.com/107996757/216635740-92ba5995-f579-4e28-9eeb-6b5bb50e5675.png)
+
+* 시간표
+![image](https://user-images.githubusercontent.com/107996757/216635477-5f875ca2-9a43-49ec-a4bb-93bca6ed1172.png)
+![image](https://user-images.githubusercontent.com/107996757/216635542-cc0695b1-fc64-4712-af31-e635b634079d.png)
+
+* 장바구니
+![image](https://user-images.githubusercontent.com/107996757/216635101-0b55b139-6512-4b91-bc9b-0f930bea1d2c.png)
+![image](https://user-images.githubusercontent.com/107996757/216635277-3a7cadd3-e627-4dfb-90b2-ab7d54785b03.png)
+![image](https://user-images.githubusercontent.com/107996757/216635326-c94f1bb4-f197-4f81-b4a0-6e8c6dc5c0fe.png)
+
+* 수강신청
+![image](https://user-images.githubusercontent.com/107996757/216634706-817024d9-dfdf-49e3-826d-01740d4fe7e9.png)
+![image](https://user-images.githubusercontent.com/107996757/216635014-83a419d7-febc-4fb8-b4ef-0ca3bd092bc5.png)
+
 
 ## 🛠 개발 과정
 
