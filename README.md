@@ -74,7 +74,7 @@
 
 
 * 회원가입 및 로그인
-  - snu 메일을 통한 소셜 로그인 기능을 제공하였다.
+  - snu 메일을 통한 소셜 로그인 기능을 제공하였습니다.
 ![image](https://user-images.githubusercontent.com/107996757/216636982-96291a0e-bc3b-4f09-99ad-9b415a686207.png)
 ![image](https://user-images.githubusercontent.com/107996757/216636919-3c02209e-bb28-4438-901f-9d074ef7f34a.png)
 
