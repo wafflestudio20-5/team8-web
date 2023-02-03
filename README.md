@@ -34,6 +34,15 @@
 
 ## 🧑‍🤝‍🧑 팀원 소개
 
+##중요한것은 컴플릭트나지 않는 머지
+
+-프론트
+|송채미|전윤경|최서영|
+|[chamcham02 ] (https://github.com/chamcham02) |[cyk0315](https://github.com/cyk0315) |[chlsy07] (https://github.com/chlsy07) |
+-백
+|김유신|노현서|황명빈|
+|[catnip033](https://github.com/catnip033)|[serverrepairman] (https://github.com/serverrepairman)|[bean1009] (https://github.com/bean1009)|
+
 ## 📚 기술 스택
 
 프론트엔드: react
@@ -70,3 +79,7 @@
   - 사용자와 강좌 간의 ManyToMany 관계인 관심강좌, 장바구니, 수강신청 사이의 상태 변화 관리를 설계하는 것이 핵심이었다.
   - 관심강좌, 장바구니, 수강신청의 세 분류를 모두 표현할 수 있는 ManyToMany 관계의 through 모델을 설계하였다.
   - view를 제작할 때 상속을 이용하여 관심강좌, 장바구니, 수강신청을 내부적으로 동일한 방식으로 처리하게 하였다.
+* 프론트엔드 개발 과정
+  - 기존의 디자인이 없어 새로 디자인을 해야했어 어려움이 있었다
+  - 글작성자가 본인인지 확인하고 맞을시에는 수정과 삭제가 가능해야 하였다.
+  - 글작성자의 정보를 받아서 작성자가 이름 혹은 익명으로 나타나고  수정 삭제버튼이 조건에 따라 나타나게 하였다.
