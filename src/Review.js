@@ -70,7 +70,7 @@ const Review = () => {
   const [reviews, setReviews] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
-  const page1 = parseInt(page / 5) * 5 + 1;
+  const page1 = parseInt((page - 1) / 5) * 5 + 1;
   const dummy = [0, 1, 2, 3, 4];
   const { pickcourses, setPickcourses } = useClassDataContext();
   useEffect(() => {
@@ -84,8 +84,6 @@ const Review = () => {
           `https://snu-sugang.o-r.kr/lectures/${courseid}/reviews/?page=${page}`
         )
         .then((res) => {
-          console.log("여기");
-          console.log(res);
           setPickcourses(res.data.course);
           setReviews(res.data.results);
           setTotalPage(parseInt((res.data.count - 1) / 10) + 1);
@@ -105,10 +103,7 @@ const Review = () => {
           }
         )
         .then((res) => {
-          console.log(res);
           setPickcourses(res.data.course);
-          console.log(res.data.course.name);
-          console.log(pickcourses.name);
           setReviews(res.data.results);
           setTotalPage(parseInt((res.data.count - 1) / 10) + 1);
         })

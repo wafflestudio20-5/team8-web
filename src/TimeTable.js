@@ -29,6 +29,8 @@ const StyledCell = styled.div`
   opacity: 1;
   padding-left: 10px;
   padding-right: 10px;
+  margin-bottom: ${(props) => props.marginBottom + "px" || "0"};
+  margin-top: ${(props) => props.marginTop + "px" || "0"};
 `;
 const Rows = styled.div`
   grid-column-start: 2;
@@ -121,15 +123,25 @@ const TimeTable = () => {
     return dayNum;
   };
 
-  const changeTimeToNum = (time) => {
+  const changeTimeToNum = (time, start) => {
     let arr = time.split(":");
-
     let num = (parseInt(arr[0]) - 8) * 2 + 2;
-
+    let margintop = 0,
+      marginbottom = 0;
     let minute = parseInt(arr[1]);
-    if (minute >= 45) num += 2;
-    else if (minute >= 30) num += 1;
-    return num;
+
+    if (start) {
+      // if (minute >= 45) {
+      //   num += 2;
+      // } else if (minute >= 30) num += 1;
+      // else if (minute >= 15) {
+      margintop = minute - 1;
+      // }
+    } else {
+      num += 2;
+      marginbottom = 59 - minute;
+    }
+    return [num, margintop, marginbottom];
   };
 
   const { getTT, TT_courses, count, delTT, TT2Cart } = useCourseDataContext();
@@ -146,24 +158,25 @@ const TimeTable = () => {
     const cellArr = [];
     let parsedTime = [];
     let dayNum = 2,
-      startTime = 2,
-      endTime = 3,
+      startTime = [],
+      endTime = [],
       courseCount = 0;
-    console.log(TT_courses);
     for (let i = 0; i < TT_courses.length; i++) {
       parsedTime = TT_courses[i].parsed_time;
       let color = colorSet[i];
       for (let j = 0; j < parsedTime.length; j++) {
         courseCount++;
         dayNum = changeDayToNum(parsedTime[j].day);
-        startTime = changeTimeToNum(parsedTime[j].start_time);
-        endTime = changeTimeToNum(parsedTime[j].end_time);
+        startTime = changeTimeToNum(parsedTime[j].start_time, true);
+        endTime = changeTimeToNum(parsedTime[j].end_time, false);
         cellArr.push(
           <StyledCell
             columnStart={dayNum}
             columnEnd={dayNum + 1}
-            rowStart={startTime}
-            rowEnd={endTime}
+            rowStart={startTime[0]}
+            rowEnd={endTime[0]}
+            marginTop={startTime[1]}
+            marginBottom={endTime[2]}
             opacity="1"
             backgroundColor={color}
             key={courseCount}

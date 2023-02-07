@@ -68,6 +68,7 @@ const Newreviewpage = styled.div`
   margin-right: 50px;
   height: 500px;
   flex-direction: column;
+  min-width: 400px;
   input[type="text"] {
     width: 100%;
   }
@@ -121,9 +122,15 @@ const Newreview = ({ setIsedit, isedit = false, edit = null }) => {
   const [editrating, setEditrating] = useState(0);
   const submit = (e) => {
     e.preventDefault();
+    if (e.target.title.value === "") {
+      toast.error("제목을 작성해주세요.");
+      return;
+    } else if (e.target.content.value === "") {
+      toast.error("내용을 작성해주세요.");
+      return;
+    }
     refreshFunc();
     setUpdateReview(!updateReview);
-    console.log(1);
     const func = isedit ? axios.put : axios.post;
     const url =
       `https://snu-sugang.o-r.kr/lectures/${courseid}/reviews/` +
@@ -144,12 +151,9 @@ const Newreview = ({ setIsedit, isedit = false, edit = null }) => {
       }
     )
       .then((res) => {
-        console.log(res);
         navigate(`/review/${courseid}`);
       })
       .catch((err) => {
-        console.log("여기");
-        console.log(err.response.request.status);
         if (err.response.request.status === 409)
           toast.error("이미 리뷰를 작성하셨습니다.");
         else if (err.response.request.status === 403) {

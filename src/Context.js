@@ -53,8 +53,6 @@ export function UserDataProvider({ children }) {
         refresh_token: refreshToken,
       })
       .then((response) => {
-        console.log("login success");
-        console.log(response.data.token);
         setCookie("token", response.data.token);
         localStorage.setItem("REFRESH_TOKEN", response.data.refresh_token);
       })
@@ -68,7 +66,6 @@ export function UserDataProvider({ children }) {
           })
           .then((response) => {
             let arr = response.data;
-            console.log(arr);
             setGrade(arr.academic_year);
             setCollege(arr.college);
             setDepartment(arr.department);
@@ -85,13 +82,11 @@ export function UserDataProvider({ children }) {
       })
       .catch(() => {
         setLoginState(false);
-        console.log("잘 안됨");
       });
     return bool;
   }
 
   async function loginFunc(userEmail, userPassword) {
-    console.log("login trial");
     if (userEmail.includes("@snu")) {
       axios
         .post("https://snu-sugang.o-r.kr/user/login/", {
@@ -100,9 +95,6 @@ export function UserDataProvider({ children }) {
         })
         .then((response) => {
           setCookie("token", response.data.token);
-          console.log("login success");
-          console.log(response);
-          console.log(response.data.token);
           localStorage.setItem("REFRESH_TOKEN", response.data.refresh_token);
           localStorage.setItem("TOKEN", response.data.token);
           return response.data.token;
@@ -117,13 +109,10 @@ export function UserDataProvider({ children }) {
             })
             .then((response) => {
               let arr = response.data;
-              console.log(arr);
               setGrade(arr.academic_year);
               setCollege(arr.college);
               setDepartment(arr.department);
               setName(arr.name);
-              console.log("이름");
-              console.log(arr.name);
               setProgram(arr.program);
               setStudentId(arr.student_id);
               setYearOfEntrance(arr.year_of_entrance);
@@ -133,14 +122,10 @@ export function UserDataProvider({ children }) {
               toast.success("로그인되었습니다.");
             })
             .catch((e) => {
-              console.log("error");
-              console.log(e);
               toast.error("로그인에 실패했습니다.");
             });
         })
         .catch((e) => {
-          console.log("error");
-          console.log(e);
           toast.error("로그인에 실패했습니다.");
         });
     } else {
@@ -216,7 +201,6 @@ export function CourseDataProvider({ children }) {
         },
       })
       .then((res) => {
-        console.log(res);
         setCourses(res.data.results);
         setCount(res.data.count);
       })
@@ -238,7 +222,6 @@ export function CourseDataProvider({ children }) {
         },
       })
       .then((res) => {
-        console.log(res);
         setRegistered_courses(res.data.results);
         setCount(res.data.count);
       })
@@ -275,7 +258,6 @@ export function CourseDataProvider({ children }) {
         },
       })
       .then((res) => {
-        console.log(res);
         setCart_courses(res.data.results);
         setCount(res.data.count);
       })
@@ -284,7 +266,6 @@ export function CourseDataProvider({ children }) {
       });
   }
   function getTT(num) {
-    console.log("gettingTT");
     refreshFunc();
     const link = `https://snu-sugang.o-r.kr/timetable/` + num + `/`;
     axios
@@ -295,7 +276,6 @@ export function CourseDataProvider({ children }) {
         },
       })
       .then((res) => {
-        console.log(res);
         setTT_courses(res.data.results);
         setCount(res.data.count);
       })
@@ -314,7 +294,6 @@ export function CourseDataProvider({ children }) {
         },
       })
       .then((res) => {
-        console.log(res);
         setEnroll_courses(res.data.results);
         setCount(res.data.count);
       })
@@ -334,13 +313,10 @@ export function CourseDataProvider({ children }) {
     await axios
       .get(`https://snu-sugang.o-r.kr/state/`)
       .then((res) => {
-        console.log(res);
-        console.log(res.data.period);
         return res.data.period;
       })
       .then((state) => {
         if (state !== 1) {
-          console.log(state);
           toast.error("장바구니 신청 기간이 아닙니다");
           return true;
         }
@@ -360,7 +336,6 @@ export function CourseDataProvider({ children }) {
             }
           )
           .then((res) => {
-            console.log(res);
             toast.info("장바구니로 이동 되었습니다.");
           })
           .catch((err) => {
@@ -384,14 +359,10 @@ export function CourseDataProvider({ children }) {
     await axios
       .get(`https://snu-sugang.o-r.kr/state/`)
       .then((res) => {
-        console.log(res);
-        console.log(res.data.period);
-
         return res.data.period;
       })
       .then((state) => {
         if (state !== 3) {
-          console.log(state);
           toast.error("수강신청 기간이 아닙니다");
           return true;
         }
@@ -412,11 +383,9 @@ export function CourseDataProvider({ children }) {
             }
           )
           .then((res) => {
-            console.log(res);
             toast.info("수강신청 되었습니다.");
           })
           .catch((err) => {
-            console.log(err);
             toast.error(err.response.data.course[0]);
           });
       })
@@ -448,11 +417,9 @@ export function CourseDataProvider({ children }) {
         }
       )
       .then((res) => {
-        console.log(res);
         toast.info("관심강좌로 저장되었습니다.");
       })
       .catch((err) => {
-        console.log(err);
         toast.error(err.response.data.course[0]);
       });
   };
@@ -469,14 +436,10 @@ export function CourseDataProvider({ children }) {
     await axios
       .get(`https://snu-sugang.o-r.kr/state/`)
       .then((res) => {
-        console.log(res);
-        console.log(res.data.period);
-
         return res.data.period;
       })
       .then((state) => {
         if (state !== 1) {
-          console.log(state);
           toast.error("장바구니 신청 기간이 아닙니다");
           return true;
         }
@@ -497,11 +460,9 @@ export function CourseDataProvider({ children }) {
             }
           )
           .then((res) => {
-            console.log(res);
             toast.info("장바구니로 저장되었습니다.");
           })
           .catch((err) => {
-            console.log(err);
             toast.error(err.response.data.course[0]);
           });
       })
@@ -533,11 +494,9 @@ export function CourseDataProvider({ children }) {
         }
       )
       .then((res) => {
-        console.log(res);
         toast.info("시간표에 추가되었습니다.");
       })
       .catch((err) => {
-        console.log(err);
         toast.error(err.response.data.course[0]);
       });
   };
@@ -562,7 +521,6 @@ export function CourseDataProvider({ children }) {
         },
       })
       .then((res) => {
-        console.log(res);
         toast.success("삭제되었습니다.");
         getRegistered();
       })
@@ -623,12 +581,10 @@ export function CourseDataProvider({ children }) {
         }
       )
       .then((res) => {
-        console.log(res);
         toast.info("삭제되었습니다.");
         getCart();
       })
       .catch((err) => {
-        console.log(err);
         toast.error(err.response.data.detail);
       });
   };
@@ -656,12 +612,10 @@ export function CourseDataProvider({ children }) {
         }
       )
       .then((res) => {
-        console.log(res);
         toast.info("삭제되었습니다.");
         getTT(num);
       })
       .catch((err) => {
-        console.log(err);
         toast.error(err.response.data.detail);
       });
   };

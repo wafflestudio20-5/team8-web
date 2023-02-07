@@ -35,7 +35,6 @@ const GoogleButton = ({ onSocial }) => {
   }, []);
 
   const loginSuccess = async (response) => {
-    console.log(response);
     let userEmail = response.profileObj.email;
     let userPassword = response.profileObj.googleId;
 
@@ -45,14 +44,12 @@ const GoogleButton = ({ onSocial }) => {
   };
 
   const loginFailure = (response) => {
-    console.log(response);
     toast.error("구글 로그인에 실패했습니다.");
   };
 
   let navigate = useNavigate();
 
   const signupSuccess = async (response) => {
-    console.log(response);
     let userEmail = response.profileObj.email;
     let userPassword = response.profileObj.googleId;
     if (userEmail.includes("@snu.ac.kr")) {
@@ -79,7 +76,6 @@ const GoogleButton = ({ onSocial }) => {
   };
 
   const signupFailure = (response) => {
-    console.log(response);
     toast.error("회원 가입에 실패했습니다.");
   };
 

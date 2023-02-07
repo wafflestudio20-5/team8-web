@@ -9,6 +9,8 @@
     border-radius: 5px;
     padding: 20px;
     overflow: scroll;
+    margin-bottom: 300px;
+
 }
 .register-title{
     text-align: center;

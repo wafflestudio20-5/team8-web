@@ -1,5 +1,9 @@
 import "./Interest.css";
-import { useUserDataContext, useCourseDataContext } from "./Context";
+import {
+  useUserDataContext,
+  useCourseDataContext,
+  useClassDataContext,
+} from "./Context";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Course from "./Course";
@@ -31,13 +35,23 @@ const Interest = () => {
 
   const checkSec = () => {
     let realNum = 10 * ran1 + ran2;
-    if (parseInt(secNum) === realNum) return true;
-    else return false;
+    const checkSec = () => {
+      let realNum = 10 * ran1 + ran2;
+      if (parseInt(secNum) === realNum) {
+        setUpdate(!update);
+        return true;
+      } else {
+        setUpdate(!update);
+        return false;
+      }
+    };
   };
 
   useEffect(() => {
     getInterests();
   }, []);
+
+  const { modal } = useClassDataContext();
 
   return (
     <div>
@@ -89,67 +103,72 @@ const Interest = () => {
           </div>
         </div>
       </div>
-      <div className="interest-nav">
-        <button className="cart-button" onClick={() => addCart(checkedInputs)}>
-          {" "}
-          장바구니 담기
-        </button>
-        <button className="tt-button" onClick={() => addTT(checkedInputs)}>
-          {" "}
-          시간표에 추가
-        </button>
-        <div className="tt-buttons">
+      {!modal && (
+        <div className="interest-nav">
           <button
-            className="tt-button-num"
-            onClick={() => addTT(checkedInputs, 3)}
+            className="cart-button"
+            onClick={() => addCart(checkedInputs)}
           >
             {" "}
-            1
+            장바구니 담기
           </button>
-          <button
-            className="tt-button-num"
-            onClick={() => addTT(checkedInputs, 4)}
-          >
+          <button className="tt-button" onClick={() => addTT(checkedInputs)}>
             {" "}
-            2
+            시간표에 추가
           </button>
-          <button
-            className="tt-button-num"
-            onClick={() => addTT(checkedInputs, 5)}
-          >
-            {" "}
-            3
-          </button>
-        </div>
-
-        <div className="nav-bottom">
-          <div className="nav-code">
-            {ran1}
-            {ran2}
+          <div className="tt-buttons">
+            <button
+              className="tt-button-num"
+              onClick={() => addTT(checkedInputs, 3)}
+            >
+              {" "}
+              1
+            </button>
+            <button
+              className="tt-button-num"
+              onClick={() => addTT(checkedInputs, 4)}
+            >
+              {" "}
+              2
+            </button>
+            <button
+              className="tt-button-num"
+              onClick={() => addTT(checkedInputs, 5)}
+            >
+              {" "}
+              3
+            </button>
           </div>
-          <input
-            className="nav-code-input"
-            placeholder="입력"
-            onChange={(e) => {
-              setSecNum(e.target.value);
+
+          <div className="nav-bottom">
+            <div className="nav-code">
+              {ran1}
+              {ran2}
+            </div>
+            <input
+              className="nav-code-input"
+              placeholder="입력"
+              onChange={(e) => {
+                setSecNum(e.target.value);
+              }}
+            ></input>
+          </div>
+          <button
+            className="enroll-button"
+            onClick={() => {
+              setUpdate(!update);
+              if (checkedInputs === "") toast.error("강좌를 선택해주세요.");
+              else {
+                if (checkSec()) addEnroll(checkedInputs);
+                else toast.error("보안문자가 잘못되었습니다.");
+              }
             }}
-          ></input>
+          >
+            {" "}
+            수강신청
+          </button>
         </div>
-        <button
-          className="enroll-button"
-          onClick={() => {
-            setUpdate(!update);
-            if (checkedInputs === "") toast.error("강좌를 선택해주세요.");
-            else {
-              if (checkSec()) addEnroll(checkedInputs);
-              else toast.error("보안문자가 잘못되었습니다.");
-            }
-          }}
-        >
-          {" "}
-          수강신청
-        </button>
-      </div>
+      )}
     </div>
   );
 };

@@ -45,10 +45,7 @@ const Register = () => {
     if (studentId.length > 3) setYearOfEntrance(studentId.substring(0, 4));
   }, [studentId]);
 
-  useEffect(() => {
-    console.log("문제문제문제");
-    console.log(college === "");
-  }, []);
+  useEffect(() => {}, []);
   let navigate = useNavigate();
 
   const signup = () => {
@@ -65,14 +62,10 @@ const Register = () => {
         year_of_entrance: yearOfEntrance,
       })
       .then((response) => {
-        console.log("sign-up success");
-        console.log(response);
         toast.success("회원가입 되었습니다.");
         navigate("/");
       })
       .catch((err) => {
-        console.log(err);
-        console.log("sign-up failed");
         toast.error("회원가입에 실패했습니다.");
       });
   };

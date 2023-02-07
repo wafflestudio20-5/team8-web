@@ -1,5 +1,9 @@
 import "./Enroll.css";
-import { useUserDataContext, useCourseDataContext } from "./Context";
+import {
+  useUserDataContext,
+  useCourseDataContext,
+  useClassDataContext,
+} from "./Context";
 import { useStateDataContext } from "./StateContext";
 import React, { useCallback, useState, useEffect } from "react";
 import Course from "./Course";
@@ -43,7 +47,6 @@ const Enroll = () => {
             onClick={() => {
               setPage(i);
               setGetting(true);
-              console.log(page);
             }}
           >
             {i}
@@ -78,14 +81,10 @@ const Enroll = () => {
     await axios
       .get(`https://snu-sugang.o-r.kr/state/`)
       .then((res) => {
-        console.log(res);
-        console.log(res.data.period);
-
         return res.data.period;
       })
       .then((state) => {
         if (state !== 3) {
-          console.log(state);
           navigate("/");
           toast.error("수강신청 기간이 아닙니다");
         }
@@ -100,6 +99,8 @@ const Enroll = () => {
   useEffect(() => {
     fetchState();
   }, []);
+
+  const { modal } = useClassDataContext();
 
   return (
     <div>
@@ -271,35 +272,37 @@ const Enroll = () => {
           </div>
         </div>
 
-        <div className="nav">
-          <div className="nav-bottom">
-            <div className="nav-code">
-              {ran1}
-              {ran2}
+        {!modal && (
+          <div className="nav">
+            <div className="nav-bottom">
+              <div className="nav-code">
+                {ran1}
+                {ran2}
+              </div>
+              <input
+                className="nav-code-input"
+                placeholder="입력"
+                onChange={(e) => {
+                  setSecNum(e.target.value);
+                }}
+              ></input>
             </div>
-            <input
-              className="nav-code-input"
-              placeholder="입력"
-              onChange={(e) => {
-                setSecNum(e.target.value);
+            <button
+              className="enroll-button"
+              onClick={() => {
+                setUpdate(!update);
+                if (checkedInputs === "") toast.error("강좌를 선택해주세요.");
+                else {
+                  if (checkSec()) addEnroll(checkedInputs);
+                  else toast.error("보안문자가 잘못되었습니다.");
+                }
               }}
-            ></input>
+            >
+              {" "}
+              수강신청
+            </button>
           </div>
-          <button
-            className="enroll-button"
-            onClick={() => {
-              setUpdate(!update);
-              if (checkedInputs === "") toast.error("강좌를 선택해주세요.");
-              else {
-                if (checkSec()) addEnroll(checkedInputs);
-                else toast.error("보안문자가 잘못되었습니다.");
-              }
-            }}
-          >
-            {" "}
-            수강신청
-          </button>
-        </div>
+        )}
       </div>
     </div>
   );

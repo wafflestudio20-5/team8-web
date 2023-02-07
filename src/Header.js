@@ -45,13 +45,10 @@ const Header = ({ setSearchopen }) => {
       })
       .then((response) => {
         let arr = response.data;
-        console.log(arr);
         setGrade(arr.academic_year);
         setCollege(arr.college);
         setDepartment(arr.department);
         setName(arr.name);
-        console.log("이름");
-        console.log(arr.name);
         setProgram(arr.program);
         setStudentId(arr.student_id);
         setYearOfEntrance(arr.year_of_entrance);
@@ -89,17 +86,12 @@ const Header = ({ setSearchopen }) => {
   };
 
   async function checkState() {
-    console.log(cookies.token);
     const result = await refreshFunc();
-    console.log(result);
     if (!loginState && !result) {
-      console.log(cookies.token);
       setLoginState(false);
       navigate("/");
       toast.error("먼저 로그인해주세요.");
     } else {
-      console.log("리프레시");
-      console.log(cookies.token);
       setLoginState(true);
     }
   }
@@ -107,7 +99,7 @@ const Header = ({ setSearchopen }) => {
   return (
     <div className="headerbox">
       <div className="headerup">
-        <div>
+        <div onClick={refreshFunc}>
           <Link to="/">
             <img src={"/img_logo_main.png"} alt={"logo"} className="logo" />
             <span className="logoname">2022-겨울학기</span>

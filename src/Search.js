@@ -2,6 +2,7 @@ import "./Search.css";
 import { useCourseDataContext, useUserDataContext } from "./Context";
 import React, { useEffect, useState } from "react";
 import Course from "./Course";
+import { toast } from "react-toastify";
 
 const Search = () => {
   const {
@@ -35,7 +36,6 @@ const Search = () => {
             onClick={() => {
               setPage(i);
               setGetting(true);
-              console.log(page);
             }}
           >
             {i}
@@ -50,6 +50,26 @@ const Search = () => {
   useEffect(() => {
     setPage(startNum);
   }, [startNum, setPage]);
+
+  const [secNum, setSecNum] = useState("");
+  const [ran1, setRan1] = useState(0);
+  const [ran2, setRan2] = useState(0);
+  const [update, setUpdate] = useState(false);
+  useEffect(() => {
+    setRan1(Math.floor(Math.random() * 10));
+    setRan2(Math.floor(Math.random() * 10));
+  }, [update]);
+
+  const checkSec = () => {
+    let realNum = 10 * ran1 + ran2;
+    if (parseInt(secNum) === realNum) {
+      setUpdate(!update);
+      return true;
+    } else {
+      setUpdate(!update);
+      return false;
+    }
+  };
 
   return (
     <div>
@@ -170,13 +190,23 @@ const Search = () => {
           </div>
 
           <div className="nav-bottom">
-            <div className="nav-code">00</div>
-            <input className="nav-code-input" placeholder="입력"></input>
+            <div className="nav-code">
+              {ran1}
+              {ran2}
+            </div>
+            <input
+              className="nav-code-input"
+              placeholder="입력"
+              onChange={(e) => {
+                setSecNum(e.target.value);
+              }}
+            ></input>
           </div>
           <button
             className="enroll-button"
             onClick={() => {
-              addEnroll(checkedInputs);
+              if (checkSec()) addEnroll(checkedInputs);
+              else toast.error("보안문자가 잘못되었습니다.");
             }}
           >
             {" "}

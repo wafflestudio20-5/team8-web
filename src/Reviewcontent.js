@@ -177,7 +177,6 @@ const Reviewcontent = () => {
         }
       )
       .then((res) => {
-        console.log(res.data);
         setReviews(res.data);
       })
       .catch((e) => {
@@ -194,7 +193,6 @@ const Reviewcontent = () => {
         }
       )
       .then((res) => {
-        console.log(res.data);
         setComments(res.data);
       })
       .catch((e) => {
@@ -218,7 +216,6 @@ const Reviewcontent = () => {
         }
       )
       .then((res) => {
-        console.log(res.data);
         e.target.comment.value = "";
         setComments([res.data, ...comments]);
       })
@@ -300,7 +297,6 @@ const Reviewcontent = () => {
                           }
                         )
                         .then((res) => {
-                          console.log(res.data);
                           navigate(`/review/${courseid}`);
                         })
                         .catch((e) => {
@@ -346,7 +342,6 @@ const Reviewcontent = () => {
                           }
                         )
                         .then((res) => {
-                          console.log(res.data);
                           setComments(
                             comments.map((comment) =>
                               comment.id === item.id ? res.data : comment
@@ -398,7 +393,6 @@ const Reviewcontent = () => {
                           }
                         )
                         .then((res) => {
-                          console.log(res.data);
                           setComments(
                             comments.filter((comment) => comment.id !== item.id)
                           );
