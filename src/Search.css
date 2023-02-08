@@ -20,6 +20,15 @@
   border-collapse: collapse;
   text-align: left;
 }
+.list-area-big {
+  grid-column-start: 2;
+  grid-column-end: 3;
+  width: 110%;
+  padding: 8px 10px;
+  flex-grow: 1;
+  border-collapse: collapse;
+  text-align: left;
+}
 .first {
   text-align: center;
   border-bottom: 2px solid #888a96;

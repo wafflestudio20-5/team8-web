@@ -15,7 +15,7 @@ const Timer = (props) => {
   const interval = useRef(null);
   const [min, setMin] = useState(padNumber(tempMin, 2));
   const [sec, setSec] = useState(padNumber(tempSec, 2));
-  const { refreshed, setLoginState, refreshFunc, initialTime } =
+  const { refreshed, setLoginState, refreshFunc, initialTime, setCookie } =
     useUserDataContext();
 
   useEffect(() => {
@@ -56,6 +56,7 @@ const Timer = (props) => {
       toast.info("로그아웃되었습니다.");
       localStorage.removeItem("REFRESH_TOKEN");
       localStorage.removeItem("TOKEN");
+      setCookie("token", "");
     }
   }, [sec]);
 

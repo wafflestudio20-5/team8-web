@@ -29,6 +29,7 @@ const Header = ({ setSearchopen }) => {
     setProgram,
     setStudentId,
     setYearOfEntrance,
+    setCookie,
   } = useUserDataContext();
   const { setSearch_word, setGetting } = useCourseDataContext();
   let navigate = useNavigate();
@@ -44,19 +45,20 @@ const Header = ({ setSearchopen }) => {
       })
       .then((response) => {
         let arr = response.data;
-        console.log(arr);
         setGrade(arr.academic_year);
         setCollege(arr.college);
         setDepartment(arr.department);
         setName(arr.name);
-        console.log("이름");
-        console.log(arr.name);
         setProgram(arr.program);
         setStudentId(arr.student_id);
         setYearOfEntrance(arr.year_of_entrance);
       })
       .then(() => {
         setLoginState(true);
+      })
+      .catch(() => {
+        setLoginState(false);
+        setCookie("token", "");
       });
   }, []);
 
@@ -66,6 +68,7 @@ const Header = ({ setSearchopen }) => {
     toast.success("로그아웃되었습니다.");
     localStorage.removeItem("REFRESH_TOKEN");
     localStorage.removeItem("TOKEN");
+    setCookie("token", "");
   };
 
   const onSubmitSearch = async (e) => {
@@ -82,24 +85,21 @@ const Header = ({ setSearchopen }) => {
     navigate(`/search`);
   };
 
-  const checkState = () => {
-    console.log(cookies.token);
-    refreshFunc();
-    if (!loginState) {
-      console.log(cookies.token);
+  async function checkState() {
+    const result = await refreshFunc();
+    if (!loginState && !result) {
       setLoginState(false);
       navigate("/");
+      toast.error("먼저 로그인해주세요.");
     } else {
-      console.log("리프레시");
-      console.log(cookies.token);
       setLoginState(true);
     }
-  };
+  }
 
   return (
     <div className="headerbox">
       <div className="headerup">
-        <div>
+        <div onClick={refreshFunc}>
           <Link to="/">
             <img src={"/img_logo_main.png"} alt={"logo"} className="logo" />
             <span className="logoname">2022-겨울학기</span>

@@ -14,7 +14,7 @@ import Review from "./Review";
 import Newreview from "./Newreview";
 import Reviewcontent from "./Reviewcontent";
 import Bottom from "./Bottom";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { HashRouter, Route, Routes, Navigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
@@ -27,7 +27,7 @@ function App() {
 
   return (
     <div>
-      <BrowserRouter>
+      <HashRouter>
         <Header searchopen={searchopen} setSearchopen={setSearchopen} />
         <div className="padding"></div>
         <Searchcourse searchopen={searchopen} setSearchopen={setSearchopen} />
@@ -42,10 +42,10 @@ function App() {
           <Route path="/timetable" element={<TimeTable />} />
           <Route path="/enroll" element={<Enroll />} />
           <Route path="/search" element={<Search />} />
-          <Route path="/review/:courseid" element={<Review />} />
-          <Route path="/newreview/:courseid" element={<Newreview />} />
+          <Route path="/review/:courseid/" element={<Review />} />
+          <Route path="/newreview/:courseid/" element={<Newreview />} />
           <Route
-            path="/reviewcontent/:courseid/:reviewid"
+            path="/reviewcontent/:courseid/:reviewid/"
             element={<Reviewcontent />}
           />
           <Route path="*" element={<Navigate to={""} />} />
@@ -57,7 +57,7 @@ function App() {
           pauseOnHover
         />
         <Bottom />
-      </BrowserRouter>
+      </HashRouter>
     </div>
   );
 }

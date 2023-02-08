@@ -1,11 +1,29 @@
 import "./Register.css";
 import { useUserDataContext } from "./Context";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import styled from "styled-components";
+import { depart, subject, culture, culture2 } from "./data";
+
+const Searchselect = ({ selectdata, setdata = null }) => {
+  return (
+    <select
+      onChange={(e) => {
+        if (setdata) setdata(e.target.value);
+      }}
+    >
+      <option>전체</option>
+      {selectdata.map((data) => {
+        return <option key={data}>{data}</option>;
+      })}
+    </select>
+  );
+};
 
 const Register = () => {
+  // 학번, 이름, 이수과정, 학년, 입학년도, 등록횟수, 주전공, 부전공, 복수전공
   const {
     name,
     email,
@@ -23,12 +41,11 @@ const Register = () => {
     grade,
     setGrade,
   } = useUserDataContext();
-  // 학번, 이름, 이수과정, 학년, 입학년도, 등록횟수, 주전공, 부전공, 복수전공
-
   useEffect(() => {
     if (studentId.length > 3) setYearOfEntrance(studentId.substring(0, 4));
   }, [studentId]);
 
+  useEffect(() => {}, []);
   let navigate = useNavigate();
 
   const signup = () => {
@@ -45,21 +62,28 @@ const Register = () => {
         year_of_entrance: yearOfEntrance,
       })
       .then((response) => {
-        console.log("sign-up success");
-        console.log(response);
         toast.success("회원가입 되었습니다.");
-        navigate(-1);
+        navigate("/");
       })
       .catch((err) => {
-        console.log(err);
-        console.log("sign-up failed");
         toast.error("회원가입에 실패했습니다.");
-        navigate(-1);
       });
   };
 
   const cancel = () => {
     navigate(-1);
+  };
+  const [allDepartments, setAllDepartments] = useState([]);
+  const changeDepartment = (college) => {
+    if (college === null || college === "") return;
+    else {
+      for (let i = 0; i < 30; i++) {
+        if (college === depart[i].name) {
+          setAllDepartments(depart[i].data);
+          return;
+        }
+      }
+    }
   };
 
   return (
@@ -74,17 +98,34 @@ const Register = () => {
           {email}
           <br />
           <span className="bold-title">소속 대학</span>
-          <input
-            className="register-input"
-            placeholder="공과대학"
-            onChange={(e) => setCollege(e.target.value)}
-          />
+          {/*<Searchselect*/}
+          {/*  selectdata={depart.map((i) => i.name)}*/}
+          {/*  setdata={setCollege}*/}
+          {/*/>*/}
+          <select
+            className="register-select"
+            onChange={(e) => {
+              setCollege(e.target.value);
+              changeDepartment(e.target.value);
+            }}
+          >
+            <option>전체</option>
+            {depart
+              .map((i) => i.name)
+              .map((data) => {
+                return <option key={data}>{data}</option>;
+              })}
+          </select>
           <span className="bold-title">소속 학과</span>
-          <input
-            className="register-input"
-            placeholder="컴퓨터공학과"
+          <select
+            className="register-select"
             onChange={(e) => setDepartment(e.target.value)}
-          />
+          >
+            <option>전체</option>
+            {allDepartments.map((j) => {
+              return <option key={j}>{j}</option>;
+            })}
+          </select>
           <br />
           <span className="bold-title">학번</span>
           <input
